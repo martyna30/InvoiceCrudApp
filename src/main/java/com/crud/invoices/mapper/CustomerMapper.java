@@ -23,7 +23,7 @@ public class CustomerMapper {
                         invoiceMapper.mapToInvoiceList(customerDto.getInvoices()),
                         customerDto.getName(),
                         customerDto.getVatNumber()
-                        ,customerDto.isVATpayer()))
+                        , customerDto.isVATpayer()))
                 .collect(toList());
     }
 
@@ -43,7 +43,7 @@ public class CustomerMapper {
                 invoiceMapper.mapToInvoiceList(customerDto.getInvoices()),
                 customerDto.getName(),
                 customerDto.getVatNumber()
-                ,customerDto.isVATpayer());
+                , customerDto.isVATpayer());
     }
 
     public CustomerDto mapToCustomerDto(final Customer customer) {
@@ -52,6 +52,6 @@ public class CustomerMapper {
                 invoiceMapper.mapToInvoiceDtoList(customer.getInvoices()),
                 customer.getName(),
                 customer.getVatNumber()
-                ,customer.isVATpayer());
+                , customer.isVATpayer());
     }
 }

@@ -22,6 +22,7 @@ public class InvoiceService {
         return invoiceRepository.findAll();
 
     }
+
     public Invoice saveInvoice(final Invoice invoice) {
         return invoiceRepository.save(invoice);
     }

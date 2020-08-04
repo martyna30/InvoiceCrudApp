@@ -32,7 +32,7 @@ public class ExchangeService {
         return exchangeRepository.retrieveTableWithSpecifiedDate(date);
     }
 
- public void deleteTable(Long id) {
+    public void deleteTable(Long id) {
         exchangeRepository.deleteById(id);
- }
+    }
 }

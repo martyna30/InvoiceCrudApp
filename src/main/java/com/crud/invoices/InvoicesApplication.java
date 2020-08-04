@@ -8,13 +8,13 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 @SpringBootApplication
 public class InvoicesApplication extends SpringBootServletInitializer {
 
-	public static void main(String[] args) {
-		SpringApplication.run(InvoicesApplication.class, args);
+    public static void main(String[] args) {
+        SpringApplication.run(InvoicesApplication.class, args);
 
-	}
+    }
 
-	@Override
-	protected SpringApplicationBuilder configure(SpringApplicationBuilder applicationBuilder) {
-		return applicationBuilder.sources(InvoicesApplication.class);
-	}
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder applicationBuilder) {
+        return applicationBuilder.sources(InvoicesApplication.class);
+    }
 }

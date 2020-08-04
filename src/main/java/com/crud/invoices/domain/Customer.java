@@ -41,8 +41,8 @@ public class Customer {
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
-            name ="JOIN_CUSTOMER_INVOICE",
-            joinColumns ={@JoinColumn(name = "CUSTOMER_ID", referencedColumnName = "CUSTOMER_ID")},
+            name = "JOIN_CUSTOMER_INVOICE",
+            joinColumns = {@JoinColumn(name = "CUSTOMER_ID", referencedColumnName = "CUSTOMER_ID")},
             inverseJoinColumns = {@JoinColumn(name = "INVOICE_ID", referencedColumnName = "INVOICE_ID")}
     )
     public List<Invoice> getInvoices() {
@@ -53,10 +53,12 @@ public class Customer {
     public String getName() {
         return name;
     }
+
     @Column
     public double getVatNumber() {
         return vatNumber;
     }
+
     @Column
     public boolean isVATpayer() {
         return isVATpayer;

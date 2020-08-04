@@ -39,14 +39,17 @@ public class Item {
     public Invoice getInvoice() {
         return invoice;
     }
+
     @Column
     public int getQuantity() {
         return quantity;
     }
+
     @Column
     public BigDecimal getPrice() {
         return price;
     }
+
     @Column
     public BigDecimal getValue() {
         return value;

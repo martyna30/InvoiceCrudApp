@@ -23,7 +23,7 @@ public class ItemMapper {
                         itemDto.getQuantity(),
                         itemDto.getPrice(),
                         itemDto.getValue()))
-                        .collect(toList());
+                .collect(toList());
     }
 
     public List<ItemDto> mapToItemDtoList(final List<Item> items) {

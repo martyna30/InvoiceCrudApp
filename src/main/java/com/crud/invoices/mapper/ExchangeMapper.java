@@ -57,7 +57,7 @@ public class ExchangeMapper {
                 exchange.getDate()
         );*/
 
-   public List<RateDto> mapToRateListDto(final List<Rate> rateList) {
+    public List<RateDto> mapToRateListDto(final List<Rate> rateList) {
         return rateList.stream()
                 .map(rate -> new RateDto(
                         rate.getCurrency(),

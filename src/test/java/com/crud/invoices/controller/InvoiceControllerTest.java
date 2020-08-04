@@ -75,8 +75,8 @@ class InvoiceControllerTest {
                 customersDto,
                 20.0,
                 24.0,
-                LocalDate.of(2020,7,20),
-                LocalDate.of(2020,7,30),
+                LocalDate.of(2020, 7, 20),
+                LocalDate.of(2020, 7, 30),
                 true);
 
         Invoice invoice = new Invoice();
@@ -97,7 +97,7 @@ class InvoiceControllerTest {
                 //fields SellerDto
                 .andExpect(jsonPath("$.seller.id", is(1)))
 
-                .andExpect(jsonPath("$.netto",is(20.0)))
+                .andExpect(jsonPath("$.netto", is(20.0)))
 
                 .andExpect(jsonPath("$.brutto", is(24.0)))
                 .andExpect(jsonPath("$.dateOfInvoice", is("2020-07-20")))
@@ -122,8 +122,8 @@ class InvoiceControllerTest {
                 customersDto,
                 20.0,
                 24.0,
-               LocalDate.of(2020,7,20),
-               LocalDate.of(2020,7,30),
+                LocalDate.of(2020, 7, 20),
+                LocalDate.of(2020, 7, 30),
                 true);
 
         Invoice invoice = new Invoice();
@@ -149,17 +149,17 @@ class InvoiceControllerTest {
         customers.add(new Customer());
 
         InvoiceDto invoiceDto = new InvoiceDto(1L, "1", itemDto, customersDto, 20.0, 24.0,
-                LocalDate.of(2020,7,20), LocalDate.of(2020,07,30),true);
+                LocalDate.of(2020, 7, 20), LocalDate.of(2020, 07, 30), true);
 
         Invoice invoice = new Invoice(1L, "1", items, customers, 20.0, 24.0,
-                LocalDate.of(2020,7,20), LocalDate.of(2020,07,30), true);
+                LocalDate.of(2020, 7, 20), LocalDate.of(2020, 07, 30), true);
 
         InvoiceDto invoiceDto2 = new InvoiceDto(2L, "2", itemDto, customersDto, 30.0, 37.0,
-                LocalDate.of(2020,7,21), LocalDate.of(2020,07,31),
+                LocalDate.of(2020, 7, 21), LocalDate.of(2020, 07, 31),
                 true);
 
         Invoice invoice2 = new Invoice(2L, "2", items, customers, 30.0, 37.0,
-                LocalDate.of(2020,7,21), LocalDate.of(2020,07,31), true);
+                LocalDate.of(2020, 7, 21), LocalDate.of(2020, 07, 31), true);
         when(invoiceMapper.mapToInvoice(invoiceDto)).thenReturn(invoice);
         when(invoiceMapper.mapToInvoiceDto(invoice2)).thenReturn(invoiceDto2);
         when(invoiceMapper.mapToInvoice(ArgumentMatchers.any(InvoiceDto.class))).thenReturn(invoice2);
@@ -182,8 +182,8 @@ class InvoiceControllerTest {
                 .andExpect(jsonPath("$.customers", hasSize(1)))
                 //fields SellerDto
                 .andExpect(jsonPath("$.seller.id", is(1)))
-                .andExpect(jsonPath("$.netto",is(30.0)))
-                .andExpect(jsonPath("$.brutto",is(37.0)))
+                .andExpect(jsonPath("$.netto", is(30.0)))
+                .andExpect(jsonPath("$.brutto", is(37.0)))
                 .andExpect(jsonPath("$.dateOfInvoice.year", is("2020")))
                 .andExpect(jsonPath("$.dateOfInvoice.month", is("07")))
                 .andExpect(jsonPath("$.dateOfInvoice.dayOfMonth", is("21")))

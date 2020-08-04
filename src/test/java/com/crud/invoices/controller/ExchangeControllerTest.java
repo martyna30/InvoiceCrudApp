@@ -31,7 +31,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(ExchangeController.class)//udostępnienie controllera do testowania,Dzięki adnotacji @WebMvcTest możemy również korzystać z MockMvc
+@WebMvcTest(ExchangeController.class)
+//udostępnienie controllera do testowania,Dzięki adnotacji @WebMvcTest możemy również korzystać z MockMvc
 public class ExchangeControllerTest {
     @Autowired
     private MockMvc mockMvc;//MockMvc - jest to klasa pozwalająca na wykonywanie żądań HTTP do naszego controllera

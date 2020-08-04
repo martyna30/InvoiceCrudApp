@@ -1,4 +1,5 @@
 package com.crud.invoices.respository;
+
 import com.crud.invoices.domain.Item;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

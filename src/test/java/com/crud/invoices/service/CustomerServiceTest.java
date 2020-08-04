@@ -29,7 +29,7 @@ class CustomerServiceTest {
     @Test
     public void testSaveCustomerWithInvoice() {
         //Given
-       Invoice invoice = new Invoice("1");
+        Invoice invoice = new Invoice("1");
 
         Customer customer = new Customer("Dell");
 
@@ -58,7 +58,7 @@ class CustomerServiceTest {
         //Given
         Invoice invoice = new Invoice("1");
 
-        Customer customer = new Customer("Dell",1,true);
+        Customer customer = new Customer("Dell", 1, true);
 
         customer.getInvoices().add(invoice);
         invoice.getCustomers().add(customer);
@@ -100,7 +100,7 @@ class CustomerServiceTest {
         //Given
         Invoice invoice = new Invoice("1");
 
-        Customer customer = new Customer("Dell",1,true);
+        Customer customer = new Customer("Dell", 1, true);
 
         customer.getInvoices().add(invoice);
         invoice.getCustomers().add(customer);

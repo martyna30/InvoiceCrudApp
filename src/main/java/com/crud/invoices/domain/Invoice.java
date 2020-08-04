@@ -57,8 +57,8 @@ public class Invoice {
         return items;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL,mappedBy = "invoices")
-            //{CascadeType.MERGE, CascadeType.PERSIST}, mappedBy = "invoices")
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "invoices")
+    //{CascadeType.MERGE, CascadeType.PERSIST}, mappedBy = "invoices")
     public List<Customer> getCustomers() {
         return customers;
     }
@@ -79,43 +79,44 @@ public class Invoice {
     }
 
     @Column
-    public LocalDate getDateOfPayment () {
+    public LocalDate getDateOfPayment() {
         return dateOfPayment;
     }
 
     @Column
-    public boolean isPaid () {
-            return isPaid;
+    public boolean isPaid() {
+        return isPaid;
     }
 
-    public void setId (Long id){
-            this.id = id;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setNumber (String number){
+    public void setNumber(String number) {
         this.number = number;
     }
 
-    public void setItems (List < Item > items) {
+    public void setItems(List<Item> items) {
         this.items = items;
     }
 
-    public void setCustomers (List < Customer > customers) {
+    public void setCustomers(List<Customer> customers) {
         this.customers = customers;
     }
 
-    public void setNetto ( double netto){
-            this.netto = netto;
-    }
-    public void setBrutto ( double brutto){
-            this.brutto = brutto;
+    public void setNetto(double netto) {
+        this.netto = netto;
     }
 
-    public void setPaid ( boolean paid){
+    public void setBrutto(double brutto) {
+        this.brutto = brutto;
+    }
+
+    public void setPaid(boolean paid) {
         isPaid = paid;
     }
 
-    public void setDateOfInvoice (LocalDate dateOfInvoice){
+    public void setDateOfInvoice(LocalDate dateOfInvoice) {
         this.dateOfInvoice = dateOfInvoice;
     }
 

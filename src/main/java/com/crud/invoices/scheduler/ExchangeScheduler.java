@@ -22,19 +22,19 @@ public class ExchangeScheduler {
     ExchangeRepository exchangeRepository;
 
     @Scheduled(fixedDelay = 10000)
-   // @Scheduled(cron = " 0 0 * * * * ")
+    // @Scheduled(cron = " 0 0 * * * * ")
     public void checkTable() {
         List<Exchange> currentNBPtable = exchangeRepository.retrieveTableWithSpecifiedDate(LocalDate.now());
 
         long size = currentNBPtable.size();
 
-        if(size > 0) {
+        if (size > 0) {
             System.out.println("Table is current");
 
         } else {
-              exchangeFacade.getCurrencyExchangeRatesTableAndSaveToDatabase();
-              System.out.println(SUBJECT);
-          }
+            exchangeFacade.getCurrencyExchangeRatesTableAndSaveToDatabase();
+            System.out.println(SUBJECT);
+        }
     }
 }
 

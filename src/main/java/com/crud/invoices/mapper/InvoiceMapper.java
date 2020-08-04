@@ -29,7 +29,7 @@ public class InvoiceMapper {
                         invoiceDto.getDateOfInvoice(),
                         invoiceDto.getDateOfPayment(),
                         invoiceDto.isPaid()))
-                                .collect(toList());
+                .collect(toList());
     }
 
     public List<InvoiceDto> mapToInvoiceDtoList(final List<Invoice> invoices) {

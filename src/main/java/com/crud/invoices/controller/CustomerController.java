@@ -32,7 +32,7 @@ public class CustomerController {
 
     @RequestMapping(method = RequestMethod.DELETE, value = "deleteCustomer", consumes = APPLICATION_JSON_VALUE)
     public void deleteCustomer(@RequestParam Long customerId) {
-       customerService.deleteCustomer(customerId);
+        customerService.deleteCustomer(customerId);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "updateCustomer")

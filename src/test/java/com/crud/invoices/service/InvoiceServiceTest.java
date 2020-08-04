@@ -26,7 +26,7 @@ class InvoiceServiceTest {
     @Test
     public void saveInvoiceWithItems() {
         //Given
-        Invoice invoice = new Invoice( "1");
+        Invoice invoice = new Invoice("1");
 
         Item item = new Item(invoice, 2, new BigDecimal(22), new BigDecimal(44));
         Item item2 = new Item(invoice, 2, new BigDecimal(11), new BigDecimal(22));
@@ -55,7 +55,7 @@ class InvoiceServiceTest {
     public void updateInvoice() {
         //Given
         Invoice invoice = new Invoice("1");
-        Invoice invoice2 = new Invoice( "2");
+        Invoice invoice2 = new Invoice("2");
 
         Item item = new Item(invoice, 2, new BigDecimal(22), new BigDecimal(44));
         Item item2 = new Item(invoice, 2, new BigDecimal(11), new BigDecimal(22));

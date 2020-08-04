@@ -61,14 +61,14 @@ class CustomerControllerTest {
     public void testGetCustomer() throws Exception {
         //Given
         List<InvoiceDto> invoicesDto = new ArrayList<>();
-        invoicesDto.add(new InvoiceDto(11L,"21"));
+        invoicesDto.add(new InvoiceDto(11L, "21"));
 
         List<Invoice> invoices = new ArrayList<>();
-        invoices.add(new Invoice(11L,"21"));
+        invoices.add(new Invoice(11L, "21"));
 
-        CustomerDto customerDto = new CustomerDto(1L, invoicesDto,"Dell",1.0,true);
+        CustomerDto customerDto = new CustomerDto(1L, invoicesDto, "Dell", 1.0, true);
 
-        Customer customer = new Customer(1L, invoices,"Dell",1.0,true);
+        Customer customer = new Customer(1L, invoices, "Dell", 1.0, true);
 
         when(customerService.getCustomer(1L)).thenReturn(java.util.Optional.of(customer));
         when(customerMapper.mapToCustomerDto(customer)).thenReturn(customerDto);
@@ -81,7 +81,7 @@ class CustomerControllerTest {
                 //fields list
                 .andExpect(jsonPath("$.invoices", hasSize(1)))
                 .andExpect(jsonPath("$.invoices[0].id", is(11)))
-                .andExpect(jsonPath("$.invoices[0].number",is("21")))
+                .andExpect(jsonPath("$.invoices[0].number", is("21")))
 
                 .andExpect(jsonPath("$.name", is("Dell")))
                 .andExpect(jsonPath("$.vatNumber", is(1.0)))
@@ -97,9 +97,9 @@ class CustomerControllerTest {
         List<Invoice> invoiceList = new ArrayList<>();
         invoiceList.add(new Invoice());
 
-        CustomerDto customerDto = new CustomerDto(1L, invoicesDto,"Dell",1,true);
+        CustomerDto customerDto = new CustomerDto(1L, invoicesDto, "Dell", 1, true);
 
-        Customer customer = new Customer(1L, invoiceList,"Dell",1,true);
+        Customer customer = new Customer(1L, invoiceList, "Dell", 1, true);
 
         //When & Then
         mockMvc.perform(delete("/v1/customer/deleteCustomer?customerId=1").contentType(MediaType.APPLICATION_JSON))
@@ -115,11 +115,11 @@ class CustomerControllerTest {
         List<Invoice> invoiceList = new ArrayList<>();
         invoiceList.add(new Invoice());
 
-        CustomerDto customerDto = new CustomerDto(1L, invoicesDto,"Dell",1,true);
-        Customer customer = new Customer(1L, invoiceList,"Dell",1,true);
+        CustomerDto customerDto = new CustomerDto(1L, invoicesDto, "Dell", 1, true);
+        Customer customer = new Customer(1L, invoiceList, "Dell", 1, true);
 
-        CustomerDto customerDto2 = new CustomerDto(2L, invoicesDto,"changedDell",2,false);
-        Customer customer2 = new Customer(2L, invoiceList,"changedDell",2,false);
+        CustomerDto customerDto2 = new CustomerDto(2L, invoicesDto, "changedDell", 2, false);
+        Customer customer2 = new Customer(2L, invoiceList, "changedDell", 2, false);
 
         when(customerMapper.mapToCustomer(customerDto)).thenReturn(customer);
         when(customerMapper.mapToCustomerDto(customer2)).thenReturn(customerDto2);
@@ -152,8 +152,8 @@ class CustomerControllerTest {
         List<Invoice> invoiceList = new ArrayList<>();
         invoiceList.add(new Invoice());
 
-        CustomerDto customerDto = new CustomerDto(1L, invoicesDto,"Dell",1,true);
-        Customer customer = new Customer(1L, invoiceList,"Dell",1,true);
+        CustomerDto customerDto = new CustomerDto(1L, invoicesDto, "Dell", 1, true);
+        Customer customer = new Customer(1L, invoiceList, "Dell", 1, true);
 
         when(customerMapper.mapToCustomerDto(customer)).thenReturn(customerDto);
 

@@ -31,7 +31,7 @@ public class ItemController {
         return itemMapper.mapToItemDto(itemService.getItem(itemId).orElseThrow(ItemNotFoundException::new));
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "deleteItem", consumes = APPLICATION_JSON_VALUE )
+    @RequestMapping(method = RequestMethod.DELETE, value = "deleteItem", consumes = APPLICATION_JSON_VALUE)
     public void deleteItem(@RequestParam Long itemId) {
         itemService.deleteItem(itemId);
     }

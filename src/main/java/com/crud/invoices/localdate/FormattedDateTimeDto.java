@@ -13,24 +13,24 @@ public class FormattedDateTimeDto extends DateTimeDto {
     }
 
     @Override
-    @JsonFormat(pattern="dd-MM-yyyy")
+    @JsonFormat(pattern = "dd-MM-yyyy")
     public LocalDate getLocalDate() {
         return super.getLocalDate();
     }
 
     @Override
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     public LocalDateTime getLocalDateTime() {
         return super.getLocalDateTime();
     }
 
-    @JsonFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     public LocalDateTime getLocalDateTimeFormatted() {
         return super.getLocalDateTime();
     }
 
     @Override
-    @JsonFormat(pattern="HH:mm")
+    @JsonFormat(pattern = "HH:mm")
     public LocalTime getLocalTime() {
         return super.getLocalTime();
     }

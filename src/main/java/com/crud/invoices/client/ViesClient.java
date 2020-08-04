@@ -8,10 +8,11 @@ import javax.xml.soap.*;
 public class ViesClient {
     public static void main() throws Exception {
 
-        String viesEndpoint="http://ec.europa.eu/taxation_customs/vies/checkVatTestService";
-        String action="";
+        String viesEndpoint = "http://ec.europa.eu/taxation_customs/vies/checkVatTestService";
+        String action = "";
         callSoapWebService(viesEndpoint, action);
     }
+
     private static void createSoapEnvelope(SOAPMessage soapMessage) throws SOAPException {
         SOAPPart soapPart = soapMessage.getSOAPPart();
 

@@ -31,7 +31,7 @@ public class InvoiceController {
         return invoiceMapper.mapToInvoiceDto(invoiceService.getInvoice(invoiceId).orElseThrow(InvoiceNotFoundException::new));
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "deleteInvoice", consumes = APPLICATION_JSON_VALUE )
+    @RequestMapping(method = RequestMethod.DELETE, value = "deleteInvoice", consumes = APPLICATION_JSON_VALUE)
     public void deleteInvoice(@RequestParam Long invoiceId) {
         invoiceService.deleteInvoice(invoiceId);
     }
