@@ -18,11 +18,16 @@ import java.util.List;
 @Table(name = "SELLER")
 public class Seller {
     private Long id;
-    private String name ="e-Invoicing Company";
+    private String name;
     private List<Invoice> invoices = new ArrayList<>();
 
-    public Seller(long id) {
+    public Seller(long id, String name) {
         this.id = id;
+        this.name = name;
+    }
+
+    public Seller(String name) {
+        this.name = name;
     }
 
     @Id
@@ -33,7 +38,7 @@ public class Seller {
         return id;
     }
 
-    @NonNull
+
     @Column
     public String getName() {
         return name;
@@ -42,7 +47,7 @@ public class Seller {
     @OneToMany(
             targetEntity = Invoice.class,
             mappedBy = "seller",
-            cascade = CascadeType.MERGE,
+            cascade = CascadeType.ALL,
             fetch = FetchType.LAZY
     )
     public List<Invoice> getInvoices() {

@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class NBPvalidator {
     public List<Exchange> validateTable(final List<Exchange> tableNBP) {
         LOGGER.info("Starting to check table...");
         List<Exchange> currentTable = tableNBP.stream()
-                .filter( currentNBPtable-> currentNBPtable.getDate() == new Date())
+                .filter( currentNBPtable-> currentNBPtable.getDate() == LocalDate.now())
                 .collect(toList());
         LOGGER.info("Table has been filtered. Current table: " + currentTable.size());
         return  ofNullable(currentTable).orElse(null);

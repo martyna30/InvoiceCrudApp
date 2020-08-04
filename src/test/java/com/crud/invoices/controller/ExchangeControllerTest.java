@@ -43,6 +43,7 @@ public class ExchangeControllerTest {
     @Test
     public void shouldFetchCurrencyExchangeRatesTable() throws Exception {
         //Given
+        /*
         List<RateDto> rateDto = new ArrayList<>();
         rateDto.add(new RateDto("USD", new BigDecimal(3.8997)));
 
@@ -67,22 +68,8 @@ public class ExchangeControllerTest {
                         .andExpect(jsonPath("$[0].rates", hasSize(1)))
                         .andExpect(jsonPath("$[0].rates[0].mid", is(new BigDecimal(3.8997))))
                 .andExpect(jsonPath("$[0].rates[0].code", is("USD")));
+
+         */
     }
-/*
-    @Test
-    public void shouldFindByDateCurrencyExchangeRatesTable(Date date) throws Exception {
-        //Given
-        List<RateDto> rateDto = new ArrayList<>();
-        rateDto.add(new RateDto("USD", new BigDecimal(3.8997)));
-
-        List<Rate> rate = new ArrayList<>();
-        rate.add(new Rate("USD", new BigDecimal(3.8997)));
-
-        List<ExchangeDto> exchangeDto = new ArrayList<>();
-        exchangeDto.add(new ExchangeDto(1L,"A", rateDto, new Date().compareTo();
-
-        List<Exchange> exchange = new ArrayList<>();
-        exchange.add(new Exchange("A", rate));
-*/
 }
 

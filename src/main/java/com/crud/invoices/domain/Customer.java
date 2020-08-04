@@ -21,6 +21,16 @@ public class Customer {
     private double vatNumber;
     private boolean isVATpayer;
 
+    public Customer(String name) {
+        this.name = name;
+    }
+
+    public Customer(String name, double vatNumber, boolean isVATpayer) {
+        this.name = name;
+        this.vatNumber = vatNumber;
+        this.isVATpayer = isVATpayer;
+    }
+
     @Id
     @NotNull
     @GeneratedValue
@@ -29,7 +39,7 @@ public class Customer {
         return id;
     }
 
-    @ManyToMany(cascade = CascadeType.REMOVE)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name ="JOIN_CUSTOMER_INVOICE",
             joinColumns ={@JoinColumn(name = "CUSTOMER_ID", referencedColumnName = "CUSTOMER_ID")},
@@ -71,4 +81,6 @@ public class Customer {
     public void setVATpayer(boolean VATpayer) {
         isVATpayer = VATpayer;
     }
+
+
 }

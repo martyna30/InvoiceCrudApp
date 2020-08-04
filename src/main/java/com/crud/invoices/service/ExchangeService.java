@@ -7,6 +7,7 @@ import com.crud.invoices.respository.ExchangeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -27,15 +28,11 @@ public class ExchangeService {
         return exchangeRepository.save(nbPtable);
     }
 
-    public Optional<Exchange> findTable(final Long id) {
-        return exchangeRepository.findById(id);
+    public List<Exchange> findByDate(LocalDate date) {
+        return exchangeRepository.retrieveTableWithSpecifiedDate(date);
     }
 
-    public void deleteTable(final Long id) {
+ public void deleteTable(Long id) {
         exchangeRepository.deleteById(id);
-    }
-
-    public List<Exchange> findByDate(Date date) {
-        return exchangeRepository.findByDate(date);
-    }
+ }
 }

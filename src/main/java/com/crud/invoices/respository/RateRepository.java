@@ -10,16 +10,11 @@ import java.util.Optional;
 
 @Transactional
 @Repository
-public interface CurrencyRepository extends CrudRepository<Rate, Long> {
+public interface RateRepository extends CrudRepository<Rate, Long> {
     @Override
     List<Rate> findAll();
 
     @Override
-    Rate save(Rate currency);
-
-    @Override
     Optional<Rate> findById(Long id);
 
-    @Override
-    void deleteById(Long id);
 }

@@ -5,6 +5,7 @@ import com.crud.invoices.nbp.facade.ExchangeFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -21,14 +22,8 @@ public class ExchangeController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "findByDate")
-    public List<Exchange> findByDate(Date date) {
+    public List<Exchange> findByDate(LocalDate date) {
         return exchangeFacade.findByDate(date);
     }
-
-    /*
-    @RequestMapping(method = RequestMethod.DELETE, value = "deleteTable", consumes = APPLICATION_JSON_VALUE )
-    public void deleteTable(@RequestParam Long tableId) {
-        nbPfacade.deleteTable(tableId);
-    }*/
 
 }

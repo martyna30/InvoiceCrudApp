@@ -6,9 +6,15 @@ import lombok.NoArgsConstructor;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+@NamedQuery(
+        name = "Exchange.retrieveTableWithSpecifiedDate",
+        query = "FROM Exchange WHERE date = :EFFECTIVE_DATE"
+)
 
 @Getter
 @AllArgsConstructor
@@ -19,9 +25,15 @@ public class Exchange {
     private Long id;
     private String name;
     private List<Rate> rates = new ArrayList();
-    private Date date;
+    private LocalDate date;
 
-    public Exchange(String name,  List<Rate> rates) {
+    public Exchange(String name, List<Rate> rates, LocalDate date) {
+        this.name = name;
+        this.rates = rates;
+        this.date = date;
+    }
+
+    public Exchange(String name, List<Rate> rates) {
         this.name = name;
         this.rates = rates;
     }
@@ -51,7 +63,7 @@ public class Exchange {
     }
 
     @Column(name = "EFFECTIVE_DATE")
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
@@ -59,7 +71,7 @@ public class Exchange {
         this.id = id;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

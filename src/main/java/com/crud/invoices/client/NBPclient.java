@@ -27,8 +27,6 @@ public class NBPclient {
     @Autowired
     private RestTemplate restTemplate;
 
-    private ExchangeDto nbPtableDto;
-
     public List<ExchangeDto> getTable() {
         URI url =  UriComponentsBuilder.fromHttpUrl(nbPconfig.getNBPapiEndpoint() +  "/exchangerates/tables/A/?format=json")
                 .build().encode().toUri();//qwery param?

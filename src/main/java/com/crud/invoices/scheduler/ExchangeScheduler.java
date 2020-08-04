@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -20,20 +21,17 @@ public class ExchangeScheduler {
     @Autowired
     ExchangeRepository exchangeRepository;
 
-    @Autowired
-    ExchangeController nbPcontroller;
-
     @Scheduled(fixedDelay = 10000)
-    @Scheduled(cron = " 0 0 * * * * ")
+   // @Scheduled(cron = " 0 0 * * * * ")
     public void checkTable() {
-        List<Exchange> currentNBPtable = exchangeRepository.findByDate(new Date());
-        long size = exchangeRepository.count();
+        List<Exchange> currentNBPtable = exchangeRepository.retrieveTableWithSpecifiedDate(LocalDate.now());
+
+        long size = currentNBPtable.size();
 
         if(size > 0) {
             System.out.println("Table is current");
 
-        }
-          else {
+        } else {
               exchangeFacade.getCurrencyExchangeRatesTableAndSaveToDatabase();
               System.out.println(SUBJECT);
           }

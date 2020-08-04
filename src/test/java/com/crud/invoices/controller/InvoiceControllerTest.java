@@ -68,7 +68,7 @@ class InvoiceControllerTest {
         List<CustomerDto> customersDto = new ArrayList<>();
         customersDto.add(new CustomerDto());
 
-        SellerDto sellerDto = new SellerDto(1L);
+        SellerDto sellerDto = new SellerDto(1L,"name");
 
         InvoiceDto invoiceDto = new InvoiceDto(
                 1L,
@@ -118,7 +118,7 @@ class InvoiceControllerTest {
         List<CustomerDto> customersDto = new ArrayList<>();
         customersDto.add(new CustomerDto());
 
-        SellerDto sellerDto = new SellerDto(1L);
+        SellerDto sellerDto = new SellerDto(1L, "name");
         InvoiceDto invoiceDto = new InvoiceDto(
                 1L,
                 "1",
@@ -153,8 +153,8 @@ class InvoiceControllerTest {
         List<Customer> customers = new ArrayList<>();
         customers.add(new Customer());
 
-        SellerDto sellerDto = new SellerDto(1L);
-        Seller seller = new Seller(1L);
+        SellerDto sellerDto = new SellerDto(1L, "name");
+        Seller seller = new Seller(1L,"name");
 
         InvoiceDto invoiceDto = new InvoiceDto(1L, "1", itemDto, customersDto, sellerDto, 20.0, 24.0,
                 LocalDate.of(2020,07,20), LocalDate.of(2020,07,30),true);
@@ -192,8 +192,12 @@ class InvoiceControllerTest {
                 .andExpect(jsonPath("$.seller.id", is(1)))
                 .andExpect(jsonPath("$.netto",is(30.0)))
                 .andExpect(jsonPath("$.brutto",is(37.0)))
-                .andExpect(jsonPath("$.dateOfInvoice", is("2020-07-21")))
-                .andExpect(jsonPath("$.dateOfPayment", is("2020-07-31")))
+                .andExpect(jsonPath("$.dateOfInvoice.year", is("2020")))
+                .andExpect(jsonPath("$.dateOfInvoice.month", is("07")))
+                .andExpect(jsonPath("$.dateOfInvoice.dayOfMonth", is("21")))
+                .andExpect(jsonPath("$.dateOfPayment.year", is("2020")))
+                .andExpect(jsonPath("$.dateOfInvoice.month", is("07")))
+                .andExpect(jsonPath("$.dateOfInvoice.dayOfMonth", is("31")))
                 .andExpect(jsonPath("$.paid", is(true)));
     }
 

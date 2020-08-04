@@ -52,7 +52,7 @@ class ItemControllerTest {
         when(itemMapper.mapToItemDtoList(itemList)).thenReturn(itemDtoList);
 
         //When & Then
-        mockMvc.perform(get("/v1/customer/getCustomers").contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/v1/item/getItems").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(0)));
 

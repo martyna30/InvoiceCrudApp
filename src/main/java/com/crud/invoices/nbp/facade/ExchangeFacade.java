@@ -5,14 +5,15 @@ import com.crud.invoices.domain.ExchangeDto;
 import com.crud.invoices.mapper.ExchangeMapper;
 import com.crud.invoices.nbp.validator.NBPvalidator;
 import com.crud.invoices.service.ExchangeService;
+import com.crud.invoices.service.RateService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import static java.util.Arrays.asList;
 
@@ -21,7 +22,7 @@ public class ExchangeFacade {
     private static final Logger LOGGER = LoggerFactory.getLogger(ExchangeFacade.class);
 
     @Autowired
-    private ExchangeService exchangeService;
+    ExchangeService exchangeService;
 
     @Autowired
     private ExchangeMapper exchangeMapper;
@@ -30,18 +31,14 @@ public class ExchangeFacade {
     NBPvalidator nbPvalidator;
 
     public List<ExchangeDto> getCurrencyExchangeRatesTableAndSaveToDatabase() {
-        List<Exchange> tableToSave = exchangeMapper.mapToNBPList(exchangeService.getTable());
-       // List<Exchange> filteredTable = nbPvalidator.validateTable(tableToSave);
-        //ofNullable(filteredTable).orElseGet(nbPservice.findByDate(new Date()));
+        List<Exchange> tableToSave = exchangeMapper.mapToExchangeList(exchangeService.getTable());
         Exchange tableToDatabase = exchangeService.saveTable(tableToSave.get(0));
-        return exchangeMapper.mapToNBPListDto(asList(tableToDatabase));
+        return exchangeMapper.mapToExchangeListDto(asList(tableToDatabase));
     }
 
-    public List<Exchange> findByDate(Date date) {
+    public List<Exchange> findByDate(LocalDate date) {
         return exchangeService.findByDate(date);
     }
 
-    public void deleteTable(final Long id) {
-        exchangeService.deleteTable(id);
-    }
+
 }

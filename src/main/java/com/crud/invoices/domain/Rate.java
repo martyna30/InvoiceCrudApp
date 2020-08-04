@@ -17,7 +17,8 @@ public class Rate {
     private String currency;
     private BigDecimal rateOfExchange;
 
-    public Rate(String currency, BigDecimal rateOfExchange) {
+    public Rate(Exchange exchange, String currency, BigDecimal rateOfExchange) {
+        this.exchange = exchange;
         this.currency = currency;
         this.rateOfExchange = rateOfExchange;
     }
@@ -29,8 +30,6 @@ public class Rate {
     public Long getId() {
         return id;
     }
-
-
 
     @ManyToOne
     @JoinColumn(name = "EXCHANGE_ID")

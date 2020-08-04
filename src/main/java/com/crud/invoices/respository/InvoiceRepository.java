@@ -22,4 +22,7 @@ public interface InvoiceRepository extends CrudRepository<Invoice, Long> {
 
     @Override
     void deleteById(Long id);
+
+    //@Override
+    //Invoice invoice findInvoiceByNumber();
 }

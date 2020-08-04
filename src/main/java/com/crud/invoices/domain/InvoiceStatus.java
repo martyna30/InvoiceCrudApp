@@ -1,4 +1,8 @@
 package com.crud.invoices.domain;
 
-public class InvoiceStatus {
+import org.springframework.stereotype.Component;
+
+public enum InvoiceStatus {
+    TRUE,
+    FALSE
 }
