@@ -26,14 +26,12 @@ public class InvoiceDto {
     private String number;
     private List<ItemDto> items = new ArrayList<>();
     private List<CustomerDto> customers = new ArrayList<>();
-    @JsonProperty("seller")
-    SellerDto sellerDto;
     private double netto;
     private double brutto;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
-   // @JsonFormat(pattern = "yyyy-MM-dd")
+
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate dateOfInvoice;
@@ -49,6 +47,5 @@ public class InvoiceDto {
         this.id = id;
         this.number = number;
     }
-
 
 }

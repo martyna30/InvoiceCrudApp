@@ -10,7 +10,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -20,7 +19,6 @@ public class Invoice {
     private String number;
     private List<Item> items = new ArrayList<>();
     private List<Customer> customers = new ArrayList<>();
-    Seller seller;
     private double netto;
     private double brutto;
     private LocalDate dateOfInvoice;
@@ -65,13 +63,6 @@ public class Invoice {
         return customers;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "SELLER_ID")
-    public Seller getSeller() {
-        return seller;
-    }
-
-
     @Column
     public double getNetto() {
         return netto;
@@ -111,10 +102,6 @@ public class Invoice {
 
     public void setCustomers (List < Customer > customers) {
         this.customers = customers;
-    }
-
-    public void setSeller (Seller seller){
-        this.seller = seller;
     }
 
     public void setNetto ( double netto){

@@ -13,9 +13,6 @@ import static java.util.stream.Collectors.toList;
 public class InvoiceMapper {
 
     @Autowired
-    SellerMapper sellerMapper;
-
-    @Autowired
     ItemMapper itemMapper;
 
     @Autowired
@@ -27,7 +24,6 @@ public class InvoiceMapper {
                         invoiceDto.getNumber(),
                         itemMapper.mapToItemList(invoiceDto.getItems()),
                         customerMapper.mapToCustomerList(invoiceDto.getCustomers()),
-                        sellerMapper.mapToSeller(invoiceDto.getSellerDto()),
                         invoiceDto.getNetto(),
                         invoiceDto.getBrutto(),
                         invoiceDto.getDateOfInvoice(),
@@ -42,7 +38,6 @@ public class InvoiceMapper {
                         invoice.getNumber(),
                         itemMapper.mapToItemDtoList(invoice.getItems()),
                         customerMapper.mapToCustomerDtoList(invoice.getCustomers()),
-                        sellerMapper.mapToSellerDto(invoice.getSeller()),
                         invoice.getNetto(),
                         invoice.getBrutto(),
                         invoice.getDateOfInvoice(),
@@ -57,7 +52,6 @@ public class InvoiceMapper {
                 invoiceDto.getNumber(),
                 itemMapper.mapToItemList(invoiceDto.getItems()),
                 customerMapper.mapToCustomerList(invoiceDto.getCustomers()),
-                sellerMapper.mapToSeller(invoiceDto.getSellerDto()),
                 invoiceDto.getNetto(),
                 invoiceDto.getBrutto(),
                 invoiceDto.getDateOfInvoice(),
@@ -72,7 +66,6 @@ public class InvoiceMapper {
                 invoice.getNumber(),
                 itemMapper.mapToItemDtoList(invoice.getItems()),
                 customerMapper.mapToCustomerDtoList(invoice.getCustomers()),
-                sellerMapper.mapToSellerDto(invoice.getSeller()),
                 invoice.getNetto(),
                 invoice.getBrutto(),
                 invoice.getDateOfInvoice(),
