@@ -39,11 +39,12 @@ public class Customer {
         return id;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "JOIN_CUSTOMER_INVOICE",
-            joinColumns = {@JoinColumn(name = "CUSTOMER_ID", referencedColumnName = "CUSTOMER_ID")},
-            inverseJoinColumns = {@JoinColumn(name = "INVOICE_ID", referencedColumnName = "INVOICE_ID")}
+
+    @OneToMany(
+            targetEntity = Invoice.class,
+            mappedBy = "customer",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
     )
     public List<Invoice> getInvoices() {
         return invoices;

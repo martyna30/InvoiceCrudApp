@@ -61,13 +61,9 @@ class ItemControllerTest {
     @Test
     public void testGetItem() throws Exception {
         //Given
-        InvoiceDto invoiceDto = new InvoiceDto(1L, "1");
+        ItemDto itemDto = new ItemDto(1L,2, new BigDecimal(22), new BigDecimal(44));
 
-        Invoice invoice = new Invoice(1L, "1");
-
-        ItemDto itemDto = new ItemDto(1L, invoiceDto, 2, new BigDecimal(22), new BigDecimal(44));
-
-        Item item = new Item(1L, invoice, 2, new BigDecimal(22), new BigDecimal(44));
+        Item item = new Item(1L,2, new BigDecimal(22), new BigDecimal(44));
 
         when(itemService.getItem(1L)).thenReturn(java.util.Optional.of(item));
         when(itemMapper.mapToItemDto(item)).thenReturn(itemDto);
@@ -77,10 +73,6 @@ class ItemControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(jsonPath("$.id", is(1)))
-                //fields Invoice
-                .andExpect(jsonPath("$.invoice.id", is(1)))
-                .andExpect(jsonPath("$.invoice.number", is("1")))
-
                 .andExpect(jsonPath("$.quantity", is(2)))
                 .andExpect(jsonPath("$.price", is(22)))
                 .andExpect(jsonPath("$.value", is(44)));
@@ -89,13 +81,9 @@ class ItemControllerTest {
     @Test
     public void testDeleteItem() throws Exception {
         //Given
-        InvoiceDto invoiceDto = new InvoiceDto(1L, "1");
+        ItemDto itemDto = new ItemDto( 1L,2, new BigDecimal(22), new BigDecimal(44));
 
-        Invoice invoice = new Invoice(1L, "1");
-
-        ItemDto itemDto = new ItemDto(1L, invoiceDto, 2, new BigDecimal(22), new BigDecimal(44));
-
-        Item item = new Item(1L, invoice, 2, new BigDecimal(22), new BigDecimal(44));
+        Item item = new Item(1L,2, new BigDecimal(22), new BigDecimal(44));
 
         //When & Then
         mockMvc.perform(delete("/v1/item/deleteItem?itemId=1").contentType(MediaType.APPLICATION_JSON))
@@ -106,17 +94,13 @@ class ItemControllerTest {
     @Test
     public void testUpdateItem() throws Exception {
         //Given
-        InvoiceDto invoiceDto = new InvoiceDto(1L, "1");
+        ItemDto itemDto = new ItemDto(1L,2, new BigDecimal(22), new BigDecimal(44));
 
-        Invoice invoice = new Invoice(1L, "1");
+        Item item = new Item(1L,2, new BigDecimal(22), new BigDecimal(44));
 
-        ItemDto itemDto = new ItemDto(1L, invoiceDto, 2, new BigDecimal(22), new BigDecimal(44));
+        ItemDto itemDto2 = new ItemDto(2L, 4, new BigDecimal(2), new BigDecimal(8));
 
-        Item item = new Item(1L, invoice, 2, new BigDecimal(22), new BigDecimal(44));
-
-        ItemDto itemDto2 = new ItemDto(2L, invoiceDto, 4, new BigDecimal(2), new BigDecimal(8));
-
-        Item item2 = new Item(2L, invoice, 4, new BigDecimal(2), new BigDecimal(8));
+        Item item2 = new Item(2L,4, new BigDecimal(2), new BigDecimal(8));
 
         when(itemMapper.mapToItem(itemDto)).thenReturn(item);
         when(itemMapper.mapToItemDto(item2)).thenReturn(itemDto2);
@@ -141,13 +125,9 @@ class ItemControllerTest {
     @Test
     public void testCreateItem() throws Exception {
         //Given
-        InvoiceDto invoiceDto = new InvoiceDto(1L, "1");
+        ItemDto itemDto = new ItemDto(1L,2, new BigDecimal(22), new BigDecimal(44));
 
-        Invoice invoice = new Invoice(1L, "1");
-
-        ItemDto itemDto = new ItemDto(1L, invoiceDto, 2, new BigDecimal(22), new BigDecimal(44));
-
-        Item item = new Item(1L, invoice, 2, new BigDecimal(22), new BigDecimal(44));
+        Item item = new Item(1L,2, new BigDecimal(22), new BigDecimal(44));
 
         when(itemMapper.mapToItemDto(item)).thenReturn(itemDto);
 

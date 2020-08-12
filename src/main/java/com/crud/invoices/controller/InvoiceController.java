@@ -22,7 +22,7 @@ public class InvoiceController {
     InvoiceMapper invoiceMapper;
 
     @RequestMapping(method = RequestMethod.GET, value = "getInvoices")
-    public List<InvoiceDto> getInvoice() {
+    public List<InvoiceDto> getInvoices() {
         return invoiceMapper.mapToInvoiceDtoList(invoiceService.getAllInvoices());
     }
 

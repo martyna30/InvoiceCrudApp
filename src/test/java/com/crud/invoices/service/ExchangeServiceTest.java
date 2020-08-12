@@ -30,18 +30,13 @@ class ExchangeServiceTest {
     RateService rateService;
 
     @Test
-    void getTable() {
-    }
-
-    @Test
     public void saveTableWithRates() {
-        ///Given
-        /*
+        //Given
         List<Rate> rate = new ArrayList<>();
         rate.add(new Rate("USD", new BigDecimal(3.8997)));
 
         List<Exchange> exchange = new ArrayList<>();
-        exchange.add(new Exchange("A", rate, new Date()));
+        exchange.add(new Exchange("A", rate, LocalDate.now()));
 
         Exchange nbp = exchange.get(0);
         Rate currency = rate.get(0);
@@ -58,18 +53,20 @@ class ExchangeServiceTest {
 
         //Then
         Assert.assertNotEquals(0, id);
-        Assert.assertEquals(1, rates.size());*/
+        Assert.assertNotEquals(0, rates.size());
+
+        //CleanUp
+        exchangeService.deleteTable(id);
     }
 
     @Test
     public void findByDate() {
         //Given
-        /*
         List<Rate> rate = new ArrayList<>();
         rate.add(new Rate("USD", new BigDecimal(3.8997)));
 
         List<Exchange> exchange = new ArrayList<>();
-        exchange.add(new Exchange("A", rate, new Date()));
+        exchange.add(new Exchange("A", rate, LocalDate.now()));
 
         Exchange nbp = exchange.get(0);
         Rate currency = rate.get(0);
@@ -82,16 +79,14 @@ class ExchangeServiceTest {
         long id = nbp.getId();
 
         //When
-        List<Exchange> nbpTable = exchangeService.findByDate(new Date());
+        List<Exchange> nbpTable = exchangeService.findByDate(LocalDate.now());
 
         try {
-            Assert.assertEquals(0, nbpTable.size());
-
-
+            Assert.assertNotEquals(0, nbpTable.size());
 
         } finally {
             //CleanUp
             exchangeService.deleteTable(id);
-        }*/
+        }
     }
 }

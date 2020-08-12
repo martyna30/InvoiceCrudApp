@@ -18,12 +18,12 @@ public class Invoice {
     private Long id;
     private String number;
     private List<Item> items = new ArrayList<>();
-    private List<Customer> customers = new ArrayList<>();
-    private double netto;
-    private double brutto;
+    private Customer customer;
     private LocalDate dateOfInvoice;
     private LocalDate dateOfPayment;
-    boolean isPaid;
+    InvoiceStatus isPaid;
+    private double netto;
+    private double brutto;
 
     public Invoice(Long id, String number) {
         this.id = id;
@@ -32,6 +32,15 @@ public class Invoice {
 
     public Invoice(String number) {
         this.number = number;
+    }
+
+    public Invoice(Long id, String number, List<Item> items, InvoiceStatus isPaid, double netto, double brutto) {
+        this.id = id;
+        this.number = number;
+        this.items = items;
+        this.brutto = brutto;
+        this.isPaid = isPaid;
+        this.netto = netto;
     }
 
     @Id
@@ -57,20 +66,10 @@ public class Invoice {
         return items;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "invoices")
-    //{CascadeType.MERGE, CascadeType.PERSIST}, mappedBy = "invoices")
-    public List<Customer> getCustomers() {
-        return customers;
-    }
-
-    @Column
-    public double getNetto() {
-        return netto;
-    }
-
-    @Column
-    public double getBrutto() {
-        return brutto;
+    @ManyToOne
+    @JoinColumn(name = "CUSTOMER_ID")
+    public Customer getCustomer() {
+        return customer;
     }
 
     @Column
@@ -84,8 +83,16 @@ public class Invoice {
     }
 
     @Column
-    public boolean isPaid() {
+    public InvoiceStatus getIsPaid() {
         return isPaid;
+    }
+
+    public double getNetto() {
+        return netto;
+    }
+
+    public double getBrutto() {
+        return brutto;
     }
 
     public void setId(Long id) {
@@ -100,20 +107,12 @@ public class Invoice {
         this.items = items;
     }
 
-    public void setCustomers(List<Customer> customers) {
-        this.customers = customers;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
-    public void setNetto(double netto) {
-        this.netto = netto;
-    }
-
-    public void setBrutto(double brutto) {
-        this.brutto = brutto;
-    }
-
-    public void setPaid(boolean paid) {
-        isPaid = paid;
+    public void setIsPaid(InvoiceStatus isPaid) {
+        this.isPaid = isPaid;
     }
 
     public void setDateOfInvoice(LocalDate dateOfInvoice) {
@@ -122,6 +121,14 @@ public class Invoice {
 
     public void setDateOfPayment(LocalDate dateOfPayment) {
         this.dateOfPayment = dateOfPayment;
+    }
+
+    public void setNetto(double netto) {
+        this.netto = netto;
+    }
+
+    public void setBrutto(double brutto) {
+        this.brutto = brutto;
     }
 }
 

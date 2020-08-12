@@ -1,0 +1,48 @@
+plugins {
+	id 'org.springframework.boot' version '2.3.1.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'java'
+	id 'war'
+}
+
+war {
+	'crud2.war'
+}
+
+group = 'com.crud'
+version = '2.1.7'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	testImplementation('org.springframework.boot:spring-boot-starter-test')
+	implementation('org.springframework.boot:spring-boot-starter-jdbc')
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	//lombok
+	compileOnly('org.projectlombok:lombok')
+	annotationProcessor('org.projectlombok:lombok')
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
+	testCompileOnly 'org.projectlombok:lombok:1.18.12'
+	//mysql
+	compile('mysql:mysql-connector-java')
+	//compile('org.postgresql:postgresql')
+	providedRuntime ("org.springframework.boot:spring-boot-starter-tomcat")
+	compile('com.google.code.gson:gson:2.8.2')
+	//parse to json
+	//compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.1'
+	compile "com.fasterxml.jackson.core:jackson-databind:2.9.7"
+	compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.7"
+	//test
+	//testCompile group: 'com.h2database', name: 'h2', version: '1.4.200'
+	//runtimeOnly('com.h2database:h2')
+	//soup
+	compile group: 'org.jsoup', name: 'jsoup', version: '1.13.1'
+}
+
+test {
+	useJUnitPlatform()
+}

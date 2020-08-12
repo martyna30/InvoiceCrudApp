@@ -22,6 +22,7 @@ import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.crud.invoices.domain.InvoiceStatus.TRUE;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -65,19 +66,13 @@ class InvoiceControllerTest {
         List<ItemDto> itemDto = new ArrayList<>();
         itemDto.add(new ItemDto());
 
-        List<CustomerDto> customersDto = new ArrayList<>();
-        customersDto.add(new CustomerDto());
-
-        InvoiceDto invoiceDto = new InvoiceDto(
-                1L,
+        InvoiceDto invoiceDto = new InvoiceDto(1L,
                 "1",
                 itemDto,
-                customersDto,
+               TRUE,
                 20.0,
-                24.0,
-                LocalDate.of(2020, 7, 20),
-                LocalDate.of(2020, 7, 30),
-                true);
+                24.0
+                );
 
         Invoice invoice = new Invoice();
 
@@ -92,17 +87,10 @@ class InvoiceControllerTest {
                 .andExpect(jsonPath("$.number", is("1")))
                 //fields list items
                 .andExpect(jsonPath("$.items", hasSize(1)))
-                //fields list customers
-                .andExpect(jsonPath("$.customers", hasSize(1)))
-                //fields SellerDto
-                .andExpect(jsonPath("$.seller.id", is(1)))
-
+                .andExpect(jsonPath("$.isPaid", is("TRUE")))
                 .andExpect(jsonPath("$.netto", is(20.0)))
+                .andExpect(jsonPath("$.brutto", is(24.0)));
 
-                .andExpect(jsonPath("$.brutto", is(24.0)))
-                .andExpect(jsonPath("$.dateOfInvoice", is("2020-07-20")))
-                .andExpect(jsonPath("$.dateOfPayment", is("2020-07-30")))
-                .andExpect(jsonPath("$.paid", is(true)));
 
     }
 
@@ -115,16 +103,12 @@ class InvoiceControllerTest {
         List<CustomerDto> customersDto = new ArrayList<>();
         customersDto.add(new CustomerDto());
 
-        InvoiceDto invoiceDto = new InvoiceDto(
-                1L,
+        InvoiceDto invoiceDto = new InvoiceDto(1L,
                 "1",
                 itemDto,
-                customersDto,
+                TRUE,
                 20.0,
-                24.0,
-                LocalDate.of(2020, 7, 20),
-                LocalDate.of(2020, 7, 30),
-                true);
+                24.0);
 
         Invoice invoice = new Invoice();
 
@@ -142,24 +126,14 @@ class InvoiceControllerTest {
         List<Item> items = new ArrayList<>();
         items.add(new Item());
 
-        List<CustomerDto> customersDto = new ArrayList<>();
-        customersDto.add(new CustomerDto());
+        InvoiceDto invoiceDto = new InvoiceDto(1L, "1", itemDto, TRUE, 20.0, 24.0);
 
-        List<Customer> customers = new ArrayList<>();
-        customers.add(new Customer());
+        Invoice invoice = new Invoice( 1L, "1", items,  TRUE, 20.0, 24.0);
 
-        InvoiceDto invoiceDto = new InvoiceDto(1L, "1", itemDto, customersDto, 20.0, 24.0,
-                LocalDate.of(2020, 7, 20), LocalDate.of(2020, 07, 30), true);
+        InvoiceDto invoiceDto2 = new InvoiceDto(2L, "2", itemDto,  TRUE, 30.0, 37.0 );
 
-        Invoice invoice = new Invoice(1L, "1", items, customers, 20.0, 24.0,
-                LocalDate.of(2020, 7, 20), LocalDate.of(2020, 07, 30), true);
+        Invoice invoice2 = new Invoice(2L,"2", items, TRUE, 30.0, 37.0 );
 
-        InvoiceDto invoiceDto2 = new InvoiceDto(2L, "2", itemDto, customersDto, 30.0, 37.0,
-                LocalDate.of(2020, 7, 21), LocalDate.of(2020, 07, 31),
-                true);
-
-        Invoice invoice2 = new Invoice(2L, "2", items, customers, 30.0, 37.0,
-                LocalDate.of(2020, 7, 21), LocalDate.of(2020, 07, 31), true);
         when(invoiceMapper.mapToInvoice(invoiceDto)).thenReturn(invoice);
         when(invoiceMapper.mapToInvoiceDto(invoice2)).thenReturn(invoiceDto2);
         when(invoiceMapper.mapToInvoice(ArgumentMatchers.any(InvoiceDto.class))).thenReturn(invoice2);
@@ -178,22 +152,39 @@ class InvoiceControllerTest {
                 .andExpect(jsonPath("$.number", is("2")))
                 //fields list items
                 .andExpect(jsonPath("$.items", hasSize(1)))
-                //fields list customers
-                .andExpect(jsonPath("$.customers", hasSize(1)))
-                //fields SellerDto
-                .andExpect(jsonPath("$.seller.id", is(1)))
+                .andExpect(jsonPath("$.isPaid", is("TRUE")))
                 .andExpect(jsonPath("$.netto", is(30.0)))
-                .andExpect(jsonPath("$.brutto", is(37.0)))
-                .andExpect(jsonPath("$.dateOfInvoice.year", is("2020")))
-                .andExpect(jsonPath("$.dateOfInvoice.month", is("07")))
-                .andExpect(jsonPath("$.dateOfInvoice.dayOfMonth", is("21")))
-                .andExpect(jsonPath("$.dateOfPayment.year", is("2020")))
-                .andExpect(jsonPath("$.dateOfInvoice.month", is("07")))
-                .andExpect(jsonPath("$.dateOfInvoice.dayOfMonth", is("31")))
-                .andExpect(jsonPath("$.paid", is(true)));
+                .andExpect(jsonPath("$.brutto", is(37.0)));
+
     }
 
     @Test
-    public void testCreateInvoice() {
+    public void testCreateInvoice() throws Exception {
+        //Given
+        List<ItemDto> itemDto = new ArrayList<>();
+        itemDto.add(new ItemDto());
+
+        List<Item> items = new ArrayList<>();
+        items.add(new Item());
+
+        InvoiceDto invoiceDto = new InvoiceDto(1L, "1", itemDto, TRUE, 20.0, 24.0);
+
+        Invoice invoice = new Invoice( 1L, "1", items,  TRUE, 20.0, 24.0);
+
+        when(invoiceMapper.mapToInvoiceDto(invoice)).thenReturn(invoiceDto);
+
+        when(invoiceMapper.mapToInvoice(ArgumentMatchers.any(InvoiceDto.class))).thenReturn(invoice);
+        when(invoiceService.saveInvoice(invoice)).thenReturn(invoice);
+
+        Gson gson = new Gson();
+        String jsonContent = gson.toJson(invoiceDto);
+
+        //When & Then
+        mockMvc.perform(post("/v1/invoice/createInvoice")
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8")
+                .content(jsonContent))
+                .andExpect(status().isOk());
+
     }
 }

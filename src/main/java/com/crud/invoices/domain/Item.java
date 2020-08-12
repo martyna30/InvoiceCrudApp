@@ -19,12 +19,14 @@ public class Item {
     private BigDecimal price;
     private BigDecimal value;
 
-    public Item(Invoice invoice, int quantity, BigDecimal price, BigDecimal value) {
-        this.invoice = invoice;
+    public Item(Long id, int quantity, BigDecimal price, BigDecimal value) {
+        this.id = id;
         this.quantity = quantity;
         this.price = price;
         this.value = value;
     }
+
+
 
     @Id
     @GeneratedValue

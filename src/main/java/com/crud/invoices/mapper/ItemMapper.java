@@ -7,6 +7,7 @@ import com.crud.invoices.domain.ItemDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -16,10 +17,10 @@ public class ItemMapper {
     @Autowired
     InvoiceMapper invoiceMapper;
 
-    public List<Item> mapToItemList(final List<ItemDto> itemDtos) {
+    public List<Item> mapToItemList(Invoice invoice, final List<ItemDto> itemDtos) {
         return itemDtos.stream()
-                .map(itemDto -> new Item(itemDto.getId(),
-                        invoiceMapper.mapToInvoice(itemDto.getInvoiceDto()),
+                .map(itemDto -> new Item(
+                        itemDto.getId(),
                         itemDto.getQuantity(),
                         itemDto.getPrice(),
                         itemDto.getValue()))
@@ -27,20 +28,22 @@ public class ItemMapper {
     }
 
     public List<ItemDto> mapToItemDtoList(final List<Item> items) {
-        return items.stream()
-                .map(item -> new ItemDto(item.getId(),
-                        invoiceMapper.mapToInvoiceDto(item.getInvoice()),
-                        item.getQuantity(),
-                        item.getPrice(),
-                        item.getValue()))
-                .collect(toList());
+        List<ItemDto> itemDtos = new ArrayList<>();
 
+        for (Item item : items) {
+            ItemDto itemDto = new ItemDto();
+            //itemDto.setId(item.getId());
+            itemDto.setQuantity(item.getQuantity());
+            item.setPrice(item.getPrice());
+            itemDto.setValue(item.getValue());
+            itemDtos.add(itemDto);
+        }
+        return itemDtos;
     }
 
     public Item mapToItem(final ItemDto itemDto) {
         return new Item(
                 itemDto.getId(),
-                invoiceMapper.mapToInvoice(itemDto.getInvoiceDto()),
                 itemDto.getQuantity(),
                 itemDto.getPrice(),
                 itemDto.getValue()
@@ -50,7 +53,6 @@ public class ItemMapper {
     public ItemDto mapToItemDto(final Item item) {
         return new ItemDto(
                 item.getId(),
-                invoiceMapper.mapToInvoiceDto(item.getInvoice()),
                 item.getQuantity(),
                 item.getPrice(),
                 item.getValue()

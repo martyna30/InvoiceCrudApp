@@ -34,7 +34,7 @@ class CustomerServiceTest {
         Customer customer = new Customer("Dell");
 
         customer.getInvoices().add(invoice);
-        invoice.getCustomers().add(customer);
+        invoice.setCustomer(customer);
 
         //When
         customerService.saveCustomer(customer);
@@ -61,7 +61,7 @@ class CustomerServiceTest {
         Customer customer = new Customer("Dell", 1, true);
 
         customer.getInvoices().add(invoice);
-        invoice.getCustomers().add(customer);
+        invoice.setCustomer(customer);
 
         //When
         customerService.saveCustomer(customer);
@@ -103,7 +103,7 @@ class CustomerServiceTest {
         Customer customer = new Customer("Dell", 1, true);
 
         customer.getInvoices().add(invoice);
-        invoice.getCustomers().add(customer);
+        invoice.setCustomer(customer);
 
         //Then
         customerService.saveCustomer(customer);

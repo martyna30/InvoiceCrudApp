@@ -23,6 +23,11 @@ public class Rate {
         this.rateOfExchange = rateOfExchange;
     }
 
+    public Rate(String currency, BigDecimal rateOfExchange) {
+        this.currency = currency;
+        this.rateOfExchange = rateOfExchange;
+    }
+
     @Id
     @GeneratedValue
     @NonNull

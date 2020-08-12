@@ -1,19 +1,43 @@
 package com.crud.invoices.client;
 
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Component;
 
 import javax.xml.soap.*;
+import java.io.IOException;
+import java.util.Iterator;
 
 @Component
 public class ViesClient {
-    public static void main() throws Exception {
 
-        String viesEndpoint = "http://ec.europa.eu/taxation_customs/vies/checkVatTestService";
-        String action = "";
-        callSoapWebService(viesEndpoint, action);
+    private static String endpoint = "http://ec.europa.eu/taxation_customs/vies/services/checkVatService";
+
+    public static boolean checkVat(String vatNumber) throws Exception {
+        SOAPMessage soapMessage = createSOAPMessage(vatNumber);
+        return callSoapWebService(soapMessage);
     }
 
-    private static void createSoapEnvelope(SOAPMessage soapMessage) throws SOAPException {
+    public static SOAPMessage createSOAPMessage(String vatNumber) throws Exception {
+        MessageFactory messageFactory = MessageFactory.newInstance();
+        SOAPMessage soapMessage = messageFactory.createMessage();
+
+        createSOAPMessageEnvelope(soapMessage, vatNumber);
+
+        MimeHeaders headers = soapMessage.getMimeHeaders();
+        headers.addHeader("SOAPAction", "");
+
+        soapMessage.saveChanges();
+        //Print the request message, just for debugging purposes
+        System.out.println("Request SOAP Message:");
+        soapMessage.writeTo(System.out);
+        System.out.println("\n");
+
+        return soapMessage;
+    }
+
+    public static void createSOAPMessageEnvelope(SOAPMessage soapMessage, String vatNumber) throws SOAPException {
         SOAPPart soapPart = soapMessage.getSOAPPart();
 
         String nameSpace = "urn";
@@ -27,48 +51,31 @@ public class ViesClient {
         SOAPBody soapBody = envelope.getBody();
         SOAPElement soapBodyElem = soapBody.addChildElement("checkVat", nameSpace);
         SOAPElement soapBodyElem1 = soapBodyElem.addChildElement("countryCode", nameSpace);
-        soapBodyElem1.addTextNode("PL"); //kraj vatu
+        soapBodyElem1.addTextNode(vatNumber.substring(0, 2)); // kraj vatu
         SOAPElement soapBodyElem2 = soapBodyElem.addChildElement("vatNumber", nameSpace);
-        soapBodyElem2.addTextNode("05006900962");//numer vat
+        soapBodyElem2.addTextNode(vatNumber.substring(2)); // numer vat
     }
 
-    private static void callSoapWebService(String soapEndpointUrl, String soapAction) {
-        try {
-            // Create SOAP Connection
-            SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
-            SOAPConnection soapConnection = soapConnectionFactory.createConnection();
+    public  static boolean callSoapWebService(SOAPMessage soapMessage) throws Exception {
+        // Create SOAP Connection
+        SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
+        SOAPConnection soapConnection = soapConnectionFactory.createConnection();
 
-            // Send SOAP Message to SOAP Server
-            SOAPMessage soapResponse = soapConnection.call(createSOAPRequest(soapAction), soapEndpointUrl);
+        // Send SOAP Message to SOAP Server
+        SOAPMessage soapResponse = soapConnection.call(soapMessage, endpoint);
+        soapConnection.close();
 
-            // Print the SOAP Response
-            System.out.println("Response SOAP Message:");
-            soapResponse.writeTo(System.out);
-            System.out.println();
+        // Print the SOAP Response
+        System.out.println("Response SOAP Message:");
+        soapResponse.writeTo(System.out);
 
-            soapConnection.close();
-        } catch (Exception e) {
-            System.err.println("\nError occurred while sending SOAP Request to Server!\nMake sure you have the correct endpoint URL and SOAPAction!\n");
-            e.printStackTrace();
-        }
+        return soapResponse
+                .getSOAPBody()
+                .getElementsByTagName("valid")
+                .item(0)
+                .getTextContent()
+                .equals("true");
     }
 
-    private static SOAPMessage createSOAPRequest(String soapAction) throws Exception {
-        MessageFactory messageFactory = MessageFactory.newInstance();
-        SOAPMessage soapMessage = messageFactory.createMessage();
-
-        createSoapEnvelope(soapMessage);
-
-        MimeHeaders headers = soapMessage.getMimeHeaders();
-        headers.addHeader("SOAPAction", soapAction);
-
-        soapMessage.saveChanges();
-
-        /* Print the request message, just for debugging purposes */
-        System.out.println("Request SOAP Message:");
-        soapMessage.writeTo(System.out);
-        System.out.println("\n");
-
-        return soapMessage;
-    }
 }
+

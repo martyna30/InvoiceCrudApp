@@ -11,6 +11,6 @@ public class ViesService {
     ViesClient viesClient;
 
     public void isVATpayer() throws Exception {
-        ViesClient.main();
+        //ViesClient.main();
     }
 }
