@@ -1,6 +1,5 @@
 package com.crud.invoices.controller;
 
-import com.crud.invoices.domain.InvoiceDto;
 import com.crud.invoices.domain.ItemDto;
 import com.crud.invoices.mapper.ItemMapper;
 import com.crud.invoices.service.ItemService;

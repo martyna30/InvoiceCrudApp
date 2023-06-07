@@ -1,9 +1,7 @@
 package com.crud.invoices.controller;
 
 import com.crud.invoices.domain.*;
-import com.crud.invoices.mapper.CustomerMapper;
 import com.crud.invoices.mapper.InvoiceMapper;
-import com.crud.invoices.service.CustomerService;
 import com.crud.invoices.service.InvoiceService;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.Test;
@@ -15,18 +13,14 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.time.LocalDate;
-import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.crud.invoices.domain.InvoiceStatus.TRUE;
-import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;

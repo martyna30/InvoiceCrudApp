@@ -1,6 +1,6 @@
 package com.crud.invoices.respository;
 
-import com.crud.invoices.domain.Item;
+import com.crud.invoices.domain.Contractor;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,15 +10,15 @@ import java.util.Optional;
 
 @Transactional
 @Repository
-public interface ItemRespository extends CrudRepository<Item, Long> {
+public interface ContractorRepository extends CrudRepository<Contractor, Long> {
     @Override
-    List<Item> findAll();
+    List<Contractor> findAll();
 
     @Override
-    Item save(Item item);
+    Contractor save(Contractor contractor);
 
     @Override
-    Optional<Item> findById(Long id);
+    Optional<Contractor> findById(Long id);
 
     @Override
     void deleteById(Long id);

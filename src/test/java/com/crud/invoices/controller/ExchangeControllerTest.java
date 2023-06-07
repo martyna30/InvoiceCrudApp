@@ -4,9 +4,7 @@ import com.crud.invoices.domain.Exchange;
 import com.crud.invoices.domain.ExchangeDto;
 import com.crud.invoices.domain.Rate;
 import com.crud.invoices.domain.RateDto;
-import com.crud.invoices.mapper.ExchangeMapper;
 import com.crud.invoices.nbp.facade.ExchangeFacade;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +16,10 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;

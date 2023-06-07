@@ -4,10 +4,12 @@ import com.crud.invoices.domain.Exchange;
 import com.crud.invoices.domain.ExchangeDto;
 import com.crud.invoices.nbp.facade.ExchangeFacade;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @CrossOrigin("*") //pozwoli na komunikację serwera warstwy frontendowej z warstwą backendową

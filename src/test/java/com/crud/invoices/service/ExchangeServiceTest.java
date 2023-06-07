@@ -1,9 +1,7 @@
 package com.crud.invoices.service;
 
 import com.crud.invoices.domain.Exchange;
-import com.crud.invoices.domain.ExchangeDto;
 import com.crud.invoices.domain.Rate;
-import com.crud.invoices.domain.RateDto;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -14,10 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)

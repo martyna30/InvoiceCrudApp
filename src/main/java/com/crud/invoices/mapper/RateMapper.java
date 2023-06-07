@@ -1,13 +1,7 @@
 package com.crud.invoices.mapper;
 
-import com.crud.invoices.domain.Rate;
-import com.crud.invoices.domain.RateDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @Component
 public class RateMapper {

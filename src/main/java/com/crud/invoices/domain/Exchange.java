@@ -3,12 +3,11 @@ package com.crud.invoices.domain;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @NamedQuery(
@@ -39,8 +38,8 @@ public class Exchange {
     }
 
     @Id
-    @GeneratedValue
-    @NonNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotNull
     @Column(name = "ID", unique = true)
     public Long getId() {
         return id;
@@ -53,11 +52,12 @@ public class Exchange {
     }
 
     @OneToMany(
-            targetEntity = Rate.class,
-            mappedBy = "exchange",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
+            //targetEntity = Rate.class,
+            //mappedBy = "exchange",
+            cascade = CascadeType.ALL
+            //fetch = FetchType.LAZY
     )
+    @JoinColumn(name = "EXCHANGE_ID")
     public List<Rate> getRates() {
         return rates;
     }

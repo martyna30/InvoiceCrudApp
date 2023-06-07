@@ -1,9 +1,8 @@
 package com.crud.invoices.controller;
 
-import com.crud.invoices.domain.*;
-import com.crud.invoices.mapper.CustomerMapper;
+import com.crud.invoices.domain.Item;
+import com.crud.invoices.domain.ItemDto;
 import com.crud.invoices.mapper.ItemMapper;
-import com.crud.invoices.service.CustomerService;
 import com.crud.invoices.service.ItemService;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.Test;
@@ -22,7 +21,6 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;

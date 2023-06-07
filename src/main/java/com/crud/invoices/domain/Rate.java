@@ -1,24 +1,22 @@
 package com.crud.invoices.domain;
 
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "RATES")
 public class Rate {
     private Long id;
-    Exchange exchange;
+    //Exchange exchange;
     private String currency;
     private BigDecimal rateOfExchange;
 
-    public Rate(Exchange exchange, String currency, BigDecimal rateOfExchange) {
-        this.exchange = exchange;
+    public Rate(Long id, String currency, BigDecimal rateOfExchange) {
+        this.id = id;
         this.currency = currency;
         this.rateOfExchange = rateOfExchange;
     }
@@ -29,18 +27,18 @@ public class Rate {
     }
 
     @Id
-    @GeneratedValue
-    @NonNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotNull
     @Column(name = "ID", unique = true)
     public Long getId() {
         return id;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "EXCHANGE_ID")
-    public Exchange getExchange() {
-        return exchange;
-    }
+    //@ManyToOne
+    //@JoinColumn(name = "EXCHANGE_ID")
+    //public Exchange getExchange() {
+    // return exchange;
+    //}
 
     @Column(name = "CODE")
     public String getCurrency() {
@@ -64,8 +62,8 @@ public class Rate {
         this.id = id;
     }
 
-    public void setExchange(Exchange exchange) {
-        this.exchange = exchange;
-    }
+
 }
+
+
 

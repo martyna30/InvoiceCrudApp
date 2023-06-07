@@ -1,80 +1,99 @@
 package com.crud.invoices.domain;
 
-import com.sun.istack.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "ITEMS")
 public class Item {
     private Long id;
-    Invoice invoice;
-    private int quantity;
-    private BigDecimal price;
-    private BigDecimal value;
+    private String product;
+    //Invoice invoice;
+    private int amount;
+    private BigDecimal netWorth;
+    private BigDecimal amountOfVAT;
 
-    public Item(Long id, int quantity, BigDecimal price, BigDecimal value) {
-        this.id = id;
-        this.quantity = quantity;
-        this.price = price;
-        this.value = value;
+    private Integer vatRate;
+    private BigDecimal grossValue;
+
+    public Item(String product) {
+        this.product = product;
     }
 
-
+    public Item(Long id, String product, int amount, BigDecimal netWorth, BigDecimal amountOfVAT, Integer vatRate, BigDecimal grossValue) {
+        this.id = id;
+        this.product = product;
+        this.amount = amount;
+        this.netWorth = netWorth;
+        this.amountOfVAT = amountOfVAT;
+        this.vatRate = vatRate;
+        this.grossValue = grossValue;
+    }
 
     @Id
-    @GeneratedValue
-    @NotNull
-    @Column(name = "ID", unique = true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ITEM_ID", unique = true)
     public Long getId() {
         return id;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "INVOICE_ID")
-    public Invoice getInvoice() {
-        return invoice;
+    @Column
+    public String getProduct() {
+        return product;
     }
 
     @Column
-    public int getQuantity() {
-        return quantity;
+    public int getAmount() {
+        return amount;
+    }
+    @Column
+    public BigDecimal getNetWorth() {
+        return netWorth;
+    }
+    @Column
+    public BigDecimal getGrossValue() {
+        return grossValue;
+    }
+    @Column(name="amount_of_VAT")
+    public BigDecimal getAmountOfVAT() {
+        return amountOfVAT;
     }
 
-    @Column
-    public BigDecimal getPrice() {
-        return price;
+    @Column(name="VAT_rate")
+    public Integer getVatRate() {
+        return vatRate;
     }
 
-    @Column
-    public BigDecimal getValue() {
-        return value;
+    public void setProduct(String product) {
+        this.product = product;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public void setNetWorth(BigDecimal netWorth) {
+        this.netWorth = netWorth;
+    }
+
+    public void setGrossValue(BigDecimal grossValue) {
+        this.grossValue = grossValue;
+    }
+
+    public void setAmountOfVAT(BigDecimal amountOfVAT) {
+        this.amountOfVAT = amountOfVAT;
+    }
+
+    public void setVatRate(Integer vatRate) {
+        this.vatRate = vatRate;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public void setValue(BigDecimal value) {
-        this.value = value;
-    }
-
-    public void setInvoice(Invoice invoice) {
-        this.invoice = invoice;
     }
 
 }

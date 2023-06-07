@@ -1,16 +1,12 @@
 package com.crud.invoices.mapper;
 
-import com.crud.invoices.domain.Customer;
-import com.crud.invoices.domain.CustomerDto;
 import com.crud.invoices.domain.Invoice;
 import com.crud.invoices.domain.InvoiceDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
+import java.util.stream.Collectors;
 
 @Component
 public class InvoiceMapper {
@@ -19,9 +15,89 @@ public class InvoiceMapper {
     ItemMapper itemMapper;
 
     @Autowired
-    CustomerMapper customerMapper;
+    ContractorMapper contractorMapper;
+
+
+
+    public Invoice mapToInvoice(InvoiceDto invoiceDto) {
+        return new Invoice(
+                invoiceDto.getId(),
+                invoiceDto.getNumber(),
+                contractorMapper.mapToContractor(invoiceDto.getContractorDto()),
+                invoiceDto.getDateOfInvoice(),
+                invoiceDto.getDateOfSale(),
+                invoiceDto.getDateOfPayment(),
+                invoiceDto.getPeriodOfPayment(),
+                invoiceDto.getMethodOfPayment(),
+                invoiceDto.getPaid(),
+                invoiceDto.getLeftToPay(),
+                itemMapper.mapToItemList(invoiceDto.getItems()),
+                invoiceDto.getNetAmount(),
+                invoiceDto.getSumTotal(),
+                invoiceDto.getAmountOfVAT());
+
+    }
+
+    public InvoiceDto mapToInvoiceDto(Invoice invoice) {
+        return new InvoiceDto(
+                invoice.getId(),
+                invoice.getNumber(),
+                contractorMapper.mapToContractorDto(invoice.getContractor()),
+                invoice.getDateOfInvoice(),
+                invoice.getDateOfSale(),
+                invoice.getDateOfPayment(),
+                invoice.getPeriodOfPayment(),
+                invoice.getMethodOfPayment(),
+                invoice.getPaid(),
+                invoice.getLeftToPay(),
+                itemMapper.mapToItemDtoList(invoice.getItems()),
+                invoice.getNetAmount(),
+                invoice.getSumTotal(),
+                invoice.getAmountOfVAT());
+    }
+
 
     public List<Invoice> mapToInvoiceList(final List<InvoiceDto> invoicesDtos) {
+        return invoicesDtos.stream()
+                .map(invoiceDto -> new Invoice(
+                       invoiceDto.getId(),
+                        invoiceDto.getNumber(),
+                        contractorMapper.mapToContractor(invoiceDto.getContractorDto()),
+                        invoiceDto.getDateOfInvoice(),
+                        invoiceDto.getDateOfSale(),
+                        invoiceDto.getDateOfPayment(),
+                        invoiceDto.getPeriodOfPayment(),
+                        invoiceDto.getMethodOfPayment(),
+                        invoiceDto.getPaid(),
+                        invoiceDto.getLeftToPay(),
+                        itemMapper.mapToItemList(invoiceDto.getItems()),
+                        invoiceDto.getNetAmount(),
+                        invoiceDto.getSumTotal(),
+                        invoiceDto.getAmountOfVAT()))
+                        .collect(Collectors.toList());
+    }
+
+    public List<InvoiceDto> mapToInvoiceDtoList(final List<Invoice> invoices) {
+        return invoices.stream()
+                .map(invoice -> new InvoiceDto(
+                        invoice.getId(),
+                        invoice.getNumber(),
+                        contractorMapper.mapToContractorDto(invoice.getContractor()),
+                        invoice.getDateOfInvoice(),
+                        invoice.getDateOfSale(),
+                        invoice.getDateOfPayment(),
+                        invoice.getPeriodOfPayment(),
+                        invoice.getMethodOfPayment(),
+                        invoice.getPaid(),
+                        invoice.getLeftToPay(),
+                        itemMapper.mapToItemDtoList(invoice.getItems()),
+                        invoice.getNetAmount(),
+                        invoice.getSumTotal(),
+                        invoice.getAmountOfVAT()))
+                .collect(Collectors.toList());
+    }
+
+    /*public List<Invoice> mapToInvoiceList(final List<InvoiceDto> invoicesDtos) {
         List<Invoice> invoices = new ArrayList<>();
 
         for (InvoiceDto invoiceDto : invoicesDtos) {
@@ -86,5 +162,5 @@ public class InvoiceMapper {
                 invoiceDto.setNetto(invoice.getNetto());
                 invoiceDto.setBrutto(invoice.getBrutto());
                 return invoiceDto;
-    }
+    }*/
 }

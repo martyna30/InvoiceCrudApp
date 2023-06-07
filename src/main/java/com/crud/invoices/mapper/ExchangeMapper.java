@@ -1,7 +1,9 @@
 package com.crud.invoices.mapper;
 
-import com.crud.invoices.domain.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.crud.invoices.domain.Exchange;
+import com.crud.invoices.domain.ExchangeDto;
+import com.crud.invoices.domain.Rate;
+import com.crud.invoices.domain.RateDto;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -60,6 +62,7 @@ public class ExchangeMapper {
     public List<RateDto> mapToRateListDto(final List<Rate> rateList) {
         return rateList.stream()
                 .map(rate -> new RateDto(
+                        rate.getId(),
                         rate.getCurrency(),
                         rate.getRateOfExchange()))
                 .collect(toList());
@@ -70,7 +73,7 @@ public class ExchangeMapper {
         // Exchange tworzy rates, a rates tworzy exchange przez kolejne wywolanie mapToExchange, ktory znowu tworzy rates itd
         return rateListDto.stream()
                 .map(rateDto -> new Rate(
-                        exchange,
+                        //exchange,
                         rateDto.getCurrency(),
                         rateDto.getRateOfExchange()))
                 .collect(toList());

@@ -33,5 +33,5 @@ out/
 .vscode/
 gradle/
 
-
+*.properties
 

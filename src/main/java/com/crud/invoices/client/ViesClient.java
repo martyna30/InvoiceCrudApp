@@ -1,15 +1,8 @@
 package com.crud.invoices.client;
 
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.springframework.stereotype.Component;
-
 import javax.xml.soap.*;
-import java.io.IOException;
-import java.util.Iterator;
 
-@Component
+//@Component
 public class ViesClient {
 
     private static String endpoint = "http://ec.europa.eu/taxation_customs/vies/services/checkVatService";

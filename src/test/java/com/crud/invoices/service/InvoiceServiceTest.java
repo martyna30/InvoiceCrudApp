@@ -1,6 +1,5 @@
 package com.crud.invoices.service;
 
-import com.crud.invoices.domain.Customer;
 import com.crud.invoices.domain.Invoice;
 import com.crud.invoices.domain.Item;
 import org.junit.Assert;
@@ -8,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
@@ -79,7 +79,7 @@ class InvoiceServiceTest {
         String number2 = updateInvoice.getNumber();
         long id2 = updateInvoice.getId();
 
-        List<Invoice> invoices = invoiceService.getAllInvoices();
+        List<Invoice> invoices = invoiceService.getAllInvoices(Pageable.unpaged());
 
         //Then
         Assert.assertNotNull(updateInvoice);

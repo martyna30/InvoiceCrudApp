@@ -19,28 +19,33 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
 	implementation('org.springframework.boot:spring-boot-starter-jdbc')
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation ('org.springframework.boot:spring-boot-starter-validation')
 	//lombok
 	compileOnly('org.projectlombok:lombok')
 	annotationProcessor('org.projectlombok:lombok')
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
 	testCompileOnly 'org.projectlombok:lombok:1.18.12'
 	//mysql
-	compile('mysql:mysql-connector-java')
+	implementation('mysql:mysql-connector-java')
 	//compile('org.postgresql:postgresql')
 	providedRuntime ("org.springframework.boot:spring-boot-starter-tomcat")
-	compile('com.google.code.gson:gson:2.8.2')
+	implementation('com.google.code.gson:gson:2.8.2')
 	//parse to json
-	//compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.1'
-	compile "com.fasterxml.jackson.core:jackson-databind:2.9.7"
-	compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.7"
+	//implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.1'
+	implementation "com.fasterxml.jackson.core:jackson-databind:2.9.7"
+	implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.7"
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.3.1.RELEASE'
+	testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: '5.3.1.RELEASE'
+
 	//test
 	//testCompile group: 'com.h2database', name: 'h2', version: '1.4.200'
 	//runtimeOnly('com.h2database:h2')
 	//soup
-	compile group: 'org.jsoup', name: 'jsoup', version: '1.13.1'
+	//implementation group: 'org.jsoup', name: 'jsoup', version: '1.13.1'
 }
 
 test {

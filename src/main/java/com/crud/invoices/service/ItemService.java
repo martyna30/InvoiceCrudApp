@@ -1,6 +1,5 @@
 package com.crud.invoices.service;
 
-import com.crud.invoices.domain.Invoice;
 import com.crud.invoices.domain.Item;
 import com.crud.invoices.respository.ItemRespository;
 import org.springframework.beans.factory.annotation.Autowired;
