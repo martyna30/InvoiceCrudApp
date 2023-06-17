@@ -48,7 +48,7 @@ public class ContractorController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "createContractor", consumes = APPLICATION_JSON_VALUE)
-    public void createContractor(@RequestBody ContractorDto contractorDto) {
-        contractorService.saveContractor(contractorMapper.mapToContractor(contractorDto));
+    public ContractorDto createContractor(@RequestBody ContractorDto contractorDto) {
+        return  contractorMapper.mapToContractorDto(contractorService.saveContractor(contractorMapper.mapToContractor(contractorDto)));
     }
 }

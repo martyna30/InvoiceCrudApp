@@ -12,12 +12,12 @@ import javax.persistence.*;
 public class Contractor {
     private Long id;
     private String name;
-    private double vatIdentificationNumber;
+    private String vatIdentificationNumber;
 
     Address address;
 
 
-    public Contractor(Long id, String name, double vatIdentificationNumber, Address address) {
+    public Contractor(Long id, String name, String vatIdentificationNumber, Address address) {
         this.id = id;
         this.name = name;
         this.vatIdentificationNumber = vatIdentificationNumber;
@@ -53,8 +53,11 @@ public class Contractor {
     public String getName() {
         return name;
     }
+
+
+
     @Column
-    public double getVatIdentificationNumber() {
+    public String getVatIdentificationNumber() {
         return vatIdentificationNumber;
     }
 
@@ -67,7 +70,8 @@ public class Contractor {
         this.name = name;
     }
 
-    public void setVatIdentificationNumber(double vatIdentificationNumber) {
+
+    public void setVatIdentificationNumber(String vatIdentificationNumber) {
         this.vatIdentificationNumber = vatIdentificationNumber;
     }
 

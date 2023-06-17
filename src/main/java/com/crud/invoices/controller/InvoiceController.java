@@ -5,12 +5,21 @@ import com.crud.invoices.domain.InvoiceDto;
 import com.crud.invoices.domain.ListInvoicesDto;
 import com.crud.invoices.mapper.InvoiceMapper;
 import com.crud.invoices.service.InvoiceService;
+import com.crud.invoices.validationGroup.OrderChecks;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
+import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -37,23 +46,59 @@ public class InvoiceController {
 
     //ResponseEntity zmien
     @GetMapping(value = "getInvoice")
-    public InvoiceDto getInvoice(@RequestParam Long invoiceId) throws InvoiceNotFoundException {
-        return invoiceMapper.mapToInvoiceDto(invoiceService.getInvoice(invoiceId).orElseThrow(InvoiceNotFoundException::new));
+    public ResponseEntity<InvoiceDto>getInvoice(@RequestParam Long invoiceId) {
+        try {
+            return ResponseEntity.ok(invoiceMapper.mapToInvoiceDto(invoiceService.getInvoice(invoiceId).get()));
+        } catch (ResponseStatusException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping(value = "deleteInvoice", consumes = APPLICATION_JSON_VALUE)
-    public void deleteInvoice(@RequestParam Long invoiceId) {
-        invoiceService.deleteInvoice(invoiceId);
+    public ResponseEntity<?> deleteInvoice(@RequestParam Long invoiceId) {
+        try {
+            invoiceService.deleteInvoice(invoiceId);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (EmptyResultDataAccessException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PutMapping(value = "updateInvoice")
-    public InvoiceDto updateInvoice(@RequestBody InvoiceDto invoiceDto) {
-        return invoiceMapper.mapToInvoiceDto(invoiceService.saveInvoice(invoiceMapper.mapToInvoice(invoiceDto)));
+    public ResponseEntity<Object> updateInvoice(@Validated(value = {OrderChecks.class}) @Valid @RequestBody InvoiceDto invoiceDto, Errors errors) {
+
+        if(errors.hasErrors()) {
+            Map<String, ArrayList<Object>>errorsMap = new HashMap<>();
+            errors.getFieldErrors().stream().forEach((fieldError -> {
+                String key = fieldError.getField();
+                if(!errorsMap.containsKey(key)) {
+                    errorsMap.put(key, new ArrayList<>());
+                }
+                errorsMap.get(key).add(fieldError.getDefaultMessage());
+            }));
+            errorsMap.values().stream().findFirst();
+            return new ResponseEntity<>(errorsMap, HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        invoiceMapper.mapToInvoiceDto(invoiceService.saveInvoice(invoiceMapper.mapToInvoice(invoiceDto)));
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping(value = "createInvoice", consumes = APPLICATION_JSON_VALUE)
-    public void createInvoice(@RequestBody InvoiceDto invoiceDto) {
+    public ResponseEntity<Object> createInvoice(@Validated(value = {OrderChecks.class}) @Valid @RequestBody InvoiceDto invoiceDto, Errors errors) {
+        if(errors.hasErrors()) {
+            Map<String, ArrayList<Object>>errorsMap = new HashMap<>();
+            errors.getFieldErrors().stream().forEach((fieldError -> {
+                String key = fieldError.getField();
+                if(!errorsMap.containsKey(key)) {
+                    errorsMap.put(key, new ArrayList<>());
+                }
+                errorsMap.get(key).add(fieldError.getDefaultMessage());
+            }));
+            errorsMap.values().stream().findFirst();
+            return new ResponseEntity<>(errorsMap, HttpStatus.UNPROCESSABLE_ENTITY);
+        }
         invoiceService.saveInvoice(invoiceMapper.mapToInvoice(invoiceDto));
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
 
