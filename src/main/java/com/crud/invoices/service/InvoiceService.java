@@ -1,6 +1,8 @@
 package com.crud.invoices.service;
 
 
+import com.crud.invoices.domain.Address;
+import com.crud.invoices.domain.Contractor;
 import com.crud.invoices.domain.Invoice;
 import com.crud.invoices.respository.InvoiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,12 @@ public class InvoiceService {
     @Autowired
     InvoiceRepository invoiceRepository;
 
+    @Autowired
+    ContractorService contractorService;
+
+    @Autowired
+    AddressService addressService;
+
     public List<Invoice> getAllInvoices(Pageable pageable) {
         Page<Invoice> bookPage = invoiceRepository.findAll(pageable);
         return bookPage.getContent();
@@ -28,6 +36,20 @@ public class InvoiceService {
     }
     @Transactional
     public Invoice saveInvoice(final Invoice invoice) {
+
+        Optional<Contractor> contractorInDatabase = contractorService.findContractorByVatIdentificationNumber(invoice.getContractor().getVatIdentificationNumber());
+        contractorInDatabase.ifPresent(contractor -> invoice.setContractor(contractorInDatabase.get()));
+         if(contractorInDatabase.isPresent()) {
+             Optional<Address> addressForContractor = addressService.getAddress(contractorInDatabase.get().getAddress().getId());
+             if (addressForContractor.isPresent()) {
+                 contractorInDatabase.get().setAddress(addressForContractor.get());
+             }
+         }
+        else {
+            addressService.saveAddress(invoice.getContractor().getAddress());
+        }
+
+
         LocalDate dateOfInvoice = invoice.getDateOfInvoice();
         Integer periodOfPayment = invoice.getPeriodOfPayment();
         LocalDate datePayment = dateOfInvoice.plusDays(periodOfPayment);
@@ -49,7 +71,9 @@ public class InvoiceService {
         String number = String.valueOf(sb.append(year));
 
         invoiceIn.setNumber(number);
-        System.out.println(number);
+
+
+
         return invoiceRepository.save(invoiceIn);
 
     }

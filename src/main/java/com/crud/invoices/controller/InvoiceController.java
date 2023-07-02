@@ -5,7 +5,7 @@ import com.crud.invoices.domain.InvoiceDto;
 import com.crud.invoices.domain.ListInvoicesDto;
 import com.crud.invoices.mapper.InvoiceMapper;
 import com.crud.invoices.service.InvoiceService;
-import com.crud.invoices.validationGroup.OrderChecks;
+import com.crud.invoices.validationGroup.OrderChecks2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
@@ -44,7 +44,7 @@ public class InvoiceController {
         }
     }
 
-    //ResponseEntity zmien
+
     @GetMapping(value = "getInvoice")
     public ResponseEntity<InvoiceDto>getInvoice(@RequestParam Long invoiceId) {
         try {
@@ -65,7 +65,7 @@ public class InvoiceController {
     }
 
     @PutMapping(value = "updateInvoice")
-    public ResponseEntity<Object> updateInvoice(@Validated(value = {OrderChecks.class}) @Valid @RequestBody InvoiceDto invoiceDto, Errors errors) {
+    public ResponseEntity<Object> updateInvoice(@Validated(value = {OrderChecks2.class}) @Valid @RequestBody InvoiceDto invoiceDto, Errors errors) {
 
         if(errors.hasErrors()) {
             Map<String, ArrayList<Object>>errorsMap = new HashMap<>();
@@ -84,7 +84,7 @@ public class InvoiceController {
     }
 
     @PostMapping(value = "createInvoice", consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> createInvoice(@Validated(value = {OrderChecks.class}) @Valid @RequestBody InvoiceDto invoiceDto, Errors errors) {
+    public ResponseEntity<Object> createInvoice(@Validated(value = {OrderChecks2.class}) @Valid @RequestBody InvoiceDto invoiceDto, Errors errors) {
         if(errors.hasErrors()) {
             Map<String, ArrayList<Object>>errorsMap = new HashMap<>();
             errors.getFieldErrors().stream().forEach((fieldError -> {

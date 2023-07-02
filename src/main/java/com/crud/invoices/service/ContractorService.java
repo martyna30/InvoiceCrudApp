@@ -3,6 +3,8 @@ package com.crud.invoices.service;
 import com.crud.invoices.domain.Contractor;
 import com.crud.invoices.respository.ContractorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,11 +15,20 @@ public class ContractorService {
     @Autowired
     ContractorRepository contractorRepository;
 
-    public List<Contractor> getAllContractors() {
-        return contractorRepository.findAll();
+    @Autowired
+    AddressService addressService;
+
+    public List<Contractor> getAllContractors(Pageable pageable) {
+        Page<Contractor> contractorPage = contractorRepository.findAll(pageable);
+        return contractorPage.getContent();
     }
 
     public Contractor saveContractor(final Contractor contractor) {
+        Optional<Contractor> contractorInDatabase = contractorRepository.findContractorByVatIdentificationNumber(contractor.getVatIdentificationNumber());
+        if(contractorInDatabase.isPresent()) {
+            contractor.setId(contractorInDatabase.get().getId());
+            contractor.getAddress().setId(contractorInDatabase.get().getAddress().getId());
+        }
         return contractorRepository.save(contractor);
     }
 
@@ -29,10 +40,14 @@ public class ContractorService {
         contractorRepository.deleteById(id);
     }
 
+    public long getCount() {
+       return contractorRepository.count();
 
+    }
 
-    // public <T> Optional<T> getCustomerWithSpecifiedName(String name) {
-    //}
+    public Optional<Contractor> findContractorByVatIdentificationNumber(String vatIdentificationNumber) {
+        return contractorRepository.findContractorByVatIdentificationNumber(vatIdentificationNumber);
+    }
 }
 
 

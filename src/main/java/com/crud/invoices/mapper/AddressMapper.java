@@ -14,7 +14,8 @@ public class AddressMapper {
                 address.getStreet(),
                 address.getStreetNumber(),
                 address.getPostcode(),
-                address.getCity());
+                address.getCity(),
+                address.getCountry());
     }
 
     public Address mapToAddress(AddressDto addressDto) {
@@ -23,6 +24,7 @@ public class AddressMapper {
                 addressDto.getStreet(),
                 addressDto.getStreetNumber(),
                 addressDto.getPostcode(),
-                addressDto.getCity());
+                addressDto.getCity(),
+                addressDto.getCountry());
     }
 }

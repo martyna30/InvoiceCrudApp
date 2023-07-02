@@ -24,6 +24,8 @@ public class Address {
 
     private String city;
 
+    private String country;
+
     @Column
     public String getStreet() {
         return street;
@@ -41,6 +43,12 @@ public class Address {
         return city;
     }
 
+
+    @Column
+    public String getCountry() {
+        return country;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -48,6 +56,7 @@ public class Address {
     public Long getId() {
         return id;
     }
+
 
     public void setStreet(String street) {
         this.street = street;
@@ -63,5 +72,9 @@ public class Address {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 }

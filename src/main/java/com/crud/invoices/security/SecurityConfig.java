@@ -1,11 +1,19 @@
 package com.crud.invoices.security;
 
+import com.crud.invoices.security.filter.CustomAuthorizationFilter;
+import com.crud.invoices.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -14,6 +22,24 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Autowired
+    private final UserService userService;
+
+    @Autowired
+    private final CustomAuthorizationFilter customAuthorizationFilter;
+    //@Autowired
+    //private final AuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
+    @Autowired
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public SecurityConfig(UserService userService, CustomAuthorizationFilter customAuthorizationFilter,
+                          BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.userService = userService;
+        this.customAuthorizationFilter = customAuthorizationFilter;
+        //this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
 
 
     @Bean
@@ -26,7 +52,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .allowedMethods("*")
                         .allowedHeaders("*")
                         .allowedOrigins("*")
-                        //.allowedMethods("*")
                         .allowCredentials(true);
             };
         };
@@ -39,9 +64,45 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.httpBasic();
         http.authorizeRequests().antMatchers("/v1/invoice/**").permitAll();
         http.authorizeRequests().antMatchers("/v1/invoice/createInvoice/**").permitAll()
-       .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        //http.addFilterBefore(new CorsFilter(), ChannelProcessingFilter.class );
+                //.and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.addFilterBefore(customAuthorizationFilter, UsernamePasswordAuthenticationFilter.class );
     }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        //User librarian = new User("Martyna",
+        //bCryptPasswordEncoder.encode("123")
+        // , "martyna.prawdzik@gmail.com", "ROLE_LIBRARIAN");
+
+
+        //User admin = new User("Piotr",
+        //   bCryptPasswordEncoder.encode("456"),"test-v5v1jt5rk@srv1.mail-tester.com",
+        //   "ROLE_ADMIN");
+
+
+        auth.userDetailsService(userService).passwordEncoder((bCryptPasswordEncoder));
+        //userService.saveUser(librarian);
+        //userService.saveUser(admin);
+
+        auth.authenticationProvider(daoAuthenticationProvider());
+    }
+
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider provider =
+                new DaoAuthenticationProvider();
+        provider.setPasswordEncoder((bCryptPasswordEncoder));
+        provider.setUserDetailsService(userService);
+        return provider;
+    }
+
 
     /*@Bean
     public CORSFilter corsConfigurationSource() {
