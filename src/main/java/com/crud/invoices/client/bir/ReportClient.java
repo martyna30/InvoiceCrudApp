@@ -3,6 +3,7 @@ package com.crud.invoices.client.bir;
 import cis.bir.publ._2014._07.IUslugaBIRzewnPubl;
 import cis.bir.publ._2014._07.datacontract.ObjectFactory;
 import cis.bir.publ._2014._07.datacontract.ParametryWyszukiwania;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Nullable;
@@ -11,9 +12,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 @Component
 public class ReportClient {
-
+    @Autowired
     private BirClient birClient;
-
+    @Autowired
     RegonType regonType;
 
     public ReportClient() {
@@ -36,6 +37,7 @@ public class ReportClient {
             //String pkdReport = port.danePobierzPelnyRaport(regonType.getRegon(),
             // regonType.getReportName().getPkdReportName());
             String basicData = port.daneSzukaj(searchParams);
+            System.out.println(basicData);
 
             final String silosId = getSilosId(basicData);
             //String additionalReport = (silosId != null)?

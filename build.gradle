@@ -47,15 +47,21 @@ dependencies {
 	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
     //gus
 	implementation group: 'io.lsn.spring', name: 'gus', version: '1.0.3'
-	implementation group: 'de.malkusch.soap-client-cache', name: 'soap-client-cache', version: '2.0.3'
-	implementation group: 'org.apache.cxf', name: 'cxf-spring-boot-starter-jaxws', version: '4.0.2'
-	implementation group: 'jakarta.xml.ws', name: 'jakarta.xml.ws-api', version: '4.0.0'
-	implementation group: 'org.springframework.ws', name: 'spring-ws', version: '4.0.5', ext: 'pom'
 	implementation group: 'org.springframework.ws', name: 'spring-ws-core', version: '2.2.0.RELEASE'
+	implementation group: 'javax.xml.ws', name: 'jaxws-api', version: '2.3.1'
+	implementation group: 'org.springframework.data', name: 'spring-data-elasticsearch', version: '5.1.1'//?
+	implementation group: 'com.sun.xml.messaging.saaj', name: 'saaj-impl', version: '1.5.1'//?
+	implementation group: 'com.sun.xml.ws', name: 'rt', version: '2.3.1'//?
+	//implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '2.3.2'
+	//implementation group: 'org.glassfish.metro', name: 'wssx-impl', version: '4.0.2'
+	//implementation group: 'javax.xml.soap', name: 'javax.xml.soap-api', version: '1.4.0'  //nowe
 
-	implementation group: 'org.springframework.data', name: 'spring-data-elasticsearch', version: '5.1.1'
-	implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '2.3.2'
-	implementation group: 'org.glassfish.metro', name: 'wssx-impl', version: '4.0.2'
+	//implementation group: 'de.malkusch.soap-client-cache', name: 'soap-client-cache', version: '2.0.3'
+	//implementation group: 'org.apache.cxf', name: 'cxf-spring-boot-starter-jaxws', version: '4.0.2'
+	//implementation group: 'jakarta.xml.ws', name: 'jakarta.xml.ws-api', version: '4.0.0'
+	//implementation group: 'org.springframework.ws', name: 'spring-ws', version: '4.0.5', ext: 'pom'
+
+
 	//test
 	//testCompile group: 'com.h2database', name: 'h2', version: '1.4.200'
 	//runtimeOnly('com.h2database:h2')
