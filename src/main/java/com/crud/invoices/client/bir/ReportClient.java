@@ -1,56 +1,60 @@
 package com.crud.invoices.client.bir;
 
-import cis.bir.publ._2014._07.IUslugaBIRzewnPubl;
+
 import cis.bir.publ._2014._07.datacontract.ObjectFactory;
 import cis.bir.publ._2014._07.datacontract.ParametryWyszukiwania;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
+import org.tempuri.IUslugaBIRzewnPubl;
 
 import javax.annotation.Nullable;
+import javax.xml.bind.JAXBElement;
 import java.net.MalformedURLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 @Component
 public class ReportClient {
-    @Autowired
-    private BirClient birClient;
-    @Autowired
-    RegonType regonType;
 
-    public ReportClient() {
-        this.birClient = new BirClient();
+    @Autowired
+    RestTemplate restTemplate;
+
+    private BirClient birClient;
+    private RegonType regonType;
+
+
+    public ReportClient(BirClient birClient, RegonType regonType) {
+        this.birClient = birClient;
+        this.regonType = regonType;
+
     }
 
-    public synchronized Reports getReport(RegonType regonType) {
-        Reports reports = null;
+    public synchronized String getReport(RegonType regonType) {
+
+        String basicData;
 
         try {
             final IUslugaBIRzewnPubl port = birClient.prepareApi();
 
-            ObjectFactory objectFactory = new ObjectFactory();
-            ParametryWyszukiwania searchParams = objectFactory.createParametryWyszukiwania();
-            searchParams.setNip(objectFactory.createParametryWyszukiwaniaNip(regonType.getNip()));
-            // searchParams.setRegon(objectFactory.createParametryWyszukiwaniaRegon(regonType.getRegon()));
+             ObjectFactory objectFactory = new ObjectFactory();
+             JAXBElement<String> nipParam = objectFactory.createParametryWyszukiwaniaNip(regonType.getNip());
+             ParametryWyszukiwania parametryWyszukiwania = new ParametryWyszukiwania();
+             parametryWyszukiwania.setNip(nipParam);
+             basicData = port.daneSzukajPodmioty(parametryWyszukiwania);
 
-            // String generalReport = port.danePobierzPelnyRaport(regonType.getRegon(),
-            // regonType.getReportName().getGeneralReportName());
-            //String pkdReport = port.danePobierzPelnyRaport(regonType.getRegon(),
-            // regonType.getReportName().getPkdReportName());
-            String basicData = port.daneSzukaj(searchParams);
-            System.out.println(basicData);
-
-            final String silosId = getSilosId(basicData);
+            //final String silosId = getSilosId(basicData);
             //String additionalReport = (silosId != null)?
             // String additionalReport = (silosId != null && regonType.getReportType().equals("F")) ?
             //port.danePobierzPelnyRaport(regonType.getRegon(), getReportNameForGivenSilosId(silosId)) : null;
-            if (silosId != null) {
-                reports = new Reports(basicData);
-            }
+            //if (silosId != null) {
+                //reports = new Reports(basicData);
+            //}
         }//reports = new Reports(generalReport, pkdReport, basicData, additionalReport);
         catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
-        return reports;
+        return basicData;
     }
 
     public void logout() {

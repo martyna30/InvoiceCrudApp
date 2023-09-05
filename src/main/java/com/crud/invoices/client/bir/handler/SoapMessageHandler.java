@@ -1,18 +1,20 @@
 package com.crud.invoices.client.bir.handler;
 
-import org.springframework.stereotype.Component;
-
 import javax.xml.namespace.QName;
 import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 import java.util.*;
-@Component
+
 public class SoapMessageHandler implements SOAPHandler<SOAPMessageContext> {
 
     private final String SID = "sid";
 
     private String sessionCookie;
+
+    public void setSessionCookie(String sessionCookie) {
+        this.sessionCookie = sessionCookie;
+    }
 
     public String getSessionCookie() {
         return sessionCookie;
@@ -20,10 +22,6 @@ public class SoapMessageHandler implements SOAPHandler<SOAPMessageContext> {
 
     public SoapMessageHandler() {
         this.sessionCookie = "";
-    }
-
-    public void setSessionCookie(String sessionCookie) {
-        this.sessionCookie = sessionCookie;
     }
 
     @Override
@@ -54,6 +52,4 @@ public class SoapMessageHandler implements SOAPHandler<SOAPMessageContext> {
     public Set<QName> getHeaders() {
         return null;
     }
-
-
 }

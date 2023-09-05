@@ -8,6 +8,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Transactional
@@ -27,4 +28,8 @@ public interface ContractorRepository extends CrudRepository<Contractor, Long>,
     void deleteById(Long id);
 
     Optional<Contractor> findContractorByVatIdentificationNumber(String vatIdentificationNumber);
+
+    List<Contractor> findByNameContainsIgnoreCase(String name);
+
+    Optional<Contractor> findContractorByNameIgnoreCase(String name);
 }

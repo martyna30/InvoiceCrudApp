@@ -1,11 +1,15 @@
 package com.crud.invoices.mapper;
 
+import com.crud.invoices.client.bir.ReportParser;
 import com.crud.invoices.domain.Contractor;
 import com.crud.invoices.domain.ContractorDto;
+import com.crud.invoices.domain.ContractorFromGusDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -17,6 +21,8 @@ public class ContractorMapper {
 
     @Autowired
     AddressMapper adressMapper;
+    @Autowired
+    ReportParser reportParser;
 
     /*public List<Contractor> mapToContractorList(final List<ContractorDto> contractorDtos) {
         List<Contractor> customers = new ArrayList<>();
@@ -41,6 +47,107 @@ public class ContractorMapper {
         );
 
     }
+
+    public ContractorFromGusDto mapToContractorFromGusDto(Map<String, String> map) {
+        String name = map.entrySet()
+                .stream()
+                .filter(s -> s.getKey().equals("Nazwa"))
+                .map(Map.Entry::getValue)
+                .collect(Collectors.joining());
+
+        String vatIdentificationNumber = map.entrySet()
+                .stream()
+                .filter(s -> s.getKey().equals("Nip"))
+                .map(Map.Entry::getValue)
+                .collect(Collectors.joining());
+
+
+        String street  = map.entrySet()
+                .stream()
+                .filter(s -> s.getKey().equals("Ulica"))
+                .map(Map.Entry::getValue)
+                .collect(Collectors.joining());
+
+        String streetNumber = map.entrySet()
+                .stream()
+                .filter(s -> s.getKey().equals("NrNieruchomosci"))
+                .map(Map.Entry::getValue)
+                .collect(Collectors.joining());
+
+        String postcode = map.entrySet()
+                .stream()
+                .filter(s -> s.getKey().equals("KodPocztowy"))
+                .map(Map.Entry::getValue)
+                .collect(Collectors.joining());
+
+        String city = map.entrySet()
+                .stream()
+                .filter(s -> s.getKey().equals("Miejscowosc"))
+                .map(Map.Entry::getValue)
+                .collect(Collectors.joining());
+
+        return new ContractorFromGusDto (
+                null,
+                name,
+                vatIdentificationNumber,
+                street,
+                streetNumber,
+                postcode,
+                city
+        );
+    }
+    /*
+        ContractorFromGusDto contractorFromGusDto;
+                map.entrySet().stream().map(
+
+                        .filter(stringStringEntry -> stringStringEntry.getKey().equals("Nazwa"))
+                                .
+
+
+                contractorFromGusDto.setName();
+
+
+
+        for(Map.Entry<String, String> maps : map.entrySet()) {
+            if (maps.getKey().contains("Nazwa")) {
+                contractorFromGusDto.setName(maps.getValue());
+                System.out.println(contractorFromGusDto.getName());
+            }
+            if (maps.getKey().contains("Nip")) {
+                contractorFromGusDto.setVatIdentificationNumber(maps.getValue());
+                System.out.println(contractorFromGusDto.getVatIdentificationNumber());
+            }
+            if (maps.getKey().contains("Ulica")) {
+                contractorFromGusDto.setVatIdentificationNumber(maps.getValue());
+                System.out.println(contractorFromGusDto.getVatIdentificationNumber());
+            }
+
+            if (maps.getKey().contains("NrNieruchomosci")) {
+                contractorFromGusDto.setVatIdentificationNumber(maps.getValue());
+                System.out.println(contractorFromGusDto.getVatIdentificationNumber());
+            }
+
+            if (maps.getKey().contains("KodPocztowy")) {
+                contractorFromGusDto.setVatIdentificationNumber(maps.getValue());
+                System.out.println(contractorFromGusDto.getVatIdentificationNumber());
+            }
+
+            if (maps.getKey().contains("Miejscowosc")) {
+                contractorFromGusDto.setVatIdentificationNumber(maps.getValue());
+                System.out.println(contractorFromGusDto.getVatIdentificationNumber());
+            }
+
+
+
+
+
+
+                contractor.getId(),
+                contractor.getName(),
+                contractor.getVatIdentificationNumber(),
+                adressMapper.mapToAddressDto(contractor.getAddress())
+        );*/
+
 
     public Contractor mapToContractor(ContractorDto contractorDto) {
         return new Contractor(

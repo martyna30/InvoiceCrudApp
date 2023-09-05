@@ -62,10 +62,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors();
         http.csrf().disable();
         http.httpBasic();
-        http.authorizeRequests().antMatchers("/v1/invoice/**").permitAll();
         http.authorizeRequests().antMatchers("/v1/invoice/createInvoice/**").permitAll()
+                .antMatchers("/v1/invoice/getInvoices/**").permitAll()
+                .antMatchers("/v1/invoice/getBuyerWithSpecifiedName/**").permitAll()
+        //http.authorizeRequests().antMatchers("/v1/contractor/**").permitAll()
+        //http.authorizeRequests().antMatchers("/v1/invoice/createInvoice/**").permitAll()
                 //.and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
-                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+               .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(customAuthorizationFilter, UsernamePasswordAuthenticationFilter.class );
     }
 

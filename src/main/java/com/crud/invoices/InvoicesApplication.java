@@ -1,9 +1,5 @@
 package com.crud.invoices;
 
-import com.crud.invoices.client.bir.BirClient;
-import com.crud.invoices.client.bir.RegonType;
-import com.crud.invoices.client.bir.ReportClient;
-import com.crud.invoices.client.bir.Reports;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
@@ -11,19 +7,59 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 @SpringBootApplication
 public class InvoicesApplication extends SpringBootServletInitializer {
 
-
     public static void main(String[] args) throws Exception {
         //boolean isVat = ViesClient.checkVat("IE6388047V");
         //System.out.println("\n\n" + isVat);
-        BirClient birClient = new BirClient();
-        //InvoicesApplication invoicesApplication = new InvoicesApplication();
-        ReportClient reportClient = new ReportClient();
 
-        Reports reports = reportClient.getReport(new RegonType("8992535351"));
-        System.out.println(reports.getBasicData());
-        SpringApplication.run(InvoicesApplication.class, args);
+        /*BirClient birClient = new BirClient();
+        RestTemplate restTemplate = new RestTemplate();
+        IUslugaBIRzewnPubl port = birClient.prepareApi();
+        //String sid = port.zaloguj("abcde12345abcde12345");
+        //System.out.println(sid);
+        RegonType regonType = new RegonType();
+        ContractorFromGusDto contractorFromGusDto = new ContractorFromGusDto();
+        regonType.setNip("5741739416");
+        ReportClient reportClient = new ReportClient(birClient, regonType);
+        String basic = reportClient.getReport(regonType);
+        ReportParser reportParser = new ReportParser();
+        Map<String, String> map = reportParser.parseReport(basic);
+        for(Map.Entry<String, String> maps : map.entrySet()) {
+            if (maps.getKey().contains("Nazwa")) {
+                contractorFromGusDto.setName(maps.getValue());
+                System.out.println(contractorFromGusDto.getName());
+            }
+            if (maps.getKey().contains("Nip")) {
+                contractorFromGusDto.setVatIdentificationNumber(maps.getValue());
+                System.out.println(contractorFromGusDto.getVatIdentificationNumber());
+            }
+            if (maps.getKey().contains("Ulica")) {
+                contractorFromGusDto.setVatIdentificationNumber(maps.getValue());
+                System.out.println(contractorFromGusDto.getVatIdentificationNumber());
+            }
+
+            if (maps.getKey().contains("NrNieruchomosci")) {
+                contractorFromGusDto.setVatIdentificationNumber(maps.getValue());
+                System.out.println(contractorFromGusDto.getVatIdentificationNumber());
+            }
+
+            if (maps.getKey().contains("KodPocztowy")) {
+                contractorFromGusDto.setVatIdentificationNumber(maps.getValue());
+                System.out.println(contractorFromGusDto.getVatIdentificationNumber());
+            }
+
+            if (maps.getKey().contains("Miejscowosc")) {
+                contractorFromGusDto.setVatIdentificationNumber(maps.getValue());
+                System.out.println(contractorFromGusDto.getVatIdentificationNumber());
+            }
+        }*/
+
+            //String nazwa = map.get("Nazwa").toString();
+
+
+            SpringApplication.run(InvoicesApplication.class, args);
+
+        }
+
 
     }
 
-
-}

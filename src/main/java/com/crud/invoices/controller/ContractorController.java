@@ -19,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -54,10 +55,17 @@ public class ContractorController {
     }
 
     @GetMapping(value = "getContractorWithSpecifiedName")
-    public ContractorDto getContractorWithSpecifiedName(@RequestParam String name) throws ContractorNotFoundException {
-        // return customerMapper.mapToContractorDto(customerService.getWContractorWithSpecifiedName(name).orElseThrow(ContractorNotFoundException::new));
-        // }
-        return null;
+    public List<ContractorDto> getContractorWithSpecifiedName(@RequestParam String name) {
+            return contractorMapper.mapToContractorDtoList(contractorService.getContractorWithSpecifiedName(name));
+    }
+
+    @GetMapping(value = "getContractorByName")
+    public ResponseEntity<ContractorDto> getContractorByName(@RequestParam String name) {
+        try {
+            return ResponseEntity.ok(contractorMapper.mapToContractorDto(contractorService.getContractorByName(name).get()));
+        } catch (ResponseStatusException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping(value = "deleteContractor", consumes = APPLICATION_JSON_VALUE)

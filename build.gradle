@@ -3,7 +3,11 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'java'
 	id 'war'
+	id "io.mateo.cxf-codegen" version "1.0.0-rc.3"
 }
+
+apply plugin: 'groovy'
+apply plugin: 'java'
 
 war {
 	'crud2.war'
@@ -52,14 +56,7 @@ dependencies {
 	implementation group: 'org.springframework.data', name: 'spring-data-elasticsearch', version: '5.1.1'//?
 	implementation group: 'com.sun.xml.messaging.saaj', name: 'saaj-impl', version: '1.5.1'//?
 	implementation group: 'com.sun.xml.ws', name: 'rt', version: '2.3.1'//?
-	//implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '2.3.2'
-	//implementation group: 'org.glassfish.metro', name: 'wssx-impl', version: '4.0.2'
-	//implementation group: 'javax.xml.soap', name: 'javax.xml.soap-api', version: '1.4.0'  //nowe
-
-	//implementation group: 'de.malkusch.soap-client-cache', name: 'soap-client-cache', version: '2.0.3'
-	//implementation group: 'org.apache.cxf', name: 'cxf-spring-boot-starter-jaxws', version: '4.0.2'
-	//implementation group: 'jakarta.xml.ws', name: 'jakarta.xml.ws-api', version: '4.0.0'
-	//implementation group: 'org.springframework.ws', name: 'spring-ws', version: '4.0.5', ext: 'pom'
+	implementation group: 'wsdl4j', name: 'wsdl4j', version: '1.6.3'
 
 
 	//test
@@ -69,6 +66,17 @@ dependencies {
 	//implementation group: 'org.jsoup', name: 'jsoup', version: '1.13.1'
 }
 
+cxfCodegen {
+	wsdl2java {
+		example {
+			wsdl = file("${projectDir}/src/main/resources/wsdl/bir.wsdl")
+			outputDir = file("${buildDir}/generated-java")
+			markGenerated = true
+		}
+	}
+}
+
+compileJava.dependsOn wsdl2java
 test {
 	useJUnitPlatform()
 }

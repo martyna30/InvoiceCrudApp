@@ -1,4 +1,4 @@
-package com.crud.invoices.constants;
+package com.crud.invoices.client.bir.constants;
 
 import org.springframework.stereotype.Component;
 

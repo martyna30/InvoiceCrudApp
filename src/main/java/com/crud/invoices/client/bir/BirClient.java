@@ -1,32 +1,33 @@
 package com.crud.invoices.client.bir;
 
-import cis.bir.publ._2014._07.IUslugaBIRzewnPubl;
+
+import com.crud.invoices.client.bir.constants.ApplicationConstants;
 import com.crud.invoices.client.bir.handler.SoapHandlerResolver;
 import com.crud.invoices.client.bir.handler.SoapMessageHandler;
-import com.crud.invoices.constants.ApplicationConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
+import org.tempuri.IUslugaBIRzewnPubl;
 import org.tempuri.UslugaBIRzewnPubl;
 
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.soap.AddressingFeature;
 import java.net.MalformedURLException;
 
-import static com.crud.invoices.constants.ApplicationConstants.BIR1_ADDRESS;
+import static com.crud.invoices.client.bir.constants.ApplicationConstants.BIR1_ADDRESS;
+
 
 @Component
 public class BirClient extends WebServiceGatewaySupport {
 
     private final String SESSION_STATUS = "StatusSesji";
-    @Autowired
+
     private SoapMessageHandler soapMessageHandler;
-    @Autowired
+
     private SoapHandlerResolver soapHandlerResolver;
 
-    public  BirClient() {
+    public BirClient() {
         this.soapMessageHandler = new SoapMessageHandler();
         this.soapHandlerResolver = new SoapHandlerResolver(soapMessageHandler);
     }
@@ -60,7 +61,8 @@ public class BirClient extends WebServiceGatewaySupport {
     }
 
     private IUslugaBIRzewnPubl preparePort() throws MalformedURLException {
-        UslugaBIRzewnPubl service  = new UslugaBIRzewnPubl(ApplicationConstants.BIR1_WSDL_ADDRESS,BIR1_ADDRESS);
+        //UslugaBIRzewnPubl service  = new UslugaBIRzewnPubl(new URL(BIR1_WSDL_ADDRESS), UslugaBIRzewnPubl.SERVICE);
+        UslugaBIRzewnPubl service  = new UslugaBIRzewnPubl();
         service.setHandlerResolver(this.soapHandlerResolver);
 
 
