@@ -97,7 +97,10 @@ public class ContractorController {
     }
 
     @PostMapping(value = "createContractor", consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> createContractor(@Validated(value = {OrderChecks.class}) @Valid @RequestBody ContractorDto contractorDto, Errors errors) {
+    public ResponseEntity<Object> createContractor(@Validated(value = {OrderChecks.class})
+                                                       @Valid @RequestBody
+                                                       ContractorDto contractorDto,
+                                                   Errors errors) {
         if(errors.hasErrors()) {
             Map<String, ArrayList<Object>> errorsMap = new HashMap<>();
             errors.getFieldErrors().stream().forEach((fieldError -> {

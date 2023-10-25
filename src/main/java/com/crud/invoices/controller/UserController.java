@@ -35,6 +35,16 @@ public class UserController {
         }
     }
 
+    @GetMapping("getAppUserByUsername")
+    public ResponseEntity<AppUserDto> getAppUserByUsername(@RequestParam String username) {
+        try {
+            return ResponseEntity.ok(userMapper.mapToUserDto(userService.getAppUserByUsername(username).get()));
+        } catch (ResponseStatusException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
     @DeleteMapping("deleteUser")
     public ResponseEntity<Object> deleteUser(@RequestParam Long userId) {
         try {

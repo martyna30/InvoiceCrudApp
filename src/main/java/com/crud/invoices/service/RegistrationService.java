@@ -1,8 +1,9 @@
 package com.crud.invoices.service;
 
 import com.crud.invoices.domain.AppUser;
-import com.crud.invoices.domain.AppUserRole;
 import com.crud.invoices.domain.ConfirmationToken;
+import com.crud.invoices.domain.ContractorFromGusDto;
+import com.crud.invoices.domain.Seller;
 import com.crud.invoices.mail.EmailService;
 import com.crud.invoices.registration.RegisterCredentialsDto;
 import com.crud.invoices.respository.UserRepository;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -30,20 +32,26 @@ public class RegistrationService {
     @Autowired
     private EmailService emailService;
 
-    public String register(RegisterCredentialsDto registerCredentials) throws MessagingException {
+    @Autowired
+    BirService birService;
+
+
+    public String register(RegisterCredentialsDto registerCredentials) throws Exception {
         boolean isValidEmail = emailValidator.test(registerCredentials.getEmail());
         if(!isValidEmail) {
             throw new IllegalStateException("Email not valid");
         }
+        //Optional<ContractorFromGusDto> sellerFromGus = Optional.ofNullable(birService.getContractorFromGus(registerCredentials.getNip()));
+        //if (sellerFromGus.isPresent())
         String token = userService.signUpUser(
                 new AppUser(
                         registerCredentials.getUsername(),
                         registerCredentials.getPassword(),
                         registerCredentials.getEmail(),
-                        AppUserRole.USER
+                        "USER"
                 )
         );
-        String link = "http://localhost:8080/v1/library/register/confirm?token=" + token;
+        String link = "http://localhost:8080/v1/invoice/register/confirm?token=" + token;
         emailService.send(registerCredentials.getEmail(), link);
         return token;
     }

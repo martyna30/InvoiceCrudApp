@@ -9,4 +9,7 @@ import org.springframework.stereotype.Component;
 public class AdminConfig {
     @Value("${admin.mail}")
     private String adminMail;
+
+    @Value("martyna.prawdzik@gmail.com")
+    private String adminMail2;
 }

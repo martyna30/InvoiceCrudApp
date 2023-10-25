@@ -6,6 +6,11 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+
+@NamedQuery(name = "ConfirmationToken.findByUserId",
+        query = "FROM ConfirmationToken WHERE appUser.id = :USER_ID"
+)
+
 @NoArgsConstructor
 @Getter
 @Setter
@@ -26,8 +31,8 @@ public class ConfirmationToken {
 
     private LocalDateTime confirmedAt;
 
-    @ManyToOne
-    @JoinColumn(nullable = false, name = "USER_ID")
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "USER_ID")
     private AppUser appUser;
 
 

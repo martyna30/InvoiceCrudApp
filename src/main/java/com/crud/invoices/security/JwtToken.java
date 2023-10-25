@@ -3,7 +3,7 @@ package com.crud.invoices.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.crud.invoices.domain.AppUser;
+import com.crud.invoices.domain.MyUserDetails;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
@@ -24,7 +24,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class JwtToken {
 
 
-    public String generateToken(AppUser userIn, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public String generateToken(MyUserDetails userIn, HttpServletRequest request, HttpServletResponse response) throws IOException {
         Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
 
 

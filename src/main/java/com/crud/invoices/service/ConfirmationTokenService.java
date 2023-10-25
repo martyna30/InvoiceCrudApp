@@ -20,7 +20,7 @@ public class ConfirmationTokenService {
         confirmationTokenRepository.save(token);
     }
     public Optional<ConfirmationToken> getConfirmationTokenForUser(AppUser appUser) {
-        Optional<ConfirmationToken> confirmationTokenForUser = confirmationTokenRepository.findByAppUser(appUser);
+        Optional<ConfirmationToken> confirmationTokenForUser = confirmationTokenRepository.findByUserId(appUser.getId());
         if(confirmationTokenForUser.isPresent()) {
             return Optional.ofNullable(confirmationTokenForUser.orElseThrow(() -> new RuntimeException("Confirmation token doesn't exist")));
         }

@@ -2,16 +2,21 @@ package com.crud.invoices.mapper;
 
 import com.crud.invoices.domain.AppUser;
 import com.crud.invoices.domain.AppUserDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserMapper {
+
+
+    @Autowired
+    SellerMapper sellerMapper;
     public AppUser mapToUser(AppUserDto appUserDto) {
         return new AppUser(
                 appUserDto.getUsername(),
                 appUserDto.getPassword(),
                 appUserDto.getEmail(),
-                appUserDto.getAppUserRole()
+                appUserDto.getRole()
 
         );
     }
@@ -22,7 +27,7 @@ public class UserMapper {
                 appUser.getUsername(),
                 appUser.getPassword(),
                 appUser.getEmail(),
-                appUser.getAppUserRole()
+                appUser.getRole()
         );
 
     }

@@ -25,6 +25,6 @@ public class AppUserDto {
     private String password;
 
     private String email;
-    private AppUserRole appUserRole;
+    private String role;
 
 }

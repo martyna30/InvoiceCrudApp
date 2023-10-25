@@ -5,6 +5,7 @@ import com.crud.invoices.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -27,8 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private final CustomAuthorizationFilter customAuthorizationFilter;
-    //@Autowired
-    //private final AuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
 
     @Autowired
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -37,7 +37,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                           BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userService = userService;
         this.customAuthorizationFilter = customAuthorizationFilter;
-        //this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
@@ -62,32 +61,59 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors();
         http.csrf().disable();
         http.httpBasic();
-        http.authorizeRequests().antMatchers("/v1/invoice/createInvoice/**").permitAll()
-                .antMatchers("/v1/invoice/getInvoices/**").permitAll()
-                .antMatchers("/v1/invoice/getBuyerWithSpecifiedName/**").permitAll()
-        //http.authorizeRequests().antMatchers("/v1/contractor/**").permitAll()
-        //http.authorizeRequests().antMatchers("/v1/invoice/createInvoice/**").permitAll()
-                //.and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
+        http.authorizeRequests().antMatchers(   "/v1/invoice/register/**", "/v1/invoice/login/**",
+                        "/v1/invoice/token/refresh/**", ("/v1/invoice/logout/**")).permitAll()
+                .antMatchers(HttpMethod.OPTIONS,"/**").permitAll();
+        //appUser
+        http.authorizeRequests().antMatchers("/v1/invoice/getAppUserByUsername/**").permitAll();//hasAnyRole("USER","ADMIN")
+        //invoice
+        http.authorizeRequests().antMatchers("/v1/invoice/createInvoice/**").permitAll()//hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/invoice/createInvoiceWithoutContractor/**").permitAll()//hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/invoice/getInvoice/**").permitAll()//hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/invoice/getInvoices/**").permitAll()//hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/invoice/updateInvoice/**").permitAll()//hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/invoice/deleteInvoice/**").permitAll()//hasAnyRole("ADMIN")
+                //contractor
+                .antMatchers("/v1/contractor/getContractor/**").permitAll()//hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/contractor/getContractorWithSpecifiedName/**").permitAll()//hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/contractor/getContractorByName/**").permitAll()//hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/contractor/getContractors/**").permitAll()//hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/contractor/deleteContractor/**").permitAll()//hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/contractor/updateContractor/**").permitAll()//hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/contractor/createContractor/**").permitAll()//hasAnyRole("USER","ADMIN")
+                //seller
+                .antMatchers("/v1/seller/getSeller/**").permitAll()//hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/seller/getSellerWithSpecifiedName/**").permitAll()//hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/seller/getSellerByName/**").permitAll()//hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/seller/getSellerByAppUser/**").permitAll()//hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/seller/getSellerByVatIdentificationNumber/**").permitAll()
+                .antMatchers("/v1/seller/deleteSeller/**").permitAll()//hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/seller/updateSeller/**").permitAll()//hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/seller/createSeller/**").permitAll()//hasAnyRole("USER","ADMIN")
+                //item
+                .antMatchers("/v1/item/createItem/**").permitAll()//hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/item/updateItem/**").permitAll()//hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/item/deleteItem/**").permitAll()//hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/item/deleteItem/**").permitAll()//hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/item/getItem/**").permitAll()//hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/item/getItems/**").permitAll()//hasAnyRole("USER","ADMIN")
+                .anyRequest().authenticated()
+
                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(customAuthorizationFilter, UsernamePasswordAuthenticationFilter.class );
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        //User librarian = new User("Martyna",
-        //bCryptPasswordEncoder.encode("123")
-        // , "martyna.prawdzik@gmail.com", "ROLE_LIBRARIAN");
-
-
-        //User admin = new User("Piotr",
-        //   bCryptPasswordEncoder.encode("456"),"test-v5v1jt5rk@srv1.mail-tester.com",
-        //   "ROLE_ADMIN");
-
-
+        /*AppUser user = new AppUser("Anna", bCryptPasswordEncoder.encode("123")
+        , "martyna.prawdzik@gmail.com", AppUserRole.USER);
+        AppUser admin = new AppUser("Grzegorz", bCryptPasswordEncoder.encode("456"),
+                "test-v5v1jt5rk@srv1.mail-tester.com",
+        AppUserRole.ADMIN);
+        */
         auth.userDetailsService(userService).passwordEncoder((bCryptPasswordEncoder));
-        //userService.saveUser(librarian);
+        //userService.saveUser(user);
         //userService.saveUser(admin);
-
         auth.authenticationProvider(daoAuthenticationProvider());
     }
 

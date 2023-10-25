@@ -35,7 +35,8 @@ public class ContractorService {
     public ContractorFromGusDto getContractorFromGus(final String nip) throws Exception {
         IUslugaBIRzewnPubl port = birClient.prepareApi();
         RegonType regonType = new RegonType();
-        regonType.setNip("5741739416");
+        regonType.setNip(nip);
+        //regonType.setNip("5741739416");
         ReportClient reportClient = new ReportClient(birClient, regonType);
         String basic = reportClient.getReport(regonType);
         ReportParser reportParser = new ReportParser();

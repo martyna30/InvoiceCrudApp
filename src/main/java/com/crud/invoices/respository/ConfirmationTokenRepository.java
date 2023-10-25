@@ -1,9 +1,10 @@
 package com.crud.invoices.respository;
 
 
-import com.crud.invoices.domain.AppUser;
 import com.crud.invoices.domain.ConfirmationToken;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
@@ -16,7 +17,9 @@ public interface ConfirmationTokenRepository extends CrudRepository<Confirmation
 
     Optional<ConfirmationToken> findByToken(String token);
 
-    Optional<ConfirmationToken> findByAppUser(AppUser appUser);
+    @Query
+    Optional<ConfirmationToken> findByUserId(@Param("USER_ID")Long id);
+
     @Override
     void deleteById(Long id);
 

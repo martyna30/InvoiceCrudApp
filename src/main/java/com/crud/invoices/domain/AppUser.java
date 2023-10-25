@@ -1,59 +1,61 @@
 package com.crud.invoices.domain;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.*;
-import java.util.stream.Collectors;
-
+import java.util.ArrayList;
+import java.util.List;
+@Getter
+@Setter
 @NoArgsConstructor
 @Entity
 @Table
-public class AppUser implements UserDetails {
+public class AppUser {
 
     private Long id;
     private String username;
     private String email;
     private String password;
-    //private String role;
-    @Enumerated(EnumType.STRING)
-    private AppUserRole appUserRole;
+    private String role;
     private boolean locked = false;
     private boolean enabled = false;
+    //Seller seller;
     private List<ConfirmationToken> confirmationTokens = new ArrayList<>();
-   // @Transient
+
+    //@Transient
     //private Collection<? extends GrantedAuthority> authorities;
 
-
-    public AppUser(String username, String email, String password,
-              AppUserRole appUserRole, boolean locked, boolean enabled,
+    //Collection<SimpleGrantedAuthority> authorities;
+    public AppUser(String username, String email, String password, String role,
+                   boolean locked, boolean enabled,
                 List<ConfirmationToken> confirmationTokens) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.appUserRole = appUserRole;
+        this.role = role;
         this.locked = locked;
         this.enabled = enabled;
         this.confirmationTokens = confirmationTokens;
+
     }
 
-    public AppUser(String username, String password, String email, AppUserRole appUserRole) {
+    /*public AppUser(String username, String password) {
         this.username = username;
+        this.password = password;
+    }*/
+
+    public AppUser(String username, String password, String email, String role) {
+        this.username = username;
+        this.password = password;
         this.email = email;
-        this.password = password;
-        this.appUserRole = appUserRole;
+        this.role = role;
+
     }
 
-    public AppUser(String username, String password, AppUserRole appUserRole) {
-        this.username = username;
-        this.password = password;
-        this.appUserRole = appUserRole;
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -79,17 +81,21 @@ public class AppUser implements UserDetails {
     @OneToMany(
             targetEntity = ConfirmationToken.class,//prawa strona relacji 1:n
             mappedBy = "appUser",//obiekt po lewej 1 :n
-            cascade = {CascadeType.ALL}
-    )
+            cascade = {CascadeType.ALL})
+            //@JoinColumn(name = "APP_USER_ID")
     public List<ConfirmationToken> getConfirmationTokens() {
         return confirmationTokens;
     }
 
-
+    /*@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "SELLER_ID")
+    public Seller getSeller() {
+        return seller;
+    }*/
 
     @Column(name = "ROLE")
-    public AppUserRole getAppUserRole() {
-        return appUserRole;
+    public String getRole() {
+        return role;
     }
 
 
@@ -104,32 +110,8 @@ public class AppUser implements UserDetails {
     }
 
 
-    @Transient
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-    @Transient
-    @Override
-    public boolean isAccountNonLocked() {
-        return !locked;
-    }
-    @Transient
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-    @Transient
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-       return Arrays.stream(appUserRole.name().split(","))
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
-    }
-
-
-    public void setAppUserRole(AppUserRole appUserRole) {
-        this.appUserRole = appUserRole;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public void setConfirmationTokens(List<ConfirmationToken> confirmationTokens) {

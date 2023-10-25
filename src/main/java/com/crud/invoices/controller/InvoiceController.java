@@ -100,6 +100,30 @@ public class InvoiceController {
         invoiceService.saveInvoice(invoiceMapper.mapToInvoice(invoiceDto));
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
+
+    @PostMapping(value = "createInvoiceWithoutContractor", consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> createInvoiceWithoutContractor(@Validated(value = {OrderChecks2.class}) @Valid @RequestBody InvoiceDto invoiceDto, Errors errors) {
+        if(errors.hasErrors()) {
+            Map<String, ArrayList<Object>>errorsMap = new HashMap<>();
+            errors.getFieldErrors().stream().forEach((fieldError -> {
+                String key = fieldError.getField();
+                if(!errorsMap.containsKey(key)) {
+                    errorsMap.put(key, new ArrayList<>());
+                }
+                errorsMap.get(key).add(fieldError.getDefaultMessage());
+            }));
+            errorsMap.values().stream().findFirst();
+            return new ResponseEntity<>(errorsMap, HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        invoiceService.saveInvoiceWithoutContractor(invoiceMapper.mapToInvoice(invoiceDto));
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+
+
+
+
 }
 
 

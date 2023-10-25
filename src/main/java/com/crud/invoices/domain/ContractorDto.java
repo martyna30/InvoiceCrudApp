@@ -4,8 +4,7 @@ import com.crud.invoices.validationGroup.Format;
 
 import com.crud.invoices.validation.VatIdentificationNumberConstraint;
 import com.crud.invoices.validationGroup.LengthOfCharacters;
-import com.crud.invoices.validationGroup.NotEmptyGroup;
-import com.crud.invoices.validationGroup.UniqueFormat;
+import com.crud.invoices.validationGroup.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

@@ -15,4 +15,5 @@ public class RegisterCredentialsDto {
     private String username;
     private String password;
     private String email;
+    private String nip;
 }

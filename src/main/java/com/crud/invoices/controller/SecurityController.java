@@ -4,8 +4,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.crud.invoices.domain.AppUser;
 import com.crud.invoices.domain.AppUserDto;
+import com.crud.invoices.domain.MyUserDetails;
 import com.crud.invoices.registration.RegisterCredentialsDto;
 import com.crud.invoices.security.JwtToken;
 import com.crud.invoices.service.RegistrationService;
@@ -133,8 +133,8 @@ public class SecurityController {
                                     appUserDto.getPassword()
                             )
                     );
-            AppUser userIn = (AppUser) authentication.getPrincipal();
-            jwToken = jwtToken.generateToken(userIn, request, response);
+            MyUserDetails userIn = (MyUserDetails) authentication.getPrincipal();
+            jwToken = jwtToken.generateToken( userIn, request, response);
         } catch (BadCredentialsException ex) {
 
             return new ResponseEntity<>("Incorrect username or password", HttpStatus.BAD_REQUEST);

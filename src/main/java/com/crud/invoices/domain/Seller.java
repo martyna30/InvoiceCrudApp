@@ -14,11 +14,24 @@ public class Seller {
 
     private String name;
 
-    private double vatIdentificationNumber;
+    private String vatIdentificationNumber;
 
     List<Invoice> invoiceList = new ArrayList<>();
 
     Address address;
+
+    AppUser appUser;
+
+
+
+    public Seller(Long id, String name, String vatIdentificationNumber, Address address, AppUser appUser) {
+        this.id = id;
+        this.name = name;
+        this.vatIdentificationNumber = vatIdentificationNumber;
+        this.address = address;
+        this.appUser = appUser;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "SELLER_ID", unique = true)
@@ -29,15 +42,24 @@ public class Seller {
     public String getName() {
         return name;
     }
+
     @Column
-    public double getVatIdentificationNumber() {
+    public String getVatIdentificationNumber() {
         return vatIdentificationNumber;
     }
+
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ADDRESS_ID")
     public Address getAddress() {
         return address;
     }
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="APP_USER_ID")
+    public AppUser getAppUser() {
+        return appUser;
+    }
+
     @OneToMany(
             cascade = {CascadeType.ALL}
     )
@@ -54,7 +76,7 @@ public class Seller {
         this.name = name;
     }
 
-    public void setVatIdentificationNumber(double vatIdentificationNumber) {
+    public void setVatIdentificationNumber(String vatIdentificationNumber) {
         this.vatIdentificationNumber = vatIdentificationNumber;
     }
 
@@ -64,5 +86,9 @@ public class Seller {
 
     public void setInvoiceList(List<Invoice> invoiceList) {
         this.invoiceList = invoiceList;
+    }
+
+    public void setAppUser(AppUser appUser) {
+        this.appUser = appUser;
     }
 }
