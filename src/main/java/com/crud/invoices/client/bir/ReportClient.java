@@ -42,15 +42,7 @@ public class ReportClient {
              ParametryWyszukiwania parametryWyszukiwania = new ParametryWyszukiwania();
              parametryWyszukiwania.setNip(nipParam);
              basicData = port.daneSzukajPodmioty(parametryWyszukiwania);
-
-            //final String silosId = getSilosId(basicData);
-            //String additionalReport = (silosId != null)?
-            // String additionalReport = (silosId != null && regonType.getReportType().equals("F")) ?
-            //port.danePobierzPelnyRaport(regonType.getRegon(), getReportNameForGivenSilosId(silosId)) : null;
-            //if (silosId != null) {
-                //reports = new Reports(basicData);
-            //}
-        }//reports = new Reports(generalReport, pkdReport, basicData, additionalReport);
+        }
         catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }

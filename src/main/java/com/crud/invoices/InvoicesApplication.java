@@ -10,7 +10,7 @@ public class InvoicesApplication extends SpringBootServletInitializer {
     public static void main(String[] args) throws Exception {
         //boolean isVat = ViesClient.checkVat("IE6388047V");
         //System.out.println("\n\n" + isVat);
-
+        //8992535351 nM
         /*BirClient birClient = new BirClient();
         RestTemplate restTemplate = new RestTemplate();
         IUslugaBIRzewnPubl port = birClient.prepareApi();

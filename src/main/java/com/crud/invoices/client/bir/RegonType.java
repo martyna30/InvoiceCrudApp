@@ -5,13 +5,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class RegonType {
 
-    /*private final Map<String, ReportNames> REPORTS_DEPENDENCE = ImmutableMap.of(
-            "F", new ReportNames("PublDaneRaportFizycznaOsoba", "PublDaneRaportDzialalnosciFizycznej"),
-            "LF", new ReportNames("PublDaneRaportLokalnaFizycznej", "PublDaneRaportDzialalnosciLokalnejFizycznej"),
-            "P", new ReportNames("PublDaneRaportPrawna", "PublDaneRaportDzialalnosciPrawnej"),
-            "LP", new ReportNames("PublDaneRaportLokalnaPrawnej", "PublDaneRaportDzialalnosciLokalnejPrawnej")
-    );*/
-
     private String nip;
 
     public RegonType() {}

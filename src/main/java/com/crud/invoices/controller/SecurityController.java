@@ -142,14 +142,28 @@ public class SecurityController {
         return new ResponseEntity<>(jwToken, HttpStatus.CREATED);
     }
 
+
     @PostMapping("/register")
-    public String register(@RequestBody RegisterCredentialsDto registerCredentialsDto) throws Exception {
+    public ResponseEntity<Object> register(@Validated(value = {OrderChecks.class}) @Valid @RequestBody RegisterCredentialsDto registerCredentialsDto, Errors errors) throws Exception {
+
+        if(errors.hasErrors()) {
+            Map<String,ArrayList<Object>>errorsMap = new HashMap<>();
+            errors.getFieldErrors().stream().forEach((fieldError -> {
+                String key = fieldError.getField();
+                if(!errorsMap.containsKey(key)) {
+                    errorsMap.put(key, new ArrayList<>());
+                }
+                errorsMap.get(key).add(fieldError.getDefaultMessage());
+            }));
+            errorsMap.values().stream().findFirst();
+            return new ResponseEntity<>(errorsMap, HttpStatus.UNPROCESSABLE_ENTITY);
+        }
         try {
             registrationService.register(registerCredentialsDto);
-            return "User has been registered";
+            return new ResponseEntity<>( "User has been registered", HttpStatus.CREATED);
         } catch (Exception e) {
-            System.out.println("User hasn't been registered");
-            return e.getMessage();
+            return new ResponseEntity<>("User hasn't been registered",HttpStatus.UNPROCESSABLE_ENTITY);
+
         }
     }
 

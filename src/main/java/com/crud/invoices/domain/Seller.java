@@ -61,7 +61,7 @@ public class Seller {
     }
 
     @OneToMany(
-            cascade = {CascadeType.ALL}
+            cascade = {CascadeType.MERGE}
     )
     @JoinColumn(name = "SELLER_ID")
     public List<Invoice> getInvoiceList() {

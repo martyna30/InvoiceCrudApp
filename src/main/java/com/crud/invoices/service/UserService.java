@@ -60,25 +60,12 @@ public class UserService implements UserDetailsService {
     }
 
     public String signUpUser(AppUser user) {
-        Optional<AppUser> users = userRepository.findByEmail(user.getEmail());
+        Optional<AppUser> users = userRepository.findAppUserByUsernameIgnoreCase(user.getUsername());
         if(users.isPresent()) {
-            Optional<ConfirmationToken> confirmation = confirmationTokenService.getConfirmationTokenForUser(user);
-            if (confirmation.isPresent()) {
-                if (confirmation.get().getConfirmedAt() != null) {
-                    throw new IllegalStateException("email already taken and confirmed");
-                } else {
-                    String token = UUID.randomUUID().toString();
-
-                    ConfirmationToken confirmationToken = new ConfirmationToken(
-                            token,
-                            LocalDateTime.now(),
-                            LocalDateTime.now().plusMinutes(15),
-                            users.get()
-                    );
-                    confirmationTokenService.saveConfirmationToken(confirmationToken);
-                    return token;
-                }
-            } else if (!confirmation.isPresent()) {
+            Optional<ConfirmationToken> confirmationTokeWithConfirmed = confirmationTokenService.getConfirmationTokenForUser(users.get());
+            if (confirmationTokeWithConfirmed.isPresent()) {
+                throw new IllegalStateException("email already taken and confirmed");
+            } else if (!confirmationTokeWithConfirmed.isPresent()) {
                 String token = UUID.randomUUID().toString();
 
                 ConfirmationToken confirmationToken = new ConfirmationToken(

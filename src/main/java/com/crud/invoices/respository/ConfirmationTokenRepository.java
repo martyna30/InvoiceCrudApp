@@ -18,7 +18,7 @@ public interface ConfirmationTokenRepository extends CrudRepository<Confirmation
     Optional<ConfirmationToken> findByToken(String token);
 
     @Query
-    Optional<ConfirmationToken> findByUserId(@Param("USER_ID")Long id);
+    List<ConfirmationToken> findByUserId(@Param("USER_ID")Long id);
 
     @Override
     void deleteById(Long id);

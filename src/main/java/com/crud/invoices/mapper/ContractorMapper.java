@@ -1,6 +1,7 @@
 package com.crud.invoices.mapper;
 
 import com.crud.invoices.client.bir.ReportParser;
+import com.crud.invoices.domain.AddressDto;
 import com.crud.invoices.domain.Contractor;
 import com.crud.invoices.domain.ContractorDto;
 import com.crud.invoices.domain.ContractorFromGusDto;
@@ -46,6 +47,22 @@ public class ContractorMapper {
                 adressMapper.mapToAddressDto(contractor.getAddress())
         );
 
+    }
+
+    public ContractorDto mapToContractorDtoFromGus(ContractorFromGusDto contractorFromGusDto) {
+        return new ContractorDto(
+                contractorFromGusDto.getId(),
+                contractorFromGusDto.getName(),
+                contractorFromGusDto.getVatIdentificationNumber(),
+                new AddressDto(
+                        null,
+                        contractorFromGusDto.getStreet(),
+                        contractorFromGusDto.getStreetNumber(),
+                        contractorFromGusDto.getPostcode(),
+                        contractorFromGusDto.getCity(),
+                        null
+                )
+        );
     }
 
     public ContractorFromGusDto mapToContractorFromGusDto(Map<String, String> map) {

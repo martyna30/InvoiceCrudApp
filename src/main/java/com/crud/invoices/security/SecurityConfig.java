@@ -77,7 +77,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v1/contractor/getContractor/**").permitAll()//hasAnyRole("USER","ADMIN")
                 .antMatchers("/v1/contractor/getContractorWithSpecifiedName/**").permitAll()//hasAnyRole("USER","ADMIN")
                 .antMatchers("/v1/contractor/getContractorByName/**").permitAll()//hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/gus/getContractorFromGus/**").permitAll()//hasAnyRole("USER","ADMIN")
                 .antMatchers("/v1/contractor/getContractors/**").permitAll()//hasAnyRole("USER","ADMIN")
+
                 .antMatchers("/v1/contractor/deleteContractor/**").permitAll()//hasAnyRole("USER","ADMIN")
                 .antMatchers("/v1/contractor/updateContractor/**").permitAll()//hasAnyRole("USER","ADMIN")
                 .antMatchers("/v1/contractor/createContractor/**").permitAll()//hasAnyRole("USER","ADMIN")
@@ -87,6 +89,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v1/seller/getSellerByName/**").permitAll()//hasAnyRole("USER","ADMIN")
                 .antMatchers("/v1/seller/getSellerByAppUser/**").permitAll()//hasAnyRole("USER","ADMIN")
                 .antMatchers("/v1/seller/getSellerByVatIdentificationNumber/**").permitAll()
+                .antMatchers("/v1/gus/getSellerFromGus/**").permitAll()
                 .antMatchers("/v1/seller/deleteSeller/**").permitAll()//hasAnyRole("USER","ADMIN")
                 .antMatchers("/v1/seller/updateSeller/**").permitAll()//hasAnyRole("USER","ADMIN")
                 .antMatchers("/v1/seller/createSeller/**").permitAll()//hasAnyRole("USER","ADMIN")

@@ -61,7 +61,6 @@ public class BirClient extends WebServiceGatewaySupport {
     }
 
     private IUslugaBIRzewnPubl preparePort() throws MalformedURLException {
-        //UslugaBIRzewnPubl service  = new UslugaBIRzewnPubl(new URL(BIR1_WSDL_ADDRESS), UslugaBIRzewnPubl.SERVICE);
         UslugaBIRzewnPubl service  = new UslugaBIRzewnPubl();
         service.setHandlerResolver(this.soapHandlerResolver);
 
