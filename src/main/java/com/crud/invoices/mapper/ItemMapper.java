@@ -18,7 +18,9 @@ public class ItemMapper {
         return itemDtos.stream()
                 .map(itemDto -> new Item(
                         itemDto.getId(),
+                        itemDto.getNumber(),
                 itemDto.getProduct(),
+                itemDto.getUnit(),
                 itemDto.getAmount(),
                 itemDto.getNetWorth(),
                 itemDto.getAmountOfVAT(),
@@ -31,7 +33,9 @@ public class ItemMapper {
         return items.stream()
                 .map(item -> new ItemDto(
                         item.getId(),
+                        item.getNumber(),
                         item.getProduct(),
+                        item.getUnit(),
                         item.getAmount(),
                         item.getNetWorth(),
                         item.getAmountOfVAT(),
@@ -57,7 +61,9 @@ public class ItemMapper {
     public Item mapToItem(final ItemDto itemDto) {
         return new Item(
                         itemDto.getId(),
+                        itemDto.getNumber(),
                         itemDto.getProduct(),
+                        itemDto.getUnit(),
                         itemDto.getAmount(),
                         itemDto.getNetWorth(),
                         itemDto.getAmountOfVAT(),
@@ -69,7 +75,9 @@ public class ItemMapper {
     public ItemDto mapToItemDto(final Item item) {
         return new ItemDto(
                 item.getId(),
+                item.getNumber(),
                 item.getProduct(),
+                item.getUnit(),
                 item.getAmount(),
                 item.getNetWorth(),
                 item.getAmountOfVAT(),

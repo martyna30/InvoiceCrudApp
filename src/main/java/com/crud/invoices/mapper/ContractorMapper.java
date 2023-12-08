@@ -60,7 +60,7 @@ public class ContractorMapper {
                         contractorFromGusDto.getStreetNumber(),
                         contractorFromGusDto.getPostcode(),
                         contractorFromGusDto.getCity(),
-                        null
+                       contractorFromGusDto.getCountry()
                 )
         );
     }
@@ -103,6 +103,13 @@ public class ContractorMapper {
                 .map(Map.Entry::getValue)
                 .collect(Collectors.joining());
 
+        String country = map.entrySet()
+                .stream()
+                .filter(s -> s.getKey().equals("państwo"))
+                .map(Map.Entry::getValue)
+                .collect(Collectors.joining());
+
+
         return new ContractorFromGusDto (
                 null,
                 name,
@@ -110,7 +117,8 @@ public class ContractorMapper {
                 street,
                 streetNumber,
                 postcode,
-                city
+                city,
+                country
         );
     }
     /*

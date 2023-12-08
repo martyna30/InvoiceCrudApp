@@ -8,6 +8,10 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 public class InvoicesApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) throws Exception {
+      // String dest = "/home/martyna/Pulpit/pdfPlik.plik.pdf";
+      // String data ="Jan";
+       //PrinterService printer = new PrinterService();
+       //printer.generatePDF(data,dest);
         //boolean isVat = ViesClient.checkVat("IE6388047V");
         //System.out.println("\n\n" + isVat);
         //8992535351 nM

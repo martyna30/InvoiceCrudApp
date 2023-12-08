@@ -58,7 +58,10 @@ dependencies {
 	implementation group: 'com.sun.xml.ws', name: 'rt', version: '2.3.1'//?
 	implementation group: 'wsdl4j', name: 'wsdl4j', version: '1.6.3'
 
+	implementation group: 'com.itextpdf', name: 'itextpdf', version: '5.5.13.3'
+	implementation group: 'com.itextpdf', name: 'layout', version: '8.0.2'
 
+	implementation group: 'com.itextpdf', name: 'kernel', version: '8.0.2'
 	//test
 	//testCompile group: 'com.h2database', name: 'h2', version: '1.4.200'
 	//runtimeOnly('com.h2database:h2')

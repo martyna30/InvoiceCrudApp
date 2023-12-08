@@ -69,7 +69,7 @@ public class ContractorController {
     }
 
     @DeleteMapping(value = "deleteContractor", consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<?>  deleteContractor(@RequestParam Long contractorId) {
+    public ResponseEntity<?> deleteContractor(@RequestParam Long contractorId) {
         try {
             contractorService.deleteContractor(contractorId);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

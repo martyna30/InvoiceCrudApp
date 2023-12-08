@@ -46,7 +46,9 @@ public class ReportClient {
         catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
+        System.out.println(basicData);
         return basicData;
+
     }
 
     public void logout() {

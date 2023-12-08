@@ -73,6 +73,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v1/invoice/getInvoices/**").permitAll()//hasAnyRole("USER","ADMIN")
                 .antMatchers("/v1/invoice/updateInvoice/**").permitAll()//hasAnyRole("USER","ADMIN")
                 .antMatchers("/v1/invoice/deleteInvoice/**").permitAll()//hasAnyRole("ADMIN")
+                .antMatchers("/v1/invoice/printer/generateInvoice/**").permitAll()//hasAnyRole("ADMIN")
+
                 //contractor
                 .antMatchers("/v1/contractor/getContractor/**").permitAll()//hasAnyRole("USER","ADMIN")
                 .antMatchers("/v1/contractor/getContractorWithSpecifiedName/**").permitAll()//hasAnyRole("USER","ADMIN")

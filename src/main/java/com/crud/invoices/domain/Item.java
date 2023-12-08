@@ -11,8 +11,11 @@ import java.math.BigDecimal;
 @Table(name = "ITEMS")
 public class Item {
     private Long id;
+
+    private Long number;
     private String product;
     //Invoice invoice;
+    private String unit;
     private int amount;
     private BigDecimal netWorth;
     private BigDecimal amountOfVAT;
@@ -24,8 +27,9 @@ public class Item {
         this.product = product;
     }
 
-    public Item(Long id, String product, int amount, BigDecimal netWorth, BigDecimal amountOfVAT, Integer vatRate, BigDecimal grossValue) {
+    public Item(Long id, Long number, String product,String unit, int amount, BigDecimal netWorth, BigDecimal amountOfVAT, Integer vatRate, BigDecimal grossValue) {
         this.id = id;
+        this.number = number;
         this.product = product;
         this.amount = amount;
         this.netWorth = netWorth;
@@ -42,8 +46,18 @@ public class Item {
     }
 
     @Column
+    public Long getNumber() {
+        return number;
+    }
+
+    @Column
     public String getProduct() {
         return product;
+    }
+
+    @Column
+    public String getUnit() {
+        return unit;
     }
 
     @Column
@@ -72,8 +86,16 @@ public class Item {
         this.product = product;
     }
 
+    public void setNumber(Long number) {
+        this.number = number;
+    }
+
     public void setAmount(int amount) {
         this.amount = amount;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
     public void setNetWorth(BigDecimal netWorth) {

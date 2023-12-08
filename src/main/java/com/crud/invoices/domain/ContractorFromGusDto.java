@@ -28,7 +28,7 @@ public class ContractorFromGusDto {
     private String postcode;
     @JsonProperty("Miejscowosc")
     private String city;
-    //private String country;
+    private String country;
 
 
 
