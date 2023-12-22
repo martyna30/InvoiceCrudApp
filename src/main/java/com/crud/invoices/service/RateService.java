@@ -10,6 +10,9 @@ import java.util.Optional;
 
 @Service
 public class RateService {
+
+
+
     @Autowired
     RateRepository rateRepository;
 
@@ -24,6 +27,7 @@ public class RateService {
     public Optional<Rate> getCurrency(final Long id) {
         return rateRepository.findById(id);
     }
+
 
 }
 

@@ -24,12 +24,14 @@ public class PrinterController {
     InvoiceService invoiceService;
 
 
+
     @GetMapping(value="generateInvoice")
-    public ResponseEntity<?>generateInvoice(@RequestParam Long invoiceId) {
+    public ResponseEntity<Object>generateInvoice(@RequestParam Long invoiceId, Long currentSellerId) {
         Optional<Invoice> invoice = invoiceService.getInvoice(invoiceId);
+
         if(invoice.isPresent()) {
             try {
-                this.printerService.generatePDF(invoice.get(), filePath);
+                this.printerService.generatePDF(currentSellerId, invoice.get(), filePath);
                 return ResponseEntity.ok(HttpStatus.CREATED);
             } catch (Exception ex) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
