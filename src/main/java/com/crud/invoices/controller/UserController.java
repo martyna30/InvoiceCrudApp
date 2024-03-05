@@ -59,7 +59,7 @@ public class UserController {
     @PutMapping("updateUser")
     public ResponseEntity<AppUserDto> updateUser(@RequestBody AppUserDto appUserDto) {
         try {
-            userMapper.mapToUserDto(userService.saveUser(userMapper.mapToUser(appUserDto)));
+            userMapper.mapToUserDto((AppUser) userService.saveUser(userMapper.mapToUser(appUserDto)));
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (ResponseStatusException e) {
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);

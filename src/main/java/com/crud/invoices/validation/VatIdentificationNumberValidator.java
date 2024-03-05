@@ -1,5 +1,6 @@
 package com.crud.invoices.validation;
 
+import com.crud.invoices.controller.ContractorNotFoundException;
 import com.crud.invoices.domain.Contractor;
 import com.crud.invoices.domain.ContractorDto;
 import com.crud.invoices.service.ContractorService;
@@ -23,7 +24,12 @@ public class VatIdentificationNumberValidator implements ConstraintValidator<Vat
 
     @Override
     public boolean isValid(final ContractorDto contractorDto, final ConstraintValidatorContext context) {
-        Optional<Contractor> contractorFromDB = contractorService.findContractorByVatIdentificationNumber(contractorDto.getVatIdentificationNumber());
+        Optional<Contractor> contractorFromDB = null;
+        try {
+            contractorFromDB = contractorService.findContractorByVatIdentificationNumber(contractorDto.getVatIdentificationNumber());
+        } catch (ContractorNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         if (contractorFromDB.isPresent()) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())

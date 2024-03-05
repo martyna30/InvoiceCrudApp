@@ -31,7 +31,7 @@ public class ItemDto {
     private int amount;
     @NotNull(groups= NotEmptyGroup.class, message = "Field can remain empty")
     private BigDecimal netWorth;
-    private BigDecimal amountOfVAT;
+    //private BigDecimal amountOfVAT;
     @NotNull(groups= NotEmptyGroup.class, message = "Field can remain empty")
     @Min(groups= Format.class, value = 0, message="Vat rate must be at least 0")
     private Integer vatRate;

@@ -23,8 +23,7 @@ public class ItemMapper {
                 itemDto.getUnit(),
                 itemDto.getAmount(),
                 itemDto.getNetWorth(),
-                itemDto.getAmountOfVAT(),
-                itemDto.getVatRate(),
+                        itemDto.getVatRate(),
                 itemDto.getGrossValue()))
                 .collect(toList());
     }
@@ -38,7 +37,6 @@ public class ItemMapper {
                         item.getUnit(),
                         item.getAmount(),
                         item.getNetWorth(),
-                        item.getAmountOfVAT(),
                         item.getVatRate(),
                         item.getGrossValue()))
                 .collect(toList());
@@ -66,7 +64,6 @@ public class ItemMapper {
                         itemDto.getUnit(),
                         itemDto.getAmount(),
                         itemDto.getNetWorth(),
-                        itemDto.getAmountOfVAT(),
                         itemDto.getVatRate(),
                         itemDto.getGrossValue()
         );
@@ -80,10 +77,9 @@ public class ItemMapper {
                 item.getUnit(),
                 item.getAmount(),
                 item.getNetWorth(),
-                item.getAmountOfVAT(),
                 item.getVatRate(),
                 item.getGrossValue()
-                );
+        );
     }
 }
 

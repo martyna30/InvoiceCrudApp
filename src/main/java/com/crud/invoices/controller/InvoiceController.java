@@ -1,11 +1,13 @@
 package com.crud.invoices.controller;
 
 
-import com.crud.invoices.domain.InvoiceDto;
+import com.crud.invoices.domain.InvoiceComingDto;
+import com.crud.invoices.domain.InvoiceOutgoingDto;
 import com.crud.invoices.domain.ListInvoicesDto;
+import com.crud.invoices.exception.InvoiceNullPointerException;
 import com.crud.invoices.mapper.InvoiceMapper;
 import com.crud.invoices.service.InvoiceService;
-import com.crud.invoices.validationGroup.OrderChecks2;
+import com.crud.invoices.validationGroup.OrderChecks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
@@ -27,6 +29,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @RequestMapping("/v1/invoice")
 public class InvoiceController {
+    private Map<String, ArrayList<Object>> errorsMap = new HashMap<>();
     @Autowired
     InvoiceService invoiceService;
 
@@ -38,7 +41,7 @@ public class InvoiceController {
         PageRequest pageRequest = PageRequest.of(page, size);
         try {
             return ResponseEntity.ok(new ListInvoicesDto(invoiceService.getCount(),
-                    invoiceMapper.mapToInvoiceDtoList(invoiceService.getAllInvoices(pageRequest))));
+                    invoiceMapper.mapToInvoiceOutgoingDtoList(invoiceService.getAllInvoices(pageRequest))));
         } catch (ResponseStatusException e) {
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
@@ -46,9 +49,9 @@ public class InvoiceController {
 
 
     @GetMapping(value = "getInvoice")
-    public ResponseEntity<InvoiceDto>getInvoice(@RequestParam Long invoiceId) {
+    public ResponseEntity<InvoiceOutgoingDto> getInvoice(@RequestParam Long invoiceId) {
         try {
-            return ResponseEntity.ok(invoiceMapper.mapToInvoiceDto(invoiceService.getInvoice(invoiceId).get()));
+            return ResponseEntity.ok(invoiceMapper.mapToInvoiceOutgoingDto(invoiceService.getInvoice(invoiceId).get()));
         } catch (ResponseStatusException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -65,13 +68,13 @@ public class InvoiceController {
     }
 
     @PutMapping(value = "updateInvoice")
-    public ResponseEntity<Object> updateInvoice(@Validated(value = {OrderChecks2.class}) @Valid @RequestBody InvoiceDto invoiceDto, Errors errors) {
+    public ResponseEntity<Object> updateInvoice(@Validated(value = {OrderChecks.class}) @Valid @RequestBody InvoiceComingDto invoiceDto, Errors errors) throws ContractorNotFoundException {
 
-        if(errors.hasErrors()) {
-            Map<String, ArrayList<Object>>errorsMap = new HashMap<>();
+        if (errors.hasErrors()) {
+            Map<String, ArrayList<Object>> errorsMap = new HashMap<>();
             errors.getFieldErrors().stream().forEach((fieldError -> {
                 String key = fieldError.getField();
-                if(!errorsMap.containsKey(key)) {
+                if (!errorsMap.containsKey(key)) {
                     errorsMap.put(key, new ArrayList<>());
                 }
                 errorsMap.get(key).add(fieldError.getDefaultMessage());
@@ -79,36 +82,49 @@ public class InvoiceController {
             errorsMap.values().stream().findFirst();
             return new ResponseEntity<>(errorsMap, HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        invoiceMapper.mapToInvoiceDto(invoiceService.saveInvoice(invoiceMapper.mapToInvoice(invoiceDto)));
+        invoiceMapper.mapToInvoiceOutgoingDto(invoiceService.updateInvoiceWithContractor(invoiceMapper.mapToInvoice(invoiceDto)));
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @PutMapping(value = "settleInvoice")
+    public ResponseEntity<Object> settleInvoice(@Validated(value = {OrderChecks.class}) @Valid
+                                                    @RequestBody InvoiceComingDto invoiceDto,
+                                                @RequestParam  Long invoiceId, Errors errors) {
+        if (errors.hasErrors()) {
+            Map<String, ArrayList<Object>> errorsMap = new HashMap<>();
+            errors.getFieldErrors().stream().forEach((fieldError -> {
+                String key = fieldError.getField();
+                if (!errorsMap.containsKey(key)) {
+                    errorsMap.put(key, new ArrayList<>());
+                }
+                errorsMap.get(key).add(fieldError.getDefaultMessage());
+            }));
+            errorsMap.values().stream().findFirst();
+            return new ResponseEntity<>(errorsMap, HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        //invoiceMapper.mapToInvoiceOutgoingDto(invoiceService.settleInvoiceWithContractor(invoiceMapper.mapToInvoice(invoiceDto), invoiceId));
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    //@ExceptionHandler(InvoiceNullPointerException.class)
     @PostMapping(value = "createInvoice", consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> createInvoice(@Validated(value = {OrderChecks2.class}) @Valid @RequestBody InvoiceDto invoiceDto, Errors errors) {
-        if(errors.hasErrors()) {
-            Map<String, ArrayList<Object>>errorsMap = new HashMap<>();
-            errors.getFieldErrors().stream().forEach((fieldError -> {
-                String key = fieldError.getField();
-                if(!errorsMap.containsKey(key)) {
-                    errorsMap.put(key, new ArrayList<>());
-                }
-                errorsMap.get(key).add(fieldError.getDefaultMessage());
-            }));
-            errorsMap.values().stream().findFirst();
+    public ResponseEntity<Object> createInvoice(@Validated(value = {OrderChecks.class}) @Valid @RequestBody InvoiceComingDto invoiceDto, Errors errors) throws InvoiceNullPointerException, ContractorNotFoundException {
+        boolean isError = checkErrors(errors);
+        if (isError == true) {
             return new ResponseEntity<>(errorsMap, HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        invoiceService.saveInvoice(invoiceMapper.mapToInvoice(invoiceDto));
+        invoiceService.saveInvoiceWithContractor(invoiceMapper.mapToInvoice(invoiceDto));
         return new ResponseEntity<>(HttpStatus.CREATED);
+        // }
     }
-
 
     @PostMapping(value = "createInvoiceWithoutContractor", consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> createInvoiceWithoutContractor(@Validated(value = {OrderChecks2.class}) @Valid @RequestBody InvoiceDto invoiceDto, Errors errors) {
-        if(errors.hasErrors()) {
-            Map<String, ArrayList<Object>>errorsMap = new HashMap<>();
+    public ResponseEntity<Object> createInvoiceWithoutContractor(@Validated(value = {OrderChecks.class}) @Valid @RequestBody InvoiceComingDto invoiceDto, Errors errors){
+        if (errors.hasErrors()) {
+            Map<String, ArrayList<Object>> errorsMap = new HashMap<>();
             errors.getFieldErrors().stream().forEach((fieldError -> {
                 String key = fieldError.getField();
-                if(!errorsMap.containsKey(key)) {
+                if (!errorsMap.containsKey(key)) {
                     errorsMap.put(key, new ArrayList<>());
                 }
                 errorsMap.get(key).add(fieldError.getDefaultMessage());
@@ -116,15 +132,46 @@ public class InvoiceController {
             errorsMap.values().stream().findFirst();
             return new ResponseEntity<>(errorsMap, HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        invoiceService.saveInvoiceWithoutContractor(invoiceMapper.mapToInvoice(invoiceDto));
-        return new ResponseEntity<>(HttpStatus.CREATED);
+            invoiceService.saveInvoiceWithoutContractor(invoiceMapper.mapToInvoice(invoiceDto));
+            return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 
+        public boolean checkErrors (Errors errors) {
+            if (errors.hasErrors()) {
+                errors.getFieldErrors().stream().forEach((fieldError -> {
+                    String key = fieldError.getField();
+                    if (!errorsMap.containsKey(key)) {
+                        errorsMap.put(key, new ArrayList<>());
+                    }
+                    errorsMap.get(key).add(fieldError.getDefaultMessage());
+                }));
+                errorsMap.values().stream().findFirst();
+                return true;
+            }
+            return false;
+        }
+
+     /*@RequestMapping(method = RequestMethod.GET, value = "/exception2")
+    public String getException1(ModelMap model, @RequestParam("p") String p, HttpServletRequest request) {
+
+        System.out.println("Exception 2 " + p);
+        request.setAttribute("p", p);
+        throw new CustomGenericException("1", "2");
 
 
+  @ExceptionHandler(NullPointerException.class)
+   / public ModelAndView handleCustomException(NullPointerException ex, HttpServletRequest request) {
 
+        ModelAndView model2 = new ModelAndView("error/generic_error");
+        model2.addObject("exception", ex);
+        System.out.println(request.getAttribute("p"));
+        System.out.println("CustomGenericException  ");
+        return model2;
+
+    }*/
 }
+
 
 
 

@@ -4,6 +4,7 @@ import com.crud.invoices.domain.AppUser;
 import com.crud.invoices.domain.ConfirmationToken;
 import com.crud.invoices.respository.ConfirmationTokenRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.Optional;
 @AllArgsConstructor
 @Service
 public class ConfirmationTokenService {
-
+    @Autowired
     UserService userService;
 
     private final ConfirmationTokenRepository confirmationTokenRepository;

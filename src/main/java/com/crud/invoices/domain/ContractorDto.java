@@ -1,10 +1,8 @@
 package com.crud.invoices.domain;
 
 import com.crud.invoices.validationGroup.Format;
-
-import com.crud.invoices.validation.VatIdentificationNumberConstraint;
 import com.crud.invoices.validationGroup.LengthOfCharacters;
-import com.crud.invoices.validationGroup.*;
+import com.crud.invoices.validationGroup.NotEmptyGroup;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -20,7 +18,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
-@VatIdentificationNumberConstraint(groups = UniqueFormat.class, field = "vatIdentificationNumber")
+//@VatIdentificationNumberConstraint(groups = UniqueFormat.class, field = "vatIdentificationNumber")
 public class ContractorDto {
     private Long id;
     @NotBlank(groups= NotEmptyGroup.class, message ="Field can remain empty")

@@ -19,13 +19,18 @@ public class Invoice {
     private LocalDate dateOfInvoice;
     private LocalDate dateOfSale;
 
-    private LocalDate dateOfPayment;
+    private LocalDate dateOfPayment;//usun
 
-    private Integer periodOfPayment;
+    private String periodOfPayment;
 
     private String methodOfPayment;
     private BigDecimal paid;
+
+    private BigDecimal amountPaid;
+   // private List<Payment> payments = new ArrayList<>();
     private BigDecimal leftToPay;
+    @Enumerated(EnumType.STRING)
+    private InvoiceStatus isSettled = InvoiceStatus.FALSE;
     private List<Item> items = new ArrayList<>();
     private BigDecimal netAmount;
     private BigDecimal sumTotal;
@@ -36,8 +41,26 @@ public class Invoice {
      this.contractor = contractor;
     }
 
-    public Invoice(Long id, String number, Contractor contractor, LocalDate dateOfInvoice, LocalDate dateOfSale, LocalDate dateOfPayment, Integer periodOfPayment,
-                   String methodOfPayment, BigDecimal paid, BigDecimal leftToPay,List<Item> items, BigDecimal netAmount, BigDecimal sumTotal,BigDecimal amountOfVAT) {
+    public Invoice(Long id,Contractor contractor, LocalDate dateOfInvoice, LocalDate dateOfSale,
+                   String periodOfPayment, String methodOfPayment, BigDecimal paid,List<Item> items,
+                   BigDecimal netAmount, BigDecimal sumTotal) {
+        this.id = id;
+        this.contractor = contractor;
+        this.dateOfInvoice = dateOfInvoice;
+        this.dateOfSale = dateOfSale;
+        this.periodOfPayment = periodOfPayment;
+        this.methodOfPayment = methodOfPayment;
+        this.paid = paid;
+        this.items = items;
+        this.netAmount = netAmount;
+        this.sumTotal = sumTotal;
+    }
+
+    public Invoice(Long id, String number,Contractor contractor, LocalDate dateOfInvoice, LocalDate dateOfSale,
+                   LocalDate dateOfPayment, String periodOfPayment,
+                   String methodOfPayment, BigDecimal paid, List<Item> items, BigDecimal amountPaid,
+                   BigDecimal leftToPay, InvoiceStatus isSettled, BigDecimal netAmount,
+                   BigDecimal sumTotal,BigDecimal amountOfVAT) {
         this.id = id;
         this.number = number;
         this.contractor = contractor;
@@ -47,12 +70,16 @@ public class Invoice {
         this.periodOfPayment = periodOfPayment;
         this.methodOfPayment = methodOfPayment;
         this.paid = paid;
+        this.amountPaid = amountPaid;
         this.leftToPay = leftToPay;
+        this.isSettled = isSettled;
         this.items = items;
         this.netAmount = netAmount;
         this.sumTotal = sumTotal;
         this.amountOfVAT = amountOfVAT;
     }
+
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -68,11 +95,11 @@ public class Invoice {
 
 
 
-    @OneToMany(
+   @OneToMany(
             cascade = CascadeType.ALL
-    )
-    @JoinColumn(name = "INVOICE_ID")
-    public List<Item> getItems() {
+   )
+   @JoinColumn(name = "INVOICE_ID")
+   public List<Item> getItems() {
         return items;
     }
 
@@ -101,8 +128,11 @@ public class Invoice {
     public LocalDate getDateOfPayment() {
         return dateOfPayment;
     }
+
+
+
     @Column
-    public Integer getPeriodOfPayment() {
+    public String getPeriodOfPayment() {
         return periodOfPayment;
     }
 
@@ -110,14 +140,34 @@ public class Invoice {
     public String getMethodOfPayment() {
         return methodOfPayment;
     }
+
     @Column
     public BigDecimal getPaid() {
         return paid;
     }
+
+    @Column
+    public BigDecimal getAmountPaid() {
+        return amountPaid;
+    }
+
+    /*@OneToMany(
+            cascade = CascadeType.ALL
+    )
+    @JoinColumn(name = "INVOICE_ID")*/
+
     @Column
     public BigDecimal getLeftToPay() {
         return leftToPay;
     }
+
+
+
+    @Column
+    public InvoiceStatus getIsSettled() {
+        return isSettled;
+    }
+
     @Column
     public BigDecimal getNetAmount() {
         return netAmount;
@@ -143,9 +193,6 @@ public class Invoice {
         this.methodOfPayment = methodOfPayment;
     }
 
-    public void setPaid(BigDecimal paid) {
-        this.paid = paid;
-    }
 
     public void setLeftToPay(BigDecimal leftToPay) {
         this.leftToPay = leftToPay;
@@ -159,10 +206,6 @@ public class Invoice {
         this.number = number;
     }
 
-    public void setItems(List<Item> items) {
-        this.items = items;
-    }
-
 
     public void setDateOfInvoice(LocalDate dateOfInvoice) {
         this.dateOfInvoice = dateOfInvoice;
@@ -173,7 +216,7 @@ public class Invoice {
         this.dateOfPayment = dateOfPayment;
     }
 
-    public void setPeriodOfPayment(Integer periodOfPayment) {
+    public void setPeriodOfPayment(String periodOfPayment) {
         this.periodOfPayment = periodOfPayment;
     }
 
@@ -187,6 +230,23 @@ public class Invoice {
 
     public void setAmountOfVAT(BigDecimal amountOfVAT) {
         this.amountOfVAT = amountOfVAT;
+    }
+
+    public void setPaid(BigDecimal paid) {
+        this.paid = paid;
+    }
+
+
+    public void setAmountPaid(BigDecimal amountPaid) {
+        this.amountPaid = amountPaid;
+    }
+
+    public void setIsSettled(InvoiceStatus isSettled) {
+        this.isSettled = isSettled;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
     }
 }
 

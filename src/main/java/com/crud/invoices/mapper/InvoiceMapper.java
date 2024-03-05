@@ -1,7 +1,8 @@
 package com.crud.invoices.mapper;
 
 import com.crud.invoices.domain.Invoice;
-import com.crud.invoices.domain.InvoiceDto;
+import com.crud.invoices.domain.InvoiceComingDto;
+import com.crud.invoices.domain.InvoiceOutgoingDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,27 +20,25 @@ public class InvoiceMapper {
 
 
 
-    public Invoice mapToInvoice(InvoiceDto invoiceDto) {
+    public Invoice mapToInvoice(InvoiceComingDto invoiceDto) {
         return new Invoice(
                 invoiceDto.getId(),
-                invoiceDto.getNumber(),
                 contractorMapper.mapToContractor(invoiceDto.getContractorDto()),
                 invoiceDto.getDateOfInvoice(),
                 invoiceDto.getDateOfSale(),
-                invoiceDto.getDateOfPayment(),
                 invoiceDto.getPeriodOfPayment(),
                 invoiceDto.getMethodOfPayment(),
                 invoiceDto.getPaid(),
-                invoiceDto.getLeftToPay(),
+                //invoiceDto.getIsSettled(),
                 itemMapper.mapToItemList(invoiceDto.getItems()),
                 invoiceDto.getNetAmount(),
-                invoiceDto.getSumTotal(),
-                invoiceDto.getAmountOfVAT());
-
+                invoiceDto.getSumTotal()
+                //invoiceDto.getAmountOfVAT());
+        );
     }
 
-    public InvoiceDto mapToInvoiceDto(Invoice invoice) {
-        return new InvoiceDto(
+    public InvoiceOutgoingDto mapToInvoiceOutgoingDto(Invoice invoice) {
+        return new InvoiceOutgoingDto(
                 invoice.getId(),
                 invoice.getNumber(),
                 contractorMapper.mapToContractorDto(invoice.getContractor()),
@@ -49,7 +48,9 @@ public class InvoiceMapper {
                 invoice.getPeriodOfPayment(),
                 invoice.getMethodOfPayment(),
                 invoice.getPaid(),
+                invoice.getAmountPaid(),
                 invoice.getLeftToPay(),
+                invoice.getIsSettled(),
                 itemMapper.mapToItemDtoList(invoice.getItems()),
                 invoice.getNetAmount(),
                 invoice.getSumTotal(),
@@ -57,29 +58,31 @@ public class InvoiceMapper {
     }
 
 
-    public List<Invoice> mapToInvoiceList(final List<InvoiceDto> invoicesDtos) {
+    /*public List<Invoice> mapToInvoiceList(final List<InvoiceDto> invoicesDtos) {
         return invoicesDtos.stream()
                 .map(invoiceDto -> new Invoice(
                        invoiceDto.getId(),
-                        invoiceDto.getNumber(),
+                        //invoiceDto.getNumber(),
                         contractorMapper.mapToContractor(invoiceDto.getContractorDto()),
                         invoiceDto.getDateOfInvoice(),
                         invoiceDto.getDateOfSale(),
-                        invoiceDto.getDateOfPayment(),
+                       // invoiceDto.getDateOfPayment(),
                         invoiceDto.getPeriodOfPayment(),
                         invoiceDto.getMethodOfPayment(),
                         invoiceDto.getPaid(),
-                        invoiceDto.getLeftToPay(),
+                        //invoiceDto.getPayments(),
+                        //invoiceDto.getLeftToPay(),
+                        invoiceDto.isSettled(),
                         itemMapper.mapToItemList(invoiceDto.getItems()),
                         invoiceDto.getNetAmount(),
                         invoiceDto.getSumTotal(),
                         invoiceDto.getAmountOfVAT()))
                         .collect(Collectors.toList());
-    }
+    }*/
 
-    public List<InvoiceDto> mapToInvoiceDtoList(final List<Invoice> invoices) {
+    public List<InvoiceOutgoingDto> mapToInvoiceOutgoingDtoList(final List<Invoice> invoices) {
         return invoices.stream()
-                .map(invoice -> new InvoiceDto(
+                .map(invoice -> new InvoiceOutgoingDto(
                         invoice.getId(),
                         invoice.getNumber(),
                         contractorMapper.mapToContractorDto(invoice.getContractor()),
@@ -89,13 +92,17 @@ public class InvoiceMapper {
                         invoice.getPeriodOfPayment(),
                         invoice.getMethodOfPayment(),
                         invoice.getPaid(),
+                        invoice.getAmountPaid(),
                         invoice.getLeftToPay(),
+                        invoice.getIsSettled(),
                         itemMapper.mapToItemDtoList(invoice.getItems()),
                         invoice.getNetAmount(),
                         invoice.getSumTotal(),
                         invoice.getAmountOfVAT()))
                 .collect(Collectors.toList());
     }
+
+
 
     /*public List<Invoice> mapToInvoiceList(final List<InvoiceDto> invoicesDtos) {
         List<Invoice> invoices = new ArrayList<>();

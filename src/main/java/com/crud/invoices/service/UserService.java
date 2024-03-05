@@ -14,7 +14,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -50,14 +53,18 @@ public class UserService implements UserDetailsService {
     }
 
 
-    public AppUser saveUser(AppUser appUser) {
-        Optional<AppUser> userIn = getAppUserByUsername(appUser.getUsername());
+    public UserDetails saveUser(AppUser appUser) {
+        Optional<AppUser>userIn =userRepository.findByUsername(appUser.getUsername());
         if(userIn.isPresent()) {
             appUser.setId(userIn.get().getId());
             userRepository.save(userIn.get());
+        }else {
+            userRepository.save(appUser);
         }
-        return userRepository.save(appUser);
+        return new MyUserDetails(appUser);
     }
+
+
 
     public String signUpUser(AppUser user) {
         Optional<AppUser> users = userRepository.findAppUserByUsernameIgnoreCase(user.getUsername());

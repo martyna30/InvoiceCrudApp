@@ -27,10 +27,12 @@ public class Item {
         this.product = product;
     }
 
-    public Item(Long id, Long number, String product,String unit, int amount, BigDecimal netWorth, BigDecimal amountOfVAT, Integer vatRate, BigDecimal grossValue) {
+    public Item(Long id, Long number, String product,String unit, int amount,
+                BigDecimal netWorth, BigDecimal amountOfVAT, Integer vatRate, BigDecimal grossValue) {
         this.id = id;
         this.number = number;
         this.product = product;
+        this.unit = unit;
         this.amount = amount;
         this.netWorth = netWorth;
         this.amountOfVAT = amountOfVAT;
@@ -38,12 +40,33 @@ public class Item {
         this.grossValue = grossValue;
     }
 
+    public Item(Long id, Long number, String product, String unit, int amount,
+                BigDecimal netWorth, Integer vatRate, BigDecimal grossValue) {
+        this.id = id;
+        this.number = number;
+        this.product = product;
+        this.unit = unit;
+        this.amount = amount;
+        this.netWorth = netWorth;
+        this.vatRate = vatRate;
+        this.grossValue = grossValue;
+    }
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ITEM_ID", unique = true)
     public Long getId() {
         return id;
     }
+
+
+    /*@JoinColumn(name ="INVOICE_ID")
+    @ManyToOne(cascade=CascadeType.MERGE)
+    public Invoice getInvoice() {
+        return invoice;
+    }*/
+
 
     @Column
     public Long getNumber() {
@@ -81,6 +104,8 @@ public class Item {
     public Integer getVatRate() {
         return vatRate;
     }
+
+
 
     public void setProduct(String product) {
         this.product = product;

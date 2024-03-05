@@ -5,7 +5,7 @@ package com.crud.invoices.validationGroup;
 import javax.validation.GroupSequence;
 import javax.validation.groups.Default;
 
-@GroupSequence(value={NotEmptyGroup.class, Format.class, LengthOfCharacters.class, UniqueFormat.class,  Default.class })
+@GroupSequence(value={NotEmptyGroup.class, LengthOfCharacters.class, Format.class, Default.class})
     public interface OrderChecks {}
-
+// LengthOfCharacters.class, UniqueFormat.class,  Default.class
 

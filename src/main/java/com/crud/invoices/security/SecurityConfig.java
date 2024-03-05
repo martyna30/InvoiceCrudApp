@@ -1,5 +1,6 @@
 package com.crud.invoices.security;
 
+import com.crud.invoices.domain.AppUser;
 import com.crud.invoices.security.filter.CustomAuthorizationFilter;
 import com.crud.invoices.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,67 +56,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             };
         };
     }
-
-    @Override
-    public void configure(HttpSecurity http) throws Exception {
-        http.cors();
-        http.csrf().disable();
-        http.httpBasic();
-        http.authorizeRequests().antMatchers(   "/v1/invoice/register/**", "/v1/invoice/login/**",
-                        "/v1/invoice/token/refresh/**", ("/v1/invoice/logout/**")).permitAll()
-                .antMatchers(HttpMethod.OPTIONS,"/**").permitAll();
-        //appUser
-        http.authorizeRequests().antMatchers("/v1/invoice/getAppUserByUsername/**").permitAll();//hasAnyRole("USER","ADMIN")
-        //invoice
-        http.authorizeRequests().antMatchers("/v1/invoice/createInvoice/**").permitAll()//hasAnyRole("USER","ADMIN")
-                .antMatchers("/v1/invoice/createInvoiceWithoutContractor/**").permitAll()//hasAnyRole("USER","ADMIN")
-                .antMatchers("/v1/invoice/getInvoice/**").permitAll()//hasAnyRole("USER","ADMIN")
-                .antMatchers("/v1/invoice/getInvoices/**").permitAll()//hasAnyRole("USER","ADMIN")
-                .antMatchers("/v1/invoice/updateInvoice/**").permitAll()//hasAnyRole("USER","ADMIN")
-                .antMatchers("/v1/invoice/deleteInvoice/**").permitAll()//hasAnyRole("ADMIN")
-                .antMatchers("/v1/invoice/printer/generateInvoice/**").permitAll()//hasAnyRole("ADMIN")
-
-                //contractor
-                .antMatchers("/v1/contractor/getContractor/**").permitAll()//hasAnyRole("USER","ADMIN")
-                .antMatchers("/v1/contractor/getContractorWithSpecifiedName/**").permitAll()//hasAnyRole("USER","ADMIN")
-                .antMatchers("/v1/contractor/getContractorByName/**").permitAll()//hasAnyRole("USER","ADMIN")
-                .antMatchers("/v1/gus/getContractorFromGus/**").permitAll()//hasAnyRole("USER","ADMIN")
-                .antMatchers("/v1/contractor/getContractors/**").permitAll()//hasAnyRole("USER","ADMIN")
-
-                .antMatchers("/v1/contractor/deleteContractor/**").permitAll()//hasAnyRole("USER","ADMIN")
-                .antMatchers("/v1/contractor/updateContractor/**").permitAll()//hasAnyRole("USER","ADMIN")
-                .antMatchers("/v1/contractor/createContractor/**").permitAll()//hasAnyRole("USER","ADMIN")
-                //seller
-                .antMatchers("/v1/seller/getSeller/**").permitAll()//hasAnyRole("USER","ADMIN")
-                .antMatchers("/v1/seller/getSellerWithSpecifiedName/**").permitAll()//hasAnyRole("USER","ADMIN")
-                .antMatchers("/v1/seller/getSellerByName/**").permitAll()//hasAnyRole("USER","ADMIN")
-                .antMatchers("/v1/seller/getSellerByAppUser/**").permitAll()//hasAnyRole("USER","ADMIN")
-                .antMatchers("/v1/seller/getSellerByVatIdentificationNumber/**").permitAll()
-                .antMatchers("/v1/gus/getSellerFromGus/**").permitAll()
-                .antMatchers("/v1/seller/deleteSeller/**").permitAll()//hasAnyRole("USER","ADMIN")
-                .antMatchers("/v1/seller/updateSeller/**").permitAll()//hasAnyRole("USER","ADMIN")
-                .antMatchers("/v1/seller/createSeller/**").permitAll()//hasAnyRole("USER","ADMIN")
-                //item
-                .antMatchers("/v1/item/createItem/**").permitAll()//hasAnyRole("USER","ADMIN")
-                .antMatchers("/v1/item/updateItem/**").permitAll()//hasAnyRole("USER","ADMIN")
-                .antMatchers("/v1/item/deleteItem/**").permitAll()//hasAnyRole("USER","ADMIN")
-                .antMatchers("/v1/item/deleteItem/**").permitAll()//hasAnyRole("USER","ADMIN")
-                .antMatchers("/v1/item/getItem/**").permitAll()//hasAnyRole("USER","ADMIN")
-                .antMatchers("/v1/item/getItems/**").permitAll()//hasAnyRole("USER","ADMIN")
-                .anyRequest().authenticated()
-
-               .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.addFilterBefore(customAuthorizationFilter, UsernamePasswordAuthenticationFilter.class );
-    }
-
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        /*AppUser user = new AppUser("Anna", bCryptPasswordEncoder.encode("123")
-        , "martyna.prawdzik@gmail.com", AppUserRole.USER);
-        AppUser admin = new AppUser("Grzegorz", bCryptPasswordEncoder.encode("456"),
-                "test-v5v1jt5rk@srv1.mail-tester.com",
-        AppUserRole.ADMIN);
-        */
+        AppUser user = new AppUser("Anna", bCryptPasswordEncoder.encode("123")
+        , "martyna.prawdzik@gmail.com", "ROLE_USER");
+        //AppUser admin = new AppUser("Grzegorz", bCryptPasswordEncoder.encode("456"),
+           //    "test-v5v1jt5rk@srv1.mail-tester.com",
+        //AppUserRole.ADMIN);
+        //*/
         auth.userDetailsService(userService).passwordEncoder((bCryptPasswordEncoder));
         //userService.saveUser(user);
         //userService.saveUser(admin);
@@ -136,6 +84,67 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         provider.setUserDetailsService(userService);
         return provider;
     }
+
+
+    @Override
+    public void configure(HttpSecurity http) throws Exception {
+        http.cors();
+        http.csrf().disable();
+        http.httpBasic();
+        http.authorizeRequests().antMatchers(   "/v1/invoice/register/**", "/v1/invoice/login/**",
+                        "/v1/invoice/token/refresh/**", ("/v1/invoice/logout/**")).permitAll()
+                .antMatchers(HttpMethod.OPTIONS,"/**").permitAll();
+        //appUser
+        http.authorizeRequests().antMatchers("/v1/invoice/getAppUserByUsername/**").hasAnyRole("USER","ADMIN");
+        //invoice
+        http.authorizeRequests().antMatchers(HttpMethod.GET,"/v1/invoice/getInvoices/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/invoice/createInvoice/**").permitAll()//hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/invoice/createInvoiceWithoutContractor/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/invoice/getInvoice/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/invoice/getInvoices/**").hasAnyRole( "USER","ADMIN")
+                .antMatchers("/v1/invoice/updateInvoice/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/invoice/printer/generateInvoice/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/invoice/deleteInvoice/**").hasAnyRole("ADMIN")
+                //contractor
+                .antMatchers("/v1/contractor/getContractor/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/contractor/getContractorWithSpecifiedName/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/contractor/getContractorByName/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/gus/getContractorFromGus/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/contractor/getContractors/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/contractor/deleteContractor/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/contractor/updateContractor/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/contractor/createContractor/**").hasAnyRole("USER","ADMIN")
+                //seller
+                .antMatchers("/v1/seller/getSeller/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/seller/getSellerWithSpecifiedName/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/seller/getSellerByName/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/seller/getSellerByAppUser/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/seller/getSellerByVatIdentificationNumber/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/gus/getSellerFromGus/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/seller/deleteSeller/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/seller/updateSeller/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/seller/createSeller/**").hasAnyRole("USER","ADMIN")
+                //item
+                .antMatchers("/v1/item/createItem/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/item/updateItem/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/item/deleteItem/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/item/deleteItem/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/item/getItem/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/item/getItems/**").hasAnyRole("USER","ADMIN")
+                //payment
+                .antMatchers("/v1/payment/createPayment/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/payment/getPaymentsByInvoiceId/**").hasAnyRole("USER","ADMIN")
+
+
+                .anyRequest().authenticated()
+
+               .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.addFilterBefore(customAuthorizationFilter, UsernamePasswordAuthenticationFilter.class );
+    }
+
+
+
+
 
 
     /*@Bean

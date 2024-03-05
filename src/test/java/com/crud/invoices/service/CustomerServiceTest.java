@@ -1,6 +1,6 @@
 package com.crud.invoices.service;
 
-import com.crud.invoices.domain.Customer;
+
 import com.crud.invoices.domain.Invoice;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;

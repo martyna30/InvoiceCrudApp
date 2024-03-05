@@ -4,6 +4,7 @@ import com.crud.invoices.client.bir.BirClient;
 import com.crud.invoices.client.bir.RegonType;
 import com.crud.invoices.client.bir.ReportClient;
 import com.crud.invoices.client.bir.ReportParser;
+import com.crud.invoices.controller.ContractorNotFoundException;
 import com.crud.invoices.domain.Contractor;
 import com.crud.invoices.domain.ContractorFromGusDto;
 import com.crud.invoices.mapper.ContractorMapper;
@@ -105,9 +106,16 @@ public class ContractorService {
 
     }
 
-    public Optional<Contractor> findContractorByVatIdentificationNumber(String vatIdentificationNumber) {
-        return contractorRepository.findContractorByVatIdentificationNumber(vatIdentificationNumber);
+    public Optional<Contractor> findContractorByVatIdentificationNumber(String vatIdentificationNumber) throws ContractorNotFoundException {
+        Optional<Contractor> contractorOptional = contractorRepository.findContractorByVatIdentificationNumber(vatIdentificationNumber);
+        if(contractorOptional.isPresent()) {
+            return Optional.of(contractorOptional.get());
+        }
+
+        return Optional.ofNullable(new Contractor());
     }
+
+
 
     public List<Contractor> getContractorWithSpecifiedName(String name) {
         List<Contractor>contractors = contractorRepository.findByNameContainsIgnoreCase(name);

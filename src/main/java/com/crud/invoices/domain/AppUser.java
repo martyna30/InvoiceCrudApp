@@ -87,12 +87,6 @@ public class AppUser {
         return confirmationTokens;
     }
 
-    /*@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "SELLER_ID")
-    public Seller getSeller() {
-        return seller;
-    }*/
-
     @Column(name = "ROLE")
     public String getRole() {
         return role;
