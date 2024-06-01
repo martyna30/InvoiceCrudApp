@@ -2,10 +2,7 @@ package com.crud.invoices.service;
 
 
 import com.crud.invoices.controller.ContractorNotFoundException;
-import com.crud.invoices.domain.Contractor;
-import com.crud.invoices.domain.Invoice;
-import com.crud.invoices.domain.InvoiceStatus;
-import com.crud.invoices.domain.Payment;
+import com.crud.invoices.domain.*;
 import com.crud.invoices.respository.InvoiceRepository;
 import com.crud.invoices.respository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +24,9 @@ public class InvoiceService {
 
     @Autowired
     ContractorService contractorService;
+
+    @Autowired
+    SellerService sellerService;
 
     @Autowired
     AddressService addressService;
@@ -51,9 +51,10 @@ public class InvoiceService {
     @Transactional
     public Invoice saveInvoiceWithContractor(Invoice invoice) throws ContractorNotFoundException {
         this.saveContractorWithAddress(invoice);
+        this.saveSeller(invoice);
         this.addDateOfPayment(invoice);
-        this.calculateAmount(invoice);
-        this.addPaymentForInvoice(invoice);
+        this.calculateFirstAmount(invoice);
+        this.addPrimePaymentForInvoice(invoice);
         Invoice invoiceWithId = invoiceRepository.save(invoice);
         this.addNumberForInvoice(invoiceWithId);
         return invoiceRepository.save(invoiceWithId);
@@ -63,65 +64,40 @@ public class InvoiceService {
     @Transactional
     public Invoice updateInvoiceWithContractor(final Invoice invoice) throws ContractorNotFoundException {
         this.saveContractorWithAddress(invoice);
-        //this.updateItemForInvoice(invoice);
+        this.saveSeller(invoice);
         this.addDateOfPayment(invoice);
         this.addNumberForInvoice(invoice);
        //items
         Optional<Invoice> invoiceInDatabase = invoiceRepository.findById(invoice.getId());
-        InvoiceStatus isSettled = invoiceInDatabase.get().getIsSettled();
-        if (isSettled.equals(InvoiceStatus.FALSE)) {
-            this.addPaymentForExistingUnsettledInvoice(invoice);
-        } else if (isSettled.equals(InvoiceStatus.TRUE)) {
-            //this.addPaymentForInvoice(invoice);
-            this.paymentService.addPaymentForExistingSettledInvoice(invoice, invoice.getPaid());//zmiana
-        }
+        //InvoiceStatus isSettled = invoiceInDatabase.get().getIsSettled();
+        this.checkPaymentsForExistingInvoice(invoice);
+        //this.paymentService.addPaymentForExistingInvoice(invoice, invoice.getPaid());//zmiana
         return invoiceRepository.save(invoice);
     }
 
-
-    /*public Invoice settleInvoiceWithContractor(Invoice invoice, Long invoiceId) {
-        //Optional<Invoice> invoiceInDatabase = invoiceRepository.findById(invoiceId);
-        //if(invoiceInDatabase.isPresent()){
-            invoice.setIsSettled(InvoiceStatus.TRUE);
-            this.addPaymentForInvoice(invoice);
-            this.addPaymentForExistingSettledInvoice(invoice);
-            return invoice;
-    }*/
-
-
-
-
-
-    /*@Transactional
-    public void updateItemForInvoice(Invoice invoice) {
-        List<Item>itemsForInvoice = itemService.getItemsByInvoice(invoice.getId());
-        //List<Item>itemsForInvoice = invoiceRepository.findItemsByInvoiceId(invoice.getId());
-
-        if (itemsForInvoice.size() > 0) {
-            IntStream.range(1, itemsForInvoice.size())
-                    .forEachOrdered(i -> {
-                        if (itemsForInvoice.get(i).getProduct().equals(invoice.getItems().get(i).getProduct())) {
-                            invoice.getItems().set(i, itemsForInvoice.get(i));
-                        }
-                        else {
-                            System.out.println("Nowy produkt");
-                        }
-                    });
-        }
-    }*/
-
-
     @Transactional
     public Invoice saveInvoiceWithoutContractor(final Invoice invoice) {
-        return null;
+        this.saveSeller(invoice);
+        this.addDateOfPayment(invoice);
+        this.calculateFirstAmount(invoice);
+        this.addPrimePaymentForInvoice(invoice);
+        Invoice invoiceWithId = invoiceRepository.save(invoice);
+        this.addNumberForInvoice(invoiceWithId);
+        return invoiceRepository.save(invoiceWithId);
     }
 
 
+    public void calculateFirstAmount(Invoice invoice) {
+        BigDecimal primePaymentOnInvoice = invoice.getPaid();
+        invoice.setAmountPaid(primePaymentOnInvoice);
+
+        this.calculateAmount(invoice);
+    }
+
     public void calculateAmount(Invoice invoice) {
-        BigDecimal currentPayment = invoice.getPaid();
-        invoice.setAmountPaid(currentPayment);
+        BigDecimal amountPaid = invoice.getAmountPaid();
         BigDecimal sumTotal = invoice.getSumTotal();
-        BigDecimal leftToPay = sumTotal.subtract(currentPayment);
+        BigDecimal leftToPay = sumTotal.subtract(amountPaid);
         invoice.setLeftToPay(leftToPay);
         BigDecimal netAmount = invoice.getNetAmount();
         BigDecimal vatAmount = sumTotal.subtract(netAmount);
@@ -129,28 +105,73 @@ public class InvoiceService {
     }
 
 
-    public void addPaymentForInvoice(Invoice invoice) {
-        paymentRepository.save(
-                new Payment(
-                        null,
-                        invoice.getMethodOfPayment(),
-                        invoice.getPaid(),
-                        invoice.getDateOfInvoice(),
-                        invoice));
+
+    public void updateAmount(Invoice invoice, Payment firstPaymentForInvoice) {
+        this.updatePaymentForExistingInvoice(invoice);
+        this.calculateAmount(invoice);
+
     }
-    private void addPaymentForExistingUnsettledInvoice(Invoice invoice) {
-           this.calculateAmount(invoice);
-           Optional<Payment> paymentForInvoice = paymentService.
-                   findFirstPaymentByInvoiceId(invoice.getId());
-           if (paymentForInvoice.isPresent()) {
-               paymentForInvoice.get().setMethodOfPayment(invoice.getMethodOfPayment());
-               paymentForInvoice.get().setPaid(invoice.getPaid());
+
+
+    @Transactional
+    public void updatePaymentForExistingInvoice(Invoice invoice) {
+        Optional<BigDecimal> newSumOfPayments = Optional.of(
+                paymentRepository.findAllPaymentsByInvoiceId(invoice.getId())
+                        .stream()
+                        .map(payment1 -> payment1.getPaid())
+                        .reduce(BigDecimal.valueOf(0), BigDecimal::add));
+        invoice.setAmountPaid(newSumOfPayments.get());
+        //BigDecimal leftToPay = invoice.getSumTotal().subtract(newSumOfPayments.get());
+       // invoice.setLeftToPay(leftToPay);
+
+        //BigDecimal sumTotal = invoice.getSumTotal();
+        //BigDecimal netAmount = invoice.getNetAmount();
+        //BigDecimal vatAmount = newSumOfPayments.subtract(netAmount);
+        //invoice.setAmountOfVAT(vatAmount);
+    }
+
+
+
+
+
+
+
+    public void addPrimePaymentForInvoice(Invoice invoice) {
+        BigDecimal paid = invoice.getPaid();
+        if (paid.compareTo(BigDecimal.ZERO) > 0) {
+            paymentRepository.save(
+                    new Payment(
+                            null,
+                            invoice.getMethodOfPayment(),
+                            invoice.getPaid(),
+                            invoice.getDateOfInvoice(),
+                            PaymentStatus.TRUE,
+                            invoice));
+        }
+    }
+    private void checkPaymentsForExistingInvoice(Invoice invoice) {
+         //tu popraw modyfikuj
+         List<Payment> paymentsForInvoice = paymentService.findPaymentsByInvoiceId(invoice.getId());
+         Optional<Payment>firstPaymentForInvoice = paymentsForInvoice.stream()
+                 .filter(payment -> payment.getIsPrime().equals(PaymentStatus.TRUE))
+                 .findFirst();
+
+         if (firstPaymentForInvoice.isPresent()) {
+               firstPaymentForInvoice.get().setMethodOfPayment(invoice.getMethodOfPayment());
+             if (invoice.getPaid().compareTo(BigDecimal.ZERO) > 0) {
+                 firstPaymentForInvoice.get().setPaid(invoice.getPaid());
+             }
+             if (invoice.getPaid().compareTo(BigDecimal.ZERO) <= 0) {
+                paymentService.deletePayment(firstPaymentForInvoice.get().getId());
+             }
+             this.updateAmount(invoice, firstPaymentForInvoice.get());
            } else {
-               this.addPaymentForInvoice(invoice);
+               this.addPrimePaymentForInvoice(invoice);
+               this.calculateAmount(invoice);
            }
+
+
     }
-
-
 
 
     public void addDateOfPayment(Invoice invoice) {
@@ -181,6 +202,14 @@ public class InvoiceService {
             invoice.getContractor().setId(contractorInDatabase.get().getId());
 
         }
+    }
+
+    public void saveSeller(Invoice invoice) {
+        Optional<Seller> selerInDatabase = sellerService.getSellerByVatIdentificationNumber(invoice.getSeller().getVatIdentificationNumber());
+            if(selerInDatabase.isPresent()) {
+                invoice.setSeller(selerInDatabase.get());
+            }
+
     }
 
 

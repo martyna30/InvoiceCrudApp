@@ -2,6 +2,7 @@ package com.crud.invoices.service;
 
 import com.crud.invoices.domain.AppUser;
 import com.crud.invoices.domain.Seller;
+import com.crud.invoices.exception.SellerNotFoundException;
 import com.crud.invoices.respository.SellerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,7 +53,7 @@ public class SellerService {
     public Optional<Seller> getSellerByName(String name) {
         Optional<Seller> sellerWithName = sellerRepository.findSellerByNameIgnoreCase(name);
         return Optional.ofNullable(sellerWithName
-                .orElseThrow(() -> new RuntimeException("Seller doesn't exist")));
+                .orElseThrow(() -> new SellerNotFoundException("Seller doesn't exist")));
     }
 
     public Optional<Seller>  getSellerByVatIdentificationNumber(String vatIdentificationNumber) {
@@ -61,6 +62,7 @@ public class SellerService {
 
     public Seller getSellerByAppUser(String username) {
         Optional<Seller> sellerForAppUser = sellerRepository.findSellerByAppUser_Username(username);
-        return Optional.ofNullable(sellerForAppUser.orElseThrow(() ->new RuntimeException("Seller doesn't exist"))).get();
+        return Optional.ofNullable(sellerForAppUser.orElseThrow(() -> new SellerNotFoundException("Seller doesn't exist"))).get();
     }
 }
+

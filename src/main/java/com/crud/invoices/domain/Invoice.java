@@ -14,20 +14,15 @@ import java.util.List;
 public class Invoice {
     private Long id;
     private String number;
-
     private Contractor contractor;
+    private Seller seller;
     private LocalDate dateOfInvoice;
     private LocalDate dateOfSale;
-
     private LocalDate dateOfPayment;//usun
-
     private String periodOfPayment;
-
     private String methodOfPayment;
     private BigDecimal paid;
-
     private BigDecimal amountPaid;
-   // private List<Payment> payments = new ArrayList<>();
     private BigDecimal leftToPay;
     @Enumerated(EnumType.STRING)
     private InvoiceStatus isSettled = InvoiceStatus.FALSE;
@@ -56,7 +51,7 @@ public class Invoice {
         this.sumTotal = sumTotal;
     }
 
-    public Invoice(Long id, String number,Contractor contractor, LocalDate dateOfInvoice, LocalDate dateOfSale,
+    public Invoice(Long id, String number,Contractor contractor,Seller seller, LocalDate dateOfInvoice, LocalDate dateOfSale,
                    LocalDate dateOfPayment, String periodOfPayment,
                    String methodOfPayment, BigDecimal paid, List<Item> items, BigDecimal amountPaid,
                    BigDecimal leftToPay, InvoiceStatus isSettled, BigDecimal netAmount,
@@ -64,6 +59,7 @@ public class Invoice {
         this.id = id;
         this.number = number;
         this.contractor = contractor;
+        this.seller = seller;
         this.dateOfInvoice = dateOfInvoice;
         this.dateOfSale = dateOfSale;
         this.dateOfPayment = dateOfPayment;
@@ -109,8 +105,13 @@ public class Invoice {
         return contractor;
     }
 
-    //@JoinColumn(name = "SELLER_ID")
-   // @ManyToOne
+
+    @JoinColumn(name = "SELLER_ID")
+    @ManyToOne(cascade = {CascadeType.PERSIST})
+    public Seller getSeller() {
+        return seller;
+    }
+
 
     @Column
     public LocalDate getDateOfInvoice() {
@@ -183,6 +184,10 @@ public class Invoice {
 
     public void setContractor(Contractor contractor) {
         this.contractor = contractor;
+    }
+
+    public void setSeller(Seller seller) {
+        this.seller = seller;
     }
 
     public void setDateOfSale(LocalDate dateOfSale) {

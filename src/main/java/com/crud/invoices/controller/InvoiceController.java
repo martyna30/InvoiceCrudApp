@@ -29,12 +29,16 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @RequestMapping("/v1/invoice")
 public class InvoiceController {
-    private Map<String, ArrayList<Object>> errorsMap = new HashMap<>();
+
     @Autowired
     InvoiceService invoiceService;
 
     @Autowired
     InvoiceMapper invoiceMapper;
+
+
+    @Autowired
+    ValidationErrors validationErrors;
 
     @GetMapping(value = "getInvoices")
     public ResponseEntity<ListInvoicesDto> getInvoices(@RequestParam int page, @RequestParam int size) throws ResponseStatusException {
@@ -86,7 +90,7 @@ public class InvoiceController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PutMapping(value = "settleInvoice")
+    /*@PutMapping(value = "settleInvoice")
     public ResponseEntity<Object> settleInvoice(@Validated(value = {OrderChecks.class}) @Valid
                                                     @RequestBody InvoiceComingDto invoiceDto,
                                                 @RequestParam  Long invoiceId, Errors errors) {
@@ -104,18 +108,18 @@ public class InvoiceController {
         }
         //invoiceMapper.mapToInvoiceOutgoingDto(invoiceService.settleInvoiceWithContractor(invoiceMapper.mapToInvoice(invoiceDto), invoiceId));
         return new ResponseEntity<>(HttpStatus.CREATED);
-    }
+    }*/
 
-    //@ExceptionHandler(InvoiceNullPointerException.class)
+
     @PostMapping(value = "createInvoice", consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> createInvoice(@Validated(value = {OrderChecks.class}) @Valid @RequestBody InvoiceComingDto invoiceDto, Errors errors) throws InvoiceNullPointerException, ContractorNotFoundException {
-        boolean isError = checkErrors(errors);
-        if (isError == true) {
-            return new ResponseEntity<>(errorsMap, HttpStatus.UNPROCESSABLE_ENTITY);
+    public ResponseEntity<Object> createInvoice(@Validated(value = {OrderChecks.class})
+                                                    @Valid @RequestBody InvoiceComingDto invoiceDto,
+                                                Errors errors) throws InvoiceNullPointerException, ContractorNotFoundException {
+        if (errors.hasErrors()) {
+            return validationErrors.checkErrors(errors);
         }
         invoiceService.saveInvoiceWithContractor(invoiceMapper.mapToInvoice(invoiceDto));
         return new ResponseEntity<>(HttpStatus.CREATED);
-        // }
     }
 
     @PostMapping(value = "createInvoiceWithoutContractor", consumes = APPLICATION_JSON_VALUE)
@@ -136,21 +140,6 @@ public class InvoiceController {
             return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-
-        public boolean checkErrors (Errors errors) {
-            if (errors.hasErrors()) {
-                errors.getFieldErrors().stream().forEach((fieldError -> {
-                    String key = fieldError.getField();
-                    if (!errorsMap.containsKey(key)) {
-                        errorsMap.put(key, new ArrayList<>());
-                    }
-                    errorsMap.get(key).add(fieldError.getDefaultMessage());
-                }));
-                errorsMap.values().stream().findFirst();
-                return true;
-            }
-            return false;
-        }
 
      /*@RequestMapping(method = RequestMethod.GET, value = "/exception2")
     public String getException1(ModelMap model, @RequestParam("p") String p, HttpServletRequest request) {

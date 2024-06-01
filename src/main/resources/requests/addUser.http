@@ -1,0 +1,10 @@
+POST http://localhost:8080/v1/invoice/createUser
+Content-Type: application/json
+
+{
+  "id": null,
+  "username": "Martyna" ,
+  "email":  "test-lceypggp0@srv1.mail-tester.com",
+  "password": "123" ,
+  "role": "ADMIN"
+}

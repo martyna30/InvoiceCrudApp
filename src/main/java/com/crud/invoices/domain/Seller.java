@@ -3,8 +3,6 @@ package com.crud.invoices.domain;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @NoArgsConstructor
 @Entity
@@ -16,7 +14,7 @@ public class Seller {
 
     private String vatIdentificationNumber;
 
-    List<Invoice> invoiceList = new ArrayList<>();
+    //List<Invoice> invoiceList = new ArrayList<>();
 
     Address address;
 
@@ -60,13 +58,13 @@ public class Seller {
         return appUser;
     }
 
-    @OneToMany(
-            cascade = {CascadeType.MERGE}
+    /*@OneToMany(
+            cascade = {CascadeType.ALL}
     )
     @JoinColumn(name = "SELLER_ID")
     public List<Invoice> getInvoiceList() {
         return invoiceList;
-    }
+    }*/
 
     public void setId(Long id) {
         this.id = id;
@@ -84,9 +82,9 @@ public class Seller {
         this.address = address;
     }
 
-    public void setInvoiceList(List<Invoice> invoiceList) {
-        this.invoiceList = invoiceList;
-    }
+    //public void setInvoiceList(List<Invoice> invoiceList) {
+       // this.invoiceList = invoiceList;
+    //}
 
     public void setAppUser(AppUser appUser) {
         this.appUser = appUser;

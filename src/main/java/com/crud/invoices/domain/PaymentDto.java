@@ -13,7 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.Min;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -26,14 +26,13 @@ import java.time.LocalDate;
 public class PaymentDto {
     private Long id;
     private String methodOfPayment;
-    @NotNull(groups = NotEmptyGroup.class, message = "Amount of paid must be at least 1")
-    @Min(groups = Format.class, value = 1, message = "Amount of paid must be at least 1")
+    @NotNull(groups= NotEmptyGroup.class, message ="Amount of paid must be at least 0")
+    @DecimalMin(groups= Format.class, value = "1.0",  message = "Amount of paid must be at least 1")
     private BigDecimal paid;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfPayment;
-    //@Valid
-    //@JsonProperty("invoice")
-    //InvoiceComingDto invoiceComingDto;
+    private PaymentStatus isPrime;
+
 }

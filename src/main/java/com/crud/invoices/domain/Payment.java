@@ -15,6 +15,8 @@ public class Payment {
     private String methodOfPayment;
     private BigDecimal paid;
     private LocalDate dateOfPayment;
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus isPrime = PaymentStatus.FALSE;
     Invoice invoice;
 
 
@@ -24,12 +26,14 @@ public class Payment {
         this.paid = paid;
         this.dateOfPayment = dateOfPayment;
     }
-    public Payment(Long id, String methodOfPayment, BigDecimal paid, LocalDate dateOfPayment,Invoice invoice) {
+    public Payment(Long id, String methodOfPayment, BigDecimal paid, LocalDate dateOfPayment, PaymentStatus isPrime, Invoice invoice) {
         this.id = id;
         this.methodOfPayment = methodOfPayment;
         this.paid = paid;
         this.dateOfPayment = dateOfPayment;
         this.invoice = invoice;
+        this.isPrime = isPrime;
+
     }
 
     @Id
@@ -59,6 +63,11 @@ public class Payment {
         return paid;
     }
 
+    @Column
+    public PaymentStatus getIsPrime() {
+        return isPrime;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -74,4 +83,11 @@ public class Payment {
     public void setPaid(BigDecimal paid) {
         this.paid = paid;
     }
+
+
+    public void setIsPrime(PaymentStatus isPrime) {
+        this.isPrime = isPrime;
+    }
+
+
 }

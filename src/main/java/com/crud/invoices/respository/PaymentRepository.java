@@ -21,8 +21,6 @@ public interface PaymentRepository extends CrudRepository<Payment, Long> {
 
     List<Payment> findAllPaymentsByInvoiceId(Long invoiceId);
 
-    Optional<Payment> findFirstByInvoiceId(Long invoiceId);
-
     @Override
     boolean existsById(Long id);
 
@@ -34,4 +32,5 @@ public interface PaymentRepository extends CrudRepository<Payment, Long> {
 
     @Override
     void deleteById(Long paymentId);
+
 }

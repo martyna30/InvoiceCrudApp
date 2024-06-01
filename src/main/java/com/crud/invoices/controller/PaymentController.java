@@ -1,20 +1,21 @@
 package com.crud.invoices.controller;
 
 import com.crud.invoices.domain.PaymentDto;
+import com.crud.invoices.exception.ExceptionHandlerController;
 import com.crud.invoices.mapper.PaymentMapper;
 import com.crud.invoices.service.PaymentService;
+import com.crud.invoices.validationGroup.OrderChecks4;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -22,6 +23,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @RequestMapping("/v1/payment")
 public class PaymentController {
+    @Autowired
+    ExceptionHandlerController exceptionHandlerController;
 
     @Autowired
     PaymentService paymentService;
@@ -29,25 +32,31 @@ public class PaymentController {
     @Autowired
     PaymentMapper paymentMapper;
 
+    @Autowired
+    ValidationErrors validationErrors;
+
     @PostMapping(value = "createPayment", consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> createPayment(@Valid @RequestBody PaymentDto paymentDto,
-                                                @RequestParam  Long invoiceId,
-                                                Errors errors) {
-        if(errors.hasErrors()) {
-            Map<String, ArrayList<Object>> errorsMap = new HashMap<>();
-            errors.getFieldErrors().stream().forEach((fieldError -> {
-                String key = fieldError.getField();
-                if (!errorsMap.containsKey(key)) {
-                    errorsMap.put(key, new ArrayList<>());
-                }
-                errorsMap.get(key).add(fieldError.getDefaultMessage());
-            }));
-            errorsMap.values().stream().findFirst();
-            return new ResponseEntity<>(errorsMap, HttpStatus.UNPROCESSABLE_ENTITY);
+    public ResponseEntity<Object> createPayment(@Validated(value = {OrderChecks4.class})
+                                                    @Valid @RequestBody PaymentDto paymentDto, @RequestParam  Long invoiceId,
+                                             Errors errors) throws MethodArgumentNotValidException {
+        if (errors.hasErrors()) {
+            return validationErrors.checkErrors(errors);
         }
         paymentService.savePayment(paymentMapper.mapToPayment(paymentDto),invoiceId);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
+    @PostMapping(value = "settlePayment", consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> settlePayment(@Validated(value = {OrderChecks4.class})
+                                                @Valid @RequestBody PaymentDto paymentDto, @RequestParam  Long invoiceId,
+                                                Errors errors) throws MethodArgumentNotValidException {
+        if (errors.hasErrors()) {
+            return validationErrors.checkErrors(errors);
+        }
+        paymentService.settle(paymentMapper.mapToPayment(paymentDto),invoiceId);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
 
     @GetMapping(value = "getPaymentsByInvoiceId")
     public List<PaymentDto> getPaymentsByInvoice(@RequestParam Long invoiceId) {
@@ -55,8 +64,8 @@ public class PaymentController {
 
     }
 
-    @DeleteMapping(value = "deleteInvoice", consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> deleteInvoice(@RequestParam Long paymentId) {
+    @DeleteMapping(value = "deletePayment", consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> deletePayment(@RequestParam Long paymentId) {
         try {
             paymentService.deletePayment(paymentId);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

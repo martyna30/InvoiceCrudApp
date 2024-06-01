@@ -27,7 +27,7 @@ public interface SellerRepository extends CrudRepository<Seller, Long> {
 
     Optional<Seller> findSellerByNameIgnoreCase(String name);
 
-
+    //@Query("SELECT Seller.name FROM")
     Optional<Seller> findSellerByAppUser_Username(String username);
 
 

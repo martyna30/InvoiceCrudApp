@@ -132,10 +132,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v1/item/getItem/**").hasAnyRole("USER","ADMIN")
                 .antMatchers("/v1/item/getItems/**").hasAnyRole("USER","ADMIN")
                 //payment
+
+                .antMatchers("/v1/payment/settlePayment/**").hasAnyRole("USER","ADMIN")
                 .antMatchers("/v1/payment/createPayment/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/payment/deletePayment/**").hasAnyRole("USER","ADMIN")
                 .antMatchers("/v1/payment/getPaymentsByInvoiceId/**").hasAnyRole("USER","ADMIN")
-
-
                 .anyRequest().authenticated()
 
                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

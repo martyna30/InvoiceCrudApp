@@ -38,8 +38,7 @@ dependencies {
 	//compile('org.postgresql:postgresql')
 	providedRuntime ("org.springframework.boot:spring-boot-starter-tomcat")
 	implementation('com.google.code.gson:gson:2.8.2')
-	//parse to json
-	//implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.1'
+
 	implementation "com.fasterxml.jackson.core:jackson-databind:2.9.7"
 	implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.7"
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.3.1.RELEASE'

@@ -29,7 +29,8 @@ public class PaymentMapper {
                 payment.getId(),
                 payment.getMethodOfPayment(),
                 payment.getPaid(),
-                payment.getDateOfPayment()
+                payment.getDateOfPayment(),
+                payment.getIsPrime()
                 //invoiceMapper.mapToInvoiceOutgoingDto(payment.getInvoice())
         );
     }
@@ -50,7 +51,8 @@ public class PaymentMapper {
                         payment.getId(),
                         payment.getMethodOfPayment(),
                         payment.getPaid(),
-                        payment.getDateOfPayment()
+                        payment.getDateOfPayment(),
+                        payment.getIsPrime()
                 )).collect(Collectors.toList());
     }
 }

@@ -1,6 +1,5 @@
 package com.crud.invoices.domain;
 
-import com.crud.invoices.validationGroup.Format;
 import com.crud.invoices.validationGroup.NotEmptyGroup;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -15,7 +14,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -49,7 +47,7 @@ public class InvoiceComingDto {
     private String periodOfPayment;
     private String methodOfPayment;
     @NotNull(groups= NotEmptyGroup.class, message ="Amount of paid must be at least 0")
-    @Min(groups= Format.class, value = 0, message="Amount of paid must be at least 0")
+    //@Min(groups= Format.class, value = 0, message="Amount of paid must be at least 0")
     private BigDecimal paid;
     private BigDecimal amountPaid;
     private BigDecimal leftToPay;
