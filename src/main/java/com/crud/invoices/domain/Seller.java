@@ -30,6 +30,8 @@ public class Seller {
         this.appUser = appUser;
     }
 
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "SELLER_ID", unique = true)

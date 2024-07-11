@@ -2,8 +2,6 @@ package com.crud.invoices.service;
 
 import com.crud.invoices.domain.AppUser;
 import com.crud.invoices.domain.ConfirmationToken;
-import com.crud.invoices.domain.ContractorFromGusDto;
-import com.crud.invoices.domain.Seller;
 import com.crud.invoices.mail.EmailService;
 import com.crud.invoices.registration.RegisterCredentialsDto;
 import com.crud.invoices.respository.UserRepository;
@@ -12,10 +10,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -41,8 +37,6 @@ public class RegistrationService {
         if(!isValidEmail) {
             throw new IllegalStateException("Email not valid");
         }
-        //Optional<ContractorFromGusDto> sellerFromGus = Optional.ofNullable(birService.getContractorFromGus(registerCredentials.getNip()));
-        //if (sellerFromGus.isPresent())
         String token = userService.signUpUser(
                 new AppUser(
                         registerCredentials.getUsername(),

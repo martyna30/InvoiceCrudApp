@@ -3,7 +3,6 @@ package com.crud.invoices.domain;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @NoArgsConstructor
@@ -28,7 +27,6 @@ public class Rate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
     @Column(name = "ID", unique = true)
     public Long getId() {
         return id;
@@ -40,7 +38,7 @@ public class Rate {
     // return exchange;
     //}
 
-    @Column(name = "CODE")
+    @Column(name = "CURRENCY")
     public String getCurrency() {
         return currency;
     }

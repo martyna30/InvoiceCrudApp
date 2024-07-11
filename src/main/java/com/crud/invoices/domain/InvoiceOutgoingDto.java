@@ -56,6 +56,5 @@ public class InvoiceOutgoingDto {
     private BigDecimal amountOfVAT;
 
 
-    public InvoiceOutgoingDto(Long id, String number, ContractorDto contractorDto, LocalDate dateOfInvoice, LocalDate dateOfSale, LocalDate dateOfPayment, String periodOfPayment, String methodOfPayment, BigDecimal paid, BigDecimal amountPaid, BigDecimal leftToPay, InvoiceStatus isSettled, BigDecimal netAmount, BigDecimal sumTotal, BigDecimal amountOfVAT) {
-    }
+
 }

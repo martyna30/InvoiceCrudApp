@@ -124,6 +124,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v1/seller/deleteSeller/**").hasAnyRole("USER","ADMIN")
                 .antMatchers("/v1/seller/updateSeller/**").hasAnyRole("USER","ADMIN")
                 .antMatchers("/v1/seller/createSeller/**").hasAnyRole("USER","ADMIN")
+                //nbp
+                .antMatchers("/v1/nbp/getRateByCurrency/**").hasAnyRole("USER","ADMIN")
                 //item
                 .antMatchers("/v1/item/createItem/**").hasAnyRole("USER","ADMIN")
                 .antMatchers("/v1/item/updateItem/**").hasAnyRole("USER","ADMIN")

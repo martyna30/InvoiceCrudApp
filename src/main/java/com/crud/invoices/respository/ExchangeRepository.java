@@ -26,7 +26,11 @@ public interface ExchangeRepository extends CrudRepository<Exchange, Long> {
     @Query
     List<Exchange> retrieveTableWithSpecifiedDate(@Param("EFFECTIVE_DATE") LocalDate date);
 
+
     @Override
     long count();
+
+
+
 
 }

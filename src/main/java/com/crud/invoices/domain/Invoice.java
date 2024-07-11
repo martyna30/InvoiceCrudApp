@@ -26,6 +26,7 @@ public class Invoice {
     private BigDecimal leftToPay;
     @Enumerated(EnumType.STRING)
     private InvoiceStatus isSettled = InvoiceStatus.FALSE;
+    private Rate rate;
     private List<Item> items = new ArrayList<>();
     private BigDecimal netAmount;
     private BigDecimal sumTotal;
@@ -36,16 +37,18 @@ public class Invoice {
      this.contractor = contractor;
     }
 
-    public Invoice(Long id,Contractor contractor, LocalDate dateOfInvoice, LocalDate dateOfSale,
-                   String periodOfPayment, String methodOfPayment, BigDecimal paid,List<Item> items,
+    public Invoice(Long id,Contractor contractor, Seller seller, LocalDate dateOfInvoice, LocalDate dateOfSale,
+                   String periodOfPayment, String methodOfPayment, BigDecimal paid, Rate rate, List<Item> items,
                    BigDecimal netAmount, BigDecimal sumTotal) {
         this.id = id;
         this.contractor = contractor;
+        this.seller = seller;
         this.dateOfInvoice = dateOfInvoice;
         this.dateOfSale = dateOfSale;
         this.periodOfPayment = periodOfPayment;
         this.methodOfPayment = methodOfPayment;
         this.paid = paid;
+        this.rate = rate;
         this.items = items;
         this.netAmount = netAmount;
         this.sumTotal = sumTotal;
@@ -147,6 +150,12 @@ public class Invoice {
         return paid;
     }
 
+    @JoinColumn(name = "RATE_ID")
+    @ManyToOne(cascade=CascadeType.PERSIST)
+    public Rate getRate() {
+        return rate;
+    }
+
     @Column
     public BigDecimal getAmountPaid() {
         return amountPaid;
@@ -241,6 +250,9 @@ public class Invoice {
         this.paid = paid;
     }
 
+    public void setRate(Rate rate) {
+        this.rate = rate;
+    }
 
     public void setAmountPaid(BigDecimal amountPaid) {
         this.amountPaid = amountPaid;

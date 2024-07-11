@@ -115,7 +115,7 @@ public class UserService implements UserDetailsService {
 
     public Optional<AppUser> getAppUserByUsername(String username) {
         Optional<AppUser> user = userRepository.findAppUserByUsernameIgnoreCase(username);
-        return Optional.ofNullable(user.orElseThrow(()-> new RuntimeException(("User doesn't exist"))));
+        return Optional.ofNullable(user.orElseThrow( () -> new RuntimeException(("User doesn't exist"))));
     }
     /*public List<AppUser> getAllUsers() {
         return userRepository.findAll();

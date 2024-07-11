@@ -32,6 +32,9 @@ public class InvoiceComingDto {
     @Valid
     @JsonProperty("contractor")
     private ContractorDto contractorDto;
+    @Valid
+    @JsonProperty("seller")
+    private SellerOnTheInvoiceDto sellerDto;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -47,13 +50,13 @@ public class InvoiceComingDto {
     private String periodOfPayment;
     private String methodOfPayment;
     @NotNull(groups= NotEmptyGroup.class, message ="Amount of paid must be at least 0")
-    //@Min(groups= Format.class, value = 0, message="Amount of paid must be at least 0")
     private BigDecimal paid;
     private BigDecimal amountPaid;
     private BigDecimal leftToPay;
     private InvoiceStatus isSettled;
     //@AssertFalse( groups = Settled.class, message = "Invoice was settled, you may not modify")
     //private InvoiceStatus isSettled;
+    RateDto rateDto;
     @Valid
     private List<ItemDto> items = new ArrayList<>();
     private BigDecimal netAmount;

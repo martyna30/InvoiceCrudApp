@@ -4,6 +4,7 @@ import com.crud.invoices.domain.Exchange;
 import com.crud.invoices.nbp.facade.ExchangeFacade;
 import com.crud.invoices.respository.ExchangeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -18,8 +19,8 @@ public class ExchangeScheduler {
     @Autowired
     ExchangeRepository exchangeRepository;
 
-   // @Scheduled(fixedDelay = 10000000)
-    // @Scheduled(cron = " 0 0 * * * * ")
+    @Scheduled(fixedDelay =36000000)
+    @Scheduled(cron = " 0 0 * * * * ")
     public void checkTable() {
         List<Exchange> currentNBPtable = exchangeRepository.retrieveTableWithSpecifiedDate(LocalDate.now());
 

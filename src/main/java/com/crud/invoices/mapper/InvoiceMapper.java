@@ -18,24 +18,32 @@ public class InvoiceMapper {
     @Autowired
     ContractorMapper contractorMapper;
 
+    @Autowired
+    SellerMapper sellerMapper;
+
+    @Autowired
+    RateMapper rateMapper;
+
 
 
     public Invoice mapToInvoice(InvoiceComingDto invoiceDto) {
         return new Invoice(
                 invoiceDto.getId(),
                 contractorMapper.mapToContractor(invoiceDto.getContractorDto()),
+                sellerMapper.mapToOnTheInvoiceSeller(invoiceDto.getSellerDto()),
                 invoiceDto.getDateOfInvoice(),
                 invoiceDto.getDateOfSale(),
                 invoiceDto.getPeriodOfPayment(),
                 invoiceDto.getMethodOfPayment(),
                 invoiceDto.getPaid(),
-                //invoiceDto.getIsSettled(),
+                rateMapper.mapToRate(invoiceDto.getRateDto()),
                 itemMapper.mapToItemList(invoiceDto.getItems()),
                 invoiceDto.getNetAmount(),
                 invoiceDto.getSumTotal()
-                //invoiceDto.getAmountOfVAT());
         );
     }
+
+
 
     public InvoiceOutgoingDto mapToInvoiceOutgoingDto(Invoice invoice) {
         return new InvoiceOutgoingDto(

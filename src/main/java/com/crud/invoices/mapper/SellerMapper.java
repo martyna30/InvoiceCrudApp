@@ -33,6 +33,17 @@ public class SellerMapper {
                 userMapper.mapToUser(sellerDto.getAppUserDto()));
     }
 
+    public Seller mapToOnTheInvoiceSeller(SellerOnTheInvoiceDto sellerDto) {
+        return new Seller(
+                sellerDto.getId(),
+                sellerDto.getName(),
+                sellerDto.getVatIdentificationNumber(),
+                null,
+                null
+        );
+
+    }
+
     public SellerDto mapToSellerDtoFromGus(ContractorFromGusDto contractorFromGusDto) {
        return new SellerDto(
                contractorFromGusDto.getId(),
