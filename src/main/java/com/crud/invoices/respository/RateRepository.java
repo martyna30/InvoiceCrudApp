@@ -23,5 +23,8 @@ public interface RateRepository extends CrudRepository<Rate, Long> {
     @Query("SELECT r FROM Rate r WHERE r.currency = :currency AND r IN (SELECT rates FROM Exchange e JOIN e.rates rates WHERE e.date = :effectiveDate)")
     Optional<Rate> findByCurrencyAndEffectiveDate(@Param("currency")String currency, @Param("effectiveDate") LocalDate date);
 
+    @Query("SELECT r FROM Rate r WHERE r.currency = :currency AND r IN (SELECT MAX(e.date) FROM Exchange e WHERE e.date < :effectiveDate)")
+    Optional<Rate> findLastRateBeforeDate(@Param("currency") String currency, @Param("effectiveDate") LocalDate effectiveDate);
+
 
 }

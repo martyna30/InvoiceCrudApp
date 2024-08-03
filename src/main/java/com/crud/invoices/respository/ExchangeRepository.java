@@ -31,6 +31,4 @@ public interface ExchangeRepository extends CrudRepository<Exchange, Long> {
     long count();
 
 
-
-
 }

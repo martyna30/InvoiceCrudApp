@@ -56,7 +56,8 @@ public class InvoiceComingDto {
     private InvoiceStatus isSettled;
     //@AssertFalse( groups = Settled.class, message = "Invoice was settled, you may not modify")
     //private InvoiceStatus isSettled;
-    RateDto rateDto;
+    @JsonProperty("rate")
+    RateFromFrontendDto rateFromFrontendDto;
     @Valid
     private List<ItemDto> items = new ArrayList<>();
     private BigDecimal netAmount;

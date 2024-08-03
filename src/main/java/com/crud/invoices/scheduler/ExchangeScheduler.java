@@ -19,7 +19,7 @@ public class ExchangeScheduler {
     @Autowired
     ExchangeRepository exchangeRepository;
 
-    @Scheduled(fixedDelay =36000000)
+    //@Scheduled(fixedDelay =3600000)
     @Scheduled(cron = " 0 0 * * * * ")
     public void checkTable() {
         List<Exchange> currentNBPtable = exchangeRepository.retrieveTableWithSpecifiedDate(LocalDate.now());

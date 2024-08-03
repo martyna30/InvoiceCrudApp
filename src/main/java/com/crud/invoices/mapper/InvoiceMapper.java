@@ -36,7 +36,7 @@ public class InvoiceMapper {
                 invoiceDto.getPeriodOfPayment(),
                 invoiceDto.getMethodOfPayment(),
                 invoiceDto.getPaid(),
-                rateMapper.mapToRate(invoiceDto.getRateDto()),
+                rateMapper.mapToRate(invoiceDto.getRateFromFrontendDto()),
                 itemMapper.mapToItemList(invoiceDto.getItems()),
                 invoiceDto.getNetAmount(),
                 invoiceDto.getSumTotal()

@@ -3,6 +3,7 @@ package com.crud.invoices.service;
 import com.crud.invoices.client.NBPclient;
 import com.crud.invoices.domain.Exchange;
 import com.crud.invoices.domain.ExchangeDto;
+import com.crud.invoices.domain.Rate;
 import com.crud.invoices.respository.ExchangeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,8 +30,11 @@ public class ExchangeService {
         if (exchangeTables.size() > 0) {
             Exchange exchangeTablesIn = exchangeTables.stream().findFirst().get();
             exchangeTablesIn.setName(nbPtable.getName());
-            exchangeTablesIn.setRates(nbPtable.getRates());
+            exchangeTablesIn.getRates().clear();
 
+            for(Rate rate: nbPtable.getRates()) {
+                exchangeTablesIn.getRates().add(rate);
+            }
             return exchangeRepository.save(exchangeTablesIn);
         } else {
             return exchangeRepository.save(nbPtable);

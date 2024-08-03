@@ -15,8 +15,6 @@ import java.math.BigDecimal;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RateDto {
     private Long id;
-    //@JsonBackReference
-    //ExchangeDto exchangeDto;
     @JsonProperty("currency")
     private String currency;
     @JsonProperty("mid")

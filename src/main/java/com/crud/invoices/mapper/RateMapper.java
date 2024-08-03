@@ -2,6 +2,7 @@ package com.crud.invoices.mapper;
 
 import com.crud.invoices.domain.Rate;
 import com.crud.invoices.domain.RateDto;
+import com.crud.invoices.domain.RateFromFrontendDto;
 import com.crud.invoices.domain.RateOutgoingDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,6 +21,15 @@ public class RateMapper {
                 rateDto.getRateOfExchange()
         );
     }
+
+    public Rate mapToRate(RateFromFrontendDto rateDto) {
+        return new Rate(
+                rateDto.getId(),
+                rateDto.getCurrency(),
+                rateDto.getRateOfExchange()
+        );
+    }
+
 
     public RateDto mapToRateDto(Rate rate) {
         return new RateDto(

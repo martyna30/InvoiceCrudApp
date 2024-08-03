@@ -12,8 +12,8 @@ import java.util.Optional;
 
 @Service
 public class RateService {
-
-
+    @Autowired
+    ExchangeService exchangeService;
 
     @Autowired
     RateRepository rateRepository;
@@ -30,10 +30,19 @@ public class RateService {
         return rateRepository.findById(id);
     }
 
+
+
     public Rate getRateByCurrencyAndDate(final String currency, final LocalDate effectiveDate) throws RateNotFoundException {
-        Optional<Rate>rate =  rateRepository.findByCurrencyAndEffectiveDate(currency, effectiveDate);
-        return Optional.ofNullable(rate).get()
-               .orElseThrow(RateNotFoundException::new);
+        Optional<Rate> rate = rateRepository.findByCurrencyAndEffectiveDate(currency, effectiveDate);
+
+        if (!rate.isPresent()) {
+            LocalDate effectiveDateFromYesterday = effectiveDate.minusDays(1);
+            rate = rateRepository.findByCurrencyAndEffectiveDate(currency, effectiveDateFromYesterday);
+            if(!rate.isPresent()) {
+                rate = rateRepository.findLastRateBeforeDate(currency, effectiveDateFromYesterday);
+            }
+        }
+        return rate.orElseThrow(RateNotFoundException::new);
     }
 }
 

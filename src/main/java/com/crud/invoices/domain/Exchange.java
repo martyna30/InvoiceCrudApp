@@ -52,7 +52,8 @@ public class Exchange {
     @OneToMany(
             //targetEntity = Rate.class,
             //mappedBy = "exchange",
-            cascade = CascadeType.ALL
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
             //fetch = FetchType.LAZY
     )
     @JoinColumn(name = "EXCHANGE_ID")
