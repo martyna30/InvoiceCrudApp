@@ -13,7 +13,7 @@ public class Item {
     private Long id;
 
     private Long number;
-    private String product;
+    private String nameOfProduct;
     //Invoice invoice;
     private String unit;
     private int amount;
@@ -22,16 +22,17 @@ public class Item {
 
     private Integer vatRate;
     private BigDecimal grossValue;
+    Product product;
 
-    public Item(String product) {
-        this.product = product;
+    public Item(String nameOfProduct) {
+        this.nameOfProduct = nameOfProduct;
     }
 
-    public Item(Long id, Long number, String product,String unit, int amount,
+    public Item(Long id, Long number, String nameOfProduct,String unit, int amount,
                 BigDecimal netWorth, BigDecimal amountOfVAT, Integer vatRate, BigDecimal grossValue) {
         this.id = id;
         this.number = number;
-        this.product = product;
+        this.nameOfProduct = nameOfProduct;
         this.unit = unit;
         this.amount = amount;
         this.netWorth = netWorth;
@@ -40,11 +41,11 @@ public class Item {
         this.grossValue = grossValue;
     }
 
-    public Item(Long id, Long number, String product, String unit, int amount,
+    public Item(Long id, Long number, String nameOfProduct, String unit, int amount,
                 BigDecimal netWorth, Integer vatRate, BigDecimal grossValue) {
         this.id = id;
         this.number = number;
-        this.product = product;
+        this.nameOfProduct = nameOfProduct;
         this.unit = unit;
         this.amount = amount;
         this.netWorth = netWorth;
@@ -61,22 +62,22 @@ public class Item {
     }
 
 
-    /*@JoinColumn(name ="INVOICE_ID")
-    @ManyToOne(cascade=CascadeType.MERGE)
-    public Invoice getInvoice() {
-        return invoice;
-    }*/
+    @JoinColumn(name ="PRODUCT_ID")
+    @ManyToOne(cascade = {CascadeType.MERGE})
+    public Product getProduct() {
+        return product;
+    }
 
 
     @Column
     public Long getNumber() {
         return number;
     }
-
     @Column
-    public String getProduct() {
-        return product;
+    public String getNameOfProduct() {
+        return nameOfProduct;
     }
+
 
     @Column
     public String getUnit() {
@@ -106,9 +107,8 @@ public class Item {
     }
 
 
-
-    public void setProduct(String product) {
-        this.product = product;
+    public void setNameOfProduct(String nameOfProduct) {
+        this.nameOfProduct = nameOfProduct;
     }
 
     public void setNumber(Long number) {
@@ -143,4 +143,7 @@ public class Item {
         this.id = id;
     }
 
+    public void setProduct(Product product) {
+        this.product = product;
+    }
 }

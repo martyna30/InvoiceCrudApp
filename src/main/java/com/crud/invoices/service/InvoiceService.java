@@ -50,15 +50,29 @@ public class InvoiceService {
 
     @Transactional
     public Invoice saveInvoiceWithContractor(Invoice invoice) throws ContractorNotFoundException {
-        this.saveContractorWithAddress(invoice);
+        this.saveContractorWithAddress(invoice);  ///sprawdz
+        return this.saveInvoice(invoice);
+
+    }
+
+    @Transactional
+    public Invoice saveInvoiceWithoutContractor(final Invoice invoice) {
+       return this.saveInvoice(invoice);
+    }
+
+
+    @Transactional
+    public Invoice saveInvoice(final Invoice invoice) {
         this.saveSeller(invoice);
         this.addDateOfPayment(invoice);
         this.calculateFirstAmount(invoice);
         this.addPrimePaymentForInvoice(invoice);
+        //this.checkItems(invoice);
         Invoice invoiceWithId = invoiceRepository.save(invoice);
         this.addNumberForInvoice(invoiceWithId);
         return invoiceRepository.save(invoiceWithId);
     }
+
 
 
     @Transactional
@@ -68,23 +82,29 @@ public class InvoiceService {
         this.addDateOfPayment(invoice);
         this.addNumberForInvoice(invoice);
        //items
-        Optional<Invoice> invoiceInDatabase = invoiceRepository.findById(invoice.getId());
+        //this.checkItems(invoice);
         //InvoiceStatus isSettled = invoiceInDatabase.get().getIsSettled();
         this.checkPaymentsForExistingInvoice(invoice);
         //this.paymentService.addPaymentForExistingInvoice(invoice, invoice.getPaid());//zmiana
         return invoiceRepository.save(invoice);
     }
 
-    @Transactional
-    public Invoice saveInvoiceWithoutContractor(final Invoice invoice) {
-        this.saveSeller(invoice);
-        this.addDateOfPayment(invoice);
-        this.calculateFirstAmount(invoice);
-        this.addPrimePaymentForInvoice(invoice);
-        Invoice invoiceWithId = invoiceRepository.save(invoice);
-        this.addNumberForInvoice(invoiceWithId);
-        return invoiceRepository.save(invoiceWithId);
-    }
+
+
+
+
+    /*private void checkItems(Invoice invoice) {
+        List<Item> listItems = new ArrayList<>(invoice.getItems());
+
+        Stream.iterate(0,i -> i + 1)
+                .limit(listItems.size())
+                .forEach((i)-> {
+
+                });
+
+
+    }*/
+
 
 
     public void calculateFirstAmount(Invoice invoice) {
@@ -149,7 +169,9 @@ public class InvoiceService {
                             invoice));
         }
     }
-    private void checkPaymentsForExistingInvoice(Invoice invoice) {
+
+    @Transactional
+    public void checkPaymentsForExistingInvoice(Invoice invoice) {
          //tu popraw modyfikuj
          List<Payment> paymentsForInvoice = paymentService.findPaymentsByInvoiceId(invoice.getId());
          Optional<Payment>firstPaymentForInvoice = paymentsForInvoice.stream()
@@ -200,15 +222,12 @@ public class InvoiceService {
         System.out.println(contractorInDatabase.get());
         if (contractorInDatabase.isPresent()) {
             invoice.getContractor().setId(contractorInDatabase.get().getId());
-
         }
     }
 
     public void saveSeller(Invoice invoice) {
         Optional<Seller> selerInDatabase = sellerService.getSellerByVatIdentificationNumber(invoice.getSeller().getVatIdentificationNumber());
-            if(selerInDatabase.isPresent()) {
-                invoice.setSeller(selerInDatabase.get());
-            }
+        selerInDatabase.ifPresent(invoice::setSeller);
 
     }
 

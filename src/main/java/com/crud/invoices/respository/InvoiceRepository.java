@@ -24,10 +24,10 @@ public interface InvoiceRepository extends CrudRepository<Invoice, Long>,
 
     @Override
     void deleteById(Long id);
+
     @Override
     Page<Invoice> findAll(Pageable pageable);
 
-    //List<Item> findItemsByInvoiceId(Long invoiceId);
 
     @Override
     long count();

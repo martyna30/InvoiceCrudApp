@@ -130,9 +130,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v1/item/createItem/**").hasAnyRole("USER","ADMIN")
                 .antMatchers("/v1/item/updateItem/**").hasAnyRole("USER","ADMIN")
                 .antMatchers("/v1/item/deleteItem/**").hasAnyRole("USER","ADMIN")
-                .antMatchers("/v1/item/deleteItem/**").hasAnyRole("USER","ADMIN")
                 .antMatchers("/v1/item/getItem/**").hasAnyRole("USER","ADMIN")
                 .antMatchers("/v1/item/getItems/**").hasAnyRole("USER","ADMIN")
+
+                //products
+                .antMatchers("/v1/product/createProduct/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/product/updateProduct/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/product/deleteProduct/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/product/getProduct/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/v1/product/getProducts/**").hasAnyRole("USER","ADMIN")
+
+
                 //payment
 
                 .antMatchers("/v1/payment/settlePayment/**").hasAnyRole("USER","ADMIN")

@@ -81,7 +81,7 @@ public class PrinterService {
                             .limit(invoice.getItems().size())
                     .forEach((i)-> {
                         table2.addCell(new Cell().add(new Paragraph(String.valueOf(i+1))))
-                        .addCell(new Cell().add(new Paragraph(String.valueOf(invoice.getItems().get(i).getProduct()))))
+                        .addCell(new Cell().add(new Paragraph(String.valueOf(invoice.getItems().get(i).getNameOfProduct()))))
                         .addCell(new Cell().add(new Paragraph(String.valueOf(invoice.getItems().get(i).getUnit()))))
                         .addCell(new Cell().add(new Paragraph(String.valueOf(invoice.getItems().get(i).getAmount()))))
                         .addCell(new Cell().add(new Paragraph(String.valueOf(invoice.getItems().get(i).getNetWorth()))))

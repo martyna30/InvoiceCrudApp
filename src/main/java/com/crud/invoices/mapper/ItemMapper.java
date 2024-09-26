@@ -19,7 +19,7 @@ public class ItemMapper {
                 .map(itemDto -> new Item(
                         itemDto.getId(),
                         itemDto.getNumber(),
-                itemDto.getProduct(),
+                itemDto.getNameOfProduct(),
                 itemDto.getUnit(),
                 itemDto.getAmount(),
                 itemDto.getNetWorth(),
@@ -33,7 +33,7 @@ public class ItemMapper {
                 .map(item -> new ItemDto(
                         item.getId(),
                         item.getNumber(),
-                        item.getProduct(),
+                        item.getNameOfProduct(),
                         item.getUnit(),
                         item.getAmount(),
                         item.getNetWorth(),
@@ -60,7 +60,7 @@ public class ItemMapper {
         return new Item(
                         itemDto.getId(),
                         itemDto.getNumber(),
-                        itemDto.getProduct(),
+                        itemDto.getNameOfProduct(),
                         itemDto.getUnit(),
                         itemDto.getAmount(),
                         itemDto.getNetWorth(),
@@ -73,7 +73,7 @@ public class ItemMapper {
         return new ItemDto(
                 item.getId(),
                 item.getNumber(),
-                item.getProduct(),
+                item.getNameOfProduct(),
                 item.getUnit(),
                 item.getAmount(),
                 item.getNetWorth(),
