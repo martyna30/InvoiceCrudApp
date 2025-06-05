@@ -36,7 +36,20 @@ public class ProductService {
         existingProduct.setVatRate(product.getVatRate());
         existingProduct.setGrossValue(product.getGrossValue());
     }
+    @Transactional
+    public Product acceptProduct(Product productId) {
+        Optional<Product> product = this.getProduct(productId.getId())
+                .map(product -> {
+                    updateAmountOfProduct(product1, product);
+                    return productRepository.save(product1);
+                })
+                .orElseGet(() -> productRepository.save(product));
 
+    }
+
+    private void updateAmountOfProduct(Product existingProduct, Product product) {
+        existingProduct.setState(product.getState());
+    }
 
 
     public Optional<Product> getProduct(final Long productId) {
@@ -56,6 +69,7 @@ public class ProductService {
     public void deleteProduct(Long productId) {
         productRepository.deleteById(productId);
     }
-
-
 }
+
+
+

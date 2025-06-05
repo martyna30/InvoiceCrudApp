@@ -26,8 +26,3 @@ public class ValidationErrors {
             return new ResponseEntity<>(errorsMap, HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
-
-
-
-
-

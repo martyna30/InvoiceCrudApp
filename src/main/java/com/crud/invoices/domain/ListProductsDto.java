@@ -17,7 +17,7 @@ public class ListProductsDto {
 
     private long total = 0;
 
-    private List<ProductOutgoingDto> productOutgoingDtoList = new ArrayList<>();
+    private List<ProductOutgoingDto> products = new ArrayList<>();
 
 
 

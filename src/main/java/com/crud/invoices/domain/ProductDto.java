@@ -27,9 +27,6 @@ public class ProductDto {
     @NotBlank(groups= NotEmptyGroup.class, message ="Field can remain empty")
     private String unit;
     private String code;
-    //@NotNull(groups= NotEmptyGroup.class, message = "Field can remain empty")
-    //@Min(groups= Format.class, value = 0, message="Stock availability of products must be at least 0")
-    //private Long state;
     @NotNull(groups= NotEmptyGroup.class, message = "Field can remain empty")
     private BigDecimal netWorth;
     @NotNull(groups= NotEmptyGroup.class, message = "Field can remain empty")

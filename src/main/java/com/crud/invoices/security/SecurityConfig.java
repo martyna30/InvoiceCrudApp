@@ -139,7 +139,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v1/product/deleteProduct/**").hasAnyRole("USER","ADMIN")
                 .antMatchers("/v1/product/getProduct/**").hasAnyRole("USER","ADMIN")
                 .antMatchers("/v1/product/getProducts/**").hasAnyRole("USER","ADMIN")
-
+                .antMatchers("/v1/product/acceptProducts/**").hasAnyRole("USER","ADMIN")
 
                 //payment
 

@@ -43,8 +43,8 @@ public class InvoiceService {
 
 
     public List<Invoice> getAllInvoices(Pageable pageable) {
-        Page<Invoice> bookPage = invoiceRepository.findAll(pageable);
-        return bookPage.getContent();
+        Page<Invoice> invoicePage = invoiceRepository.findAll(pageable);
+        return invoicePage.getContent();
     }
 
 

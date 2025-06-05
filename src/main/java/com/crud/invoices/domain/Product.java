@@ -15,10 +15,27 @@ public class Product {
     private String type;
     private String unit;
     private String code;
+    private BigDecimal state;
     private BigDecimal netWorth;
     private Integer vatRate;
     private BigDecimal grossValue;
     //private List<Item> productsItems =  new ArrayList<>();
+
+    public Product(Long id, String nameOfProduct,String type, String unit,
+                   String code, BigDecimal state, BigDecimal netWorth,
+                   Integer vatRate, BigDecimal grossValue) {
+        this.id = id;
+        this.nameOfProduct = nameOfProduct;
+        this.type = type;
+        this.unit = unit;
+        this.code = code;
+        this.state = state;
+        this.netWorth = netWorth;
+        this.vatRate = vatRate;
+        this.grossValue = grossValue;
+
+    }
+
 
     public Product(Long id, String nameOfProduct,String type, String unit,
                    String code, BigDecimal netWorth,
@@ -33,6 +50,7 @@ public class Product {
         this.grossValue = grossValue;
 
     }
+
 
 
     @Id
@@ -51,13 +69,15 @@ public class Product {
     }*/
 
 
-    @Column
-    public String getCode() {
-        return code;
-    }
+
     @Column
     public String getNameOfProduct() {
         return nameOfProduct;
+    }
+
+    @Column
+    public String getType() {
+        return type;
     }
 
     @Column
@@ -65,10 +85,16 @@ public class Product {
         return unit;
     }
 
-    public String getType() {
-        return type;
+    @Column
+    public String getCode() {
+        return code;
     }
 
+    @Column
+    public BigDecimal getState() {
+        this.state = BigDecimal.valueOf(0);
+        return state;
+    }
 
     @Column
     public BigDecimal getNetWorth() {
@@ -95,6 +121,9 @@ public class Product {
         this.code = code;
     }
 
+    public void setState(BigDecimal state) {
+        this.state = state;
+    }
 
     public void setNameOfProduct(String nameOfProduct) {
         this.nameOfProduct = nameOfProduct;

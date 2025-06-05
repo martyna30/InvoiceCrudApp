@@ -2,6 +2,7 @@ package com.crud.invoices.controller;
 
 import com.crud.invoices.domain.ListProductsDto;
 import com.crud.invoices.domain.ProductDto;
+import com.crud.invoices.domain.ProductOutgoingDto;
 import com.crud.invoices.mapper.ProductMapper;
 import com.crud.invoices.service.ProductService;
 import com.crud.invoices.validationGroup.OrderChecks;
@@ -42,8 +43,9 @@ public class ProductController {
         if (errors.hasErrors()) {
             return validationErrors.checkErrors(errors);
         }
-        productService.saveProduct(productMapper.mapToProduct(productDto));
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        ProductOutgoingDto productOutgoingDto =
+                productMapper.mapToProductOutgoingDto(productService.saveProduct(productMapper.mapToProduct(productDto)));
+        return ResponseEntity.status(HttpStatus.CREATED).body(productOutgoingDto);
     }
 
 
@@ -53,6 +55,16 @@ public class ProductController {
                 return validationErrors.checkErrors(errors);
         }
         productMapper.mapToProductOutgoingDto(productService.saveProduct(productMapper.mapToProduct(productDto)));
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+
+    @PutMapping(value = "acceptProduct")
+    public ResponseEntity<Object> acceptProduct(@Validated(value = {OrderChecks.class}) @Valid @RequestBody ProductDto productDto, Errors errors) throws ProductNotFoundException {
+        if (errors.hasErrors()) {
+            return validationErrors.checkErrors(errors);
+        }
+        productMapper.mapToProductOutgoingDto(productService.acceptProduct(productMapper.mapToProduct(productDto)));
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

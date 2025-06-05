@@ -52,17 +52,15 @@ public class InvoiceComingDto {
     @NotNull(groups= NotEmptyGroup.class, message ="Amount of paid must be at least 0")
     private BigDecimal paid;
     private BigDecimal amountPaid;
-    private BigDecimal leftToPay;
+    //private BigDecimal leftToPay;
     private InvoiceStatus isSettled;
-    //@AssertFalse( groups = Settled.class, message = "Invoice was settled, you may not modify")
-    //private InvoiceStatus isSettled;
     @JsonProperty("rate")
     RateFromFrontendDto rateFromFrontendDto;
     @Valid
     private List<ItemDto> items = new ArrayList<>();
     private BigDecimal netAmount;
     private BigDecimal sumTotal;
-    private BigDecimal amountOfVAT;
+    //private BigDecimal amountOfVAT;
 
 
 

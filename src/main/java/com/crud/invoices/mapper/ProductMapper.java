@@ -22,7 +22,6 @@ public class ProductMapper {
                 product.getNetWorth(),
                 product.getVatRate(),
                 product.getGrossValue()
-                //product.getProductsItems()
         );
     }
 
@@ -63,9 +62,11 @@ public class ProductMapper {
                 product.getType(),
                 product.getUnit(),
                 product.getCode(),
+                product.getState(),
                 product.getNetWorth(),
                 product.getVatRate(),
                 product.getGrossValue()
+
         );
     }
 
@@ -77,6 +78,7 @@ public class ProductMapper {
                         product.getType(),
                         product.getUnit(),
                         product.getCode(),
+                        product.getState(),
                         product.getNetWorth(),
                         product.getVatRate(),
                         product.getGrossValue()

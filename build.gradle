@@ -34,7 +34,7 @@ dependencies {
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
 	testCompileOnly 'org.projectlombok:lombok:1.18.12'
 	//mysql
-	implementation('mysql:mysql-connector-java')
+	implementation("mysql:mysql-connector-java:8.0.33")
 	//compile('org.postgresql:postgresql')
 	providedRuntime ("org.springframework.boot:spring-boot-starter-tomcat")
 	implementation('com.google.code.gson:gson:2.8.2')
